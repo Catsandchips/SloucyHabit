@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SlouchyHabit</string>
+    <string name="habit_screen_title">Ваша привычка</string>
+    <string name="habit_title_hint">Введите название</string>
+    <string name="habit_description_hint">Введите описание</string>
+    <string name="bad_habit_radio">Полезная</string>
+    <string name="good_habit_radio">Вредная</string>
+    <string name="habit_type_header">Тип привычки</string>
+    <string name="add_habit_button_description">Add habit</string>
+    <string name="priority_title">Приоритет</string>
+    <string name="periodicity_title">Периодичность</string>
+    <string name="save_habit_button_text">Сохранить</string>
+    <string name="repetitions_field_hint">5</string>
+</resources>
