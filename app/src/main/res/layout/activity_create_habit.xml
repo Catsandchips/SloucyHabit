@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
-                    android:text="раз в"
+                    android:text="@string/repetitions_field_base_text"
                     android:textSize="24sp" />
 
                 <EditText
@@ -156,7 +156,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
-                    android:hint="6"
+                    android:hint="@string/days_count_field_hint"
                     android:inputType="number"
                     android:textSize="24sp" />
 
@@ -165,7 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
-                    android:text="дней"
+                    android:text="@string/days_count_field_base_text"
                     android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>

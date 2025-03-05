@@ -11,4 +11,7 @@
     <string name="periodicity_title">Периодичность</string>
     <string name="save_habit_button_text">Сохранить</string>
     <string name="repetitions_field_hint">5</string>
+    <string name="days_count_field_hint">6</string>
+    <string name="repetitions_field_base_text">раз в</string>
+    <string name="days_count_field_base_text">дней</string>
 </resources>
