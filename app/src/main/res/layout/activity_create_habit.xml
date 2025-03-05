@@ -1,183 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    tools:context=".CreateHabitActivity">
+    android:background="@color/background_color">
 
-    <TextView
-        android:id="@+id/tvCreateHabitHeader"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:fontFamily="@font/amatic_sc_bold"
-        android:text="@string/habit_screen_title"
-        android:textColor="@color/headers_color"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/etHabitNameField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/amatic_sc_bold"
-        android:hint="@string/habit_title_hint"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCreateHabitHeader" />
-
-    <EditText
-        android:id="@+id/etHabitDescriptionField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/amatic_sc_bold"
-        android:hint="@string/habit_description_hint"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/etHabitNameField"
-        app:layout_constraintStart_toStartOf="@+id/etHabitNameField"
-        app:layout_constraintTop_toBottomOf="@+id/etHabitNameField" />
-
-    <LinearLayout
-        android:id="@+id/llPriority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/etHabitDescriptionField"
-        app:layout_constraintTop_toBottomOf="@+id/etHabitDescriptionField">
+        tools:context=".CreateHabitActivity">
 
         <TextView
+            android:id="@+id/tvCreateHabitHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
             android:fontFamily="@font/amatic_sc_bold"
-            android:text="@string/priority_title"
+            android:text="@string/habit_screen_title"
             android:textColor="@color/headers_color"
-            android:textSize="34sp" />
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/habitPrioritySpinner"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etHabitNameField"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:entries="@array/types_array"
-            android:popupBackground="@color/background_color" />
-    </LinearLayout>
-
-    <RadioGroup
-        android:id="@+id/rgHabitTypeField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:checkedButton="@id/rbGoodHabitRadio"
-        app:layout_constraintStart_toStartOf="@+id/llPriority"
-        app:layout_constraintTop_toBottomOf="@+id/llPriority">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="24dp"
             android:fontFamily="@font/amatic_sc_bold"
-            android:text="@string/habit_type_header"
-            android:textColor="@color/headers_color"
-            android:textSize="34sp" />
+            android:hint="@string/habit_title_hint"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateHabitHeader" />
 
-        <RadioButton
-            android:id="@+id/rbGoodHabitRadio"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/etHabitDescriptionField"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/headers_color"
+            android:layout_marginTop="16dp"
             android:fontFamily="@font/amatic_sc_bold"
-            android:textSize="24sp" />
-
-        <RadioButton
-            android:id="@+id/rbBadHabitRadio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/headers_color"
-            android:fontFamily="@font/amatic_sc_bold"
-            android:textSize="24sp" />
-    </RadioGroup>
-
-    <LinearLayout
-        android:id="@+id/llPeriodicity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@+id/rgHabitTypeField"
-        app:layout_constraintTop_toBottomOf="@+id/rgHabitTypeField">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/amatic_sc_bold"
-            android:text="@string/periodicity_title"
-            android:textColor="@color/headers_color"
-            android:textSize="34sp" />
+            android:hint="@string/habit_description_hint"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/etHabitNameField"
+            app:layout_constraintStart_toStartOf="@+id/etHabitNameField"
+            app:layout_constraintTop_toBottomOf="@+id/etHabitNameField" />
 
         <LinearLayout
-            android:id="@+id/llPeriodicityFields"
+            android:id="@+id/llPriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@+id/etHabitDescriptionField"
+            app:layout_constraintTop_toBottomOf="@+id/etHabitDescriptionField">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/amatic_sc_bold"
+                android:text="@string/priority_title"
+                android:textColor="@color/headers_color"
+                android:textSize="34sp" />
+
+            <Spinner
+                android:id="@+id/habitPrioritySpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/types_array"
+                android:popupBackground="@color/background_color" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rgHabitTypeField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:checkedButton="@id/rbGoodHabitRadio"
+            app:layout_constraintStart_toStartOf="@+id/llPriority"
+            app:layout_constraintTop_toBottomOf="@+id/llPriority">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/amatic_sc_bold"
+                android:text="@string/habit_type_header"
+                android:textColor="@color/headers_color"
+                android:textSize="34sp" />
+
+            <RadioButton
+                android:id="@+id/rbGoodHabitRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/headers_color"
+                android:fontFamily="@font/amatic_sc_bold"
+                android:textSize="24sp" />
+
+            <RadioButton
+                android:id="@+id/rbBadHabitRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/headers_color"
+                android:fontFamily="@font/amatic_sc_bold"
+                android:textSize="24sp" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/llPeriodicity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="@+id/rgHabitTypeField"
             app:layout_constraintTop_toBottomOf="@+id/rgHabitTypeField">
 
-            <EditText
-                android:id="@+id/etRepetitionsField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/amatic_sc_bold"
-                android:hint="@string/repetitions_field_hint"
-                android:inputType="number"
-                android:textSize="24sp" />
-
             <TextView
-                android:id="@+id/tvRepetitionsFieldText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/amatic_sc_bold"
-                android:text="раз в"
-                android:textSize="24sp" />
+                android:text="@string/periodicity_title"
+                android:textColor="@color/headers_color"
+                android:textSize="34sp" />
 
-            <EditText
-                android:id="@+id/etDaysCountField"
+            <LinearLayout
+                android:id="@+id/llPeriodicityFields"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/amatic_sc_bold"
-                android:hint="6"
-                android:inputType="number"
-                android:textSize="24sp" />
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@+id/rgHabitTypeField"
+                app:layout_constraintTop_toBottomOf="@+id/rgHabitTypeField">
 
-            <TextView
-                android:id="@+id/tvDaysCountFieldText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/amatic_sc_bold"
-                android:text="дней"
-                android:textSize="24sp" />
+                <EditText
+                    android:id="@+id/etRepetitionsField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amatic_sc_bold"
+                    android:hint="@string/repetitions_field_hint"
+                    android:inputType="number"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tvRepetitionsFieldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amatic_sc_bold"
+                    android:text="раз в"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/etDaysCountField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amatic_sc_bold"
+                    android:hint="6"
+                    android:inputType="number"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/tvDaysCountFieldText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/amatic_sc_bold"
+                    android:text="дней"
+                    android:textSize="24sp" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSaveHabit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/headers_color"
-        android:fontFamily="@font/amatic_sc_bold"
-        android:text="@string/save_habit_button_text"
-        android:textColor="@color/background_color"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="@+id/llPeriodicity"
-        app:layout_constraintTop_toBottomOf="@+id/llPeriodicity" />
+        <Button
+            android:id="@+id/btnSaveHabit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/headers_color"
+            android:fontFamily="@font/amatic_sc_bold"
+            android:text="@string/save_habit_button_text"
+            android:textColor="@color/background_color"
+            android:textSize="34sp"
+            app:layout_constraintStart_toStartOf="@+id/llPeriodicity"
+            app:layout_constraintTop_toBottomOf="@+id/llPeriodicity" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

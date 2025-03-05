@@ -2,6 +2,7 @@ package com.slouchingdog.android.slouchyhabit
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.snackbar.Snackbar
@@ -13,6 +14,7 @@ class CreateHabitActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityCreateHabitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
