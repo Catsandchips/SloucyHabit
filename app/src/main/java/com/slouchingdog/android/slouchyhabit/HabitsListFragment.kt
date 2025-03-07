@@ -24,7 +24,7 @@ class HabitsListFragment : Fragment() {
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = HabitAdapter(HabitsStorage.habits) { habit: Habit ->
-            val action = HabitsListFragmentDirections.actionGoToHabitFromCard(habit)
+            val action = HabitsListFragmentDirections.actionGoToHabitFromList(habit)
             findNavController().navigate(action)
         }
         binding.habitRecyclerView.adapter = adapter
@@ -36,7 +36,7 @@ class HabitsListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.fabCreateHabit.setOnClickListener{
-            val action = HabitsListFragmentDirections.actionGoToHabitFromCard(null)
+            val action = HabitsListFragmentDirections.actionGoToHabitFromList(null)
             findNavController().navigate(action)
         }
 

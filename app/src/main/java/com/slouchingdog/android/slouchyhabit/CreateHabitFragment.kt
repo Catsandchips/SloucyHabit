@@ -52,7 +52,7 @@ class CreateHabitFragment : Fragment() {
                 )
             )
             binding.tvRepetitionsFieldText.text =
-                setDeclension(habit.periodicityTimes, "раз в", "раза в", "раз в")
+                resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
             binding.etDaysCountField.setText(
                 String.format(
                     Locale.getDefault(),
@@ -61,27 +61,22 @@ class CreateHabitFragment : Fragment() {
                 )
             )
             binding.tvDaysCountFieldText.text =
-                setDeclension(habit.periodicityDays, "день", "дня", "дней")
+                resources.getQuantityString(R.plurals.days, habit.periodicityDays)
         } else {
             habitId = HabitsStorage.habits.size
         }
 
         binding.etRepetitionsField.addTextChangedListener(afterTextChanged = { p0 ->
+            val count = if (p0.isNullOrEmpty()) 0 else p0.toString().toInt()
             binding.tvRepetitionsFieldText.text =
-                if (!p0.isNullOrEmpty()) {
-                    setDeclension(p0.toString().toInt(), "раз в", "раза в", "раз в")
-                } else {
-                    "раз в"
-                }
+                resources.getQuantityString(R.plurals.times, count)
+
         })
 
         binding.etDaysCountField.addTextChangedListener(afterTextChanged = { p0 ->
+            val count = if (p0.isNullOrEmpty()) 0 else p0.toString().toInt()
             binding.tvDaysCountFieldText.text =
-                if (!p0.isNullOrEmpty()) {
-                    setDeclension(p0.toString().toInt(), "день", "дня", "дней")
-                } else {
-                    "дней"
-                }
+                resources.getQuantityString(R.plurals.days, count)
         })
 
 

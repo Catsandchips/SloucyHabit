@@ -35,11 +35,11 @@ class HabitAdapter(
             binding.tvHabitItemDescription.text = habit.description
             binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
             binding.tvHabitItemPriority.text = habit.priority
-            val timesCountString = setDeclension(habit.periodicityTimes, "раз", "раза", "раз")
-            val daysCountString = setDeclension(habit.periodicityDays, "день", "дня", "дней")
+            val timesCountString = itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
+            val daysCountString = itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
             binding.tvHabitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
-                "%d %s в %d %s",
+                "%d %s %d %s",
                 habit.periodicityTimes,
                 timesCountString,
                 habit.periodicityDays,
