@@ -1,35 +1,38 @@
 package com.slouchingdog.android.slouchyhabit
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
-import com.slouchingdog.android.slouchyhabit.databinding.ActivityCreateHabitBinding
+import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
 
-class CreateHabitActivity : AppCompatActivity() {
-    lateinit var binding: ActivityCreateHabitBinding
+class CreateHabitFragment : Fragment() {
 
+    lateinit var binding: FragmentCreateHabitBinding
+    val args: CreateHabitFragmentArgs by navArgs()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityCreateHabitBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCreateHabitBinding.inflate(layoutInflater)
 
-        binding.rbGoodHabitRadio.text = HabitType.GOOD.title
-        binding.rbBadHabitRadio.text = HabitType.BAD.title
+        binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
+        binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)
 
-        val habitExtra = intent.getSerializableExtra(CURRENT_HABIT)
+        val habitArgument = args.habit
         var habitId: Int
-        if (habitExtra != null) {
-            val habit = habitExtra as Habit
+        if (habitArgument != null) {
+            val habit = habitArgument
             habitId = habit.id
             binding.etHabitNameField.setText(habit.title)
             binding.etHabitDescriptionField.setText(habit.description)
@@ -108,14 +111,15 @@ class CreateHabitActivity : AppCompatActivity() {
                     periodicityDays
                 )
 
-                if (habitExtra != null) {
+                if (habitArgument != null) {
                     HabitsStorage.habits[habitId] = newHabit
                 } else
                     HabitsStorage.habits.add(newHabit)
 
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                findNavController().popBackStack()
             }
         }
+
+        return binding.root
     }
 }

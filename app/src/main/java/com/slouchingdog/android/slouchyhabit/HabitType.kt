@@ -1,6 +1,11 @@
 package com.slouchingdog.android.slouchyhabit
 
-enum class HabitType(val title: String) {
-    GOOD("Полезная"),
-    BAD("Вредная")
+import androidx.annotation.StringRes
+
+enum class HabitType(
+    @StringRes
+    val title: Int
+) {
+    GOOD(R.string.good_habit_radio),
+    BAD(R.string.bad_habit_radio)
 }

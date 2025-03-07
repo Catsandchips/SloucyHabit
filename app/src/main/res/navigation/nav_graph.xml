@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/habitsListFragment">
+
+    <fragment
+        android:id="@+id/habitsListFragment"
+        android:name="com.slouchingdog.android.slouchyhabit.HabitsListFragment"
+        android:label="HabitsListFragment">
+        <action
+            android:id="@+id/action_goToHabitFromList"
+            app:destination="@id/createHabitFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createHabitFragment"
+        android:name="com.slouchingdog.android.slouchyhabit.CreateHabitFragment"
+        android:label="CreateHabitFragment">
+        <argument
+            android:name="Habit"
+            app:argType="com.slouchingdog.android.slouchyhabit.Habit"
+            app:nullable="true" />
+    </fragment>
+</navigation>

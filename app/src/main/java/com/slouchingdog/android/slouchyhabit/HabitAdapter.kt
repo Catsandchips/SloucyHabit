@@ -33,7 +33,7 @@ class HabitAdapter(
         fun bind(habit: Habit, onHabitClicked: (habit: Habit) -> Unit) {
             binding.tvHabitItemTitle.text = habit.title
             binding.tvHabitItemDescription.text = habit.description
-            binding.tvHabitItemType.text = habit.type.title
+            binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
             binding.tvHabitItemPriority.text = habit.priority
             val timesCountString = setDeclension(habit.periodicityTimes, "раз", "раза", "раз")
             val daysCountString = setDeclension(habit.periodicityDays, "день", "дня", "дней")
