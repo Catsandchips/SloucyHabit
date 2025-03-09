@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/habitsListFragment">
+    app:startDestination="@id/habitsPagerFragment">
+
+    <fragment
+        android:id="@+id/habitsPagerFragment"
+        android:name="com.slouchingdog.android.slouchyhabit.HabitsPagerFragment"
+        android:label="fragment_habits_pager"
+        tools:layout="@layout/fragment_habits_pager">
+        <action
+            android:id="@+id/action_goToHabitFromVP"
+            app:destination="@id/createHabitFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/habitsListFragment"
@@ -22,4 +33,5 @@
             app:argType="com.slouchingdog.android.slouchyhabit.Habit"
             app:nullable="true" />
     </fragment>
+
 </navigation>
