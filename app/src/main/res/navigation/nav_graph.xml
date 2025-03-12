@@ -18,11 +18,7 @@
     <fragment
         android:id="@+id/habitsListFragment"
         android:name="com.slouchingdog.android.slouchyhabit.HabitsListFragment"
-        android:label="HabitsListFragment">
-        <action
-            android:id="@+id/action_goToHabitFromList"
-            app:destination="@id/createHabitFragment" />
-    </fragment>
+        android:label="HabitsListFragment" />
 
     <fragment
         android:id="@+id/createHabitFragment"

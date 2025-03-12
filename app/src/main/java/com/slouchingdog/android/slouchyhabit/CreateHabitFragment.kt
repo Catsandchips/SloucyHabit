@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navOptions
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
@@ -111,10 +113,16 @@ class CreateHabitFragment : Fragment() {
                 } else
                     HabitsStorage.habits.add(newHabit)
 
-                findNavController().popBackStack()
+                setFragmentResult(REQUEST_KEY_SUCCESS, Bundle())
+                findNavController().navigateUp()
+
             }
         }
 
         return binding.root
+    }
+
+    companion object{
+        const val REQUEST_KEY_SUCCESS = "REQUEST_KEY_SUCCESS"
     }
 }
