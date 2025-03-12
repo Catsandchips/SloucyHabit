@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/habitsPagerFragment">
+    app:startDestination="@id/nav_home">
 
     <fragment
-        android:id="@+id/habitsPagerFragment"
+        android:id="@+id/nav_home"
         android:name="com.slouchingdog.android.slouchyhabit.HabitsPagerFragment"
-        android:label="fragment_habits_pager"
+        android:label="@string/home_title"
         tools:layout="@layout/fragment_habits_pager">
         <action
             android:id="@+id/action_goToHabitFromVP"
@@ -29,5 +29,10 @@
             app:argType="com.slouchingdog.android.slouchyhabit.Habit"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.slouchingdog.android.slouchyhabit.AppInfoFragment"
+        android:label="@string/about_title"
+        tools:layout="@layout/fragment_app_info" />
 
 </navigation>

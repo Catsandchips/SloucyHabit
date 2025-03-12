@@ -6,9 +6,9 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="Домой" />
+            android:title="@string/home_title" />
         <item
-            android:id="@+id/nav_gallery"
-            android:title="О приложении" />
+            android:id="@+id/nav_about"
+            android:title="@string/about_title" />
     </group>
 </menu>

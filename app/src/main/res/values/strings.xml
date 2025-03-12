@@ -17,4 +17,6 @@
     <string name="good_habits_tab_title">Хорошие привычки</string>
     <string name="bad_habits_tab_title">Вредные привычки</string>
     <string name="tab_placeholder">типы привычек</string>
+    <string name="home_title">Список привычек</string>
+    <string name="about_title">О приложении</string>
 </resources>
