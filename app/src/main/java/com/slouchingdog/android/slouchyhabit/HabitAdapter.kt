@@ -35,8 +35,10 @@ class HabitAdapter(
             binding.tvHabitItemDescription.text = habit.description
             binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
             binding.tvHabitItemPriority.text = habit.priority
-            val timesCountString = itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
-            val daysCountString = itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
+            val timesCountString =
+                itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
+            val daysCountString =
+                itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
             binding.tvHabitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
                 "%d %s %d %s",

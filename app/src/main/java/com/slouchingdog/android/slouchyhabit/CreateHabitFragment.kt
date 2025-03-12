@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navOptions
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
@@ -122,7 +121,7 @@ class CreateHabitFragment : Fragment() {
         return binding.root
     }
 
-    companion object{
+    companion object {
         const val REQUEST_KEY_SUCCESS = "REQUEST_KEY_SUCCESS"
     }
 }

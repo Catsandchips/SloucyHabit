@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:background="@color/background_color"
+        android:contentDescription="@string/tab_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabTextAppearance="@style/Base.Theme.SlouchyHabit"
-        android:background="@color/background_color"/>
+        app:tabTextAppearance="@style/Base.Theme.SlouchyHabit" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/habitsPagerViewPager"
