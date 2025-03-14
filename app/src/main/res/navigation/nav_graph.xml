@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.slouchingdog.android.slouchyhabit.HabitsPagerFragment"
-        android:label="@string/home_title"
+        android:label="@string/habits_list_title"
         tools:layout="@layout/fragment_habits_pager">
         <action
             android:id="@+id/action_goToHabitFromVP"
@@ -17,13 +17,12 @@
 
     <fragment
         android:id="@+id/habitsListFragment"
-        android:name="com.slouchingdog.android.slouchyhabit.HabitsListFragment"
-        android:label="HabitsListFragment" />
+        android:name="com.slouchingdog.android.slouchyhabit.HabitsListFragment" />
 
     <fragment
         android:id="@+id/createHabitFragment"
         android:name="com.slouchingdog.android.slouchyhabit.CreateHabitFragment"
-        android:label="CreateHabitFragment">
+        android:label="@string/create_habit_title">
         <argument
             android:name="Habit"
             app:argType="com.slouchingdog.android.slouchyhabit.Habit"
