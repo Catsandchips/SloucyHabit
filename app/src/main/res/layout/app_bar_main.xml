@@ -8,15 +8,14 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.MyApplication.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/background_color"
-            app:popupTheme="@style/Theme.MyApplication.PopupOverlay" />
+            app:titleTextAppearance="@style/Base.Theme.SlouchyHabit.ToolbarText" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

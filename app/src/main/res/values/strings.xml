@@ -15,10 +15,9 @@
     <string name="repetitions_field_base_text">раз в</string>
     <string name="days_count_field_base_text">дней</string>
     <string name="good_habits_tab_title">Хорошие привычки</string>
-    <string name="bad_habits_tab_title">Вредные привычки</string>
+    <string name="bad_habits_tab_title">Плохие привычки</string>
     <string name="tab_placeholder">типы привычек</string>
     <string name="habits_list_title">Список привычек</string>
     <string name="about_title">О приложении</string>
     <string name="create_habit_title">Редактировать привычку</string>
-
 </resources>
