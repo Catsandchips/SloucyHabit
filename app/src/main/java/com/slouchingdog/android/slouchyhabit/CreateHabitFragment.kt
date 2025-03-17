@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
@@ -33,6 +34,8 @@ class CreateHabitFragment : Fragment() {
         val habitArgument = args.habit
         var habitId: Int
         if (habitArgument != null) {
+            (requireActivity() as AppCompatActivity).supportActionBar?.title =
+                "Редактировать привычку"
             val habit = habitArgument
             habitId = habit.id
             binding.etHabitNameField.setText(habit.title)

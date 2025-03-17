@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Base.Theme.SlouchyHabit" parent="Theme.Material3.Dark.NoActionBar">
         <item name="fontFamily">@font/amatic_sc_bold</item>
         <item name="android:textSize">24sp</item>

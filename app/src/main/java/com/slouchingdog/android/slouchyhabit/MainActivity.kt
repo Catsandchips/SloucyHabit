@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.navigationDrawerLayout
         val navView: NavigationView = binding.navView
+        navView.setItemBackgroundResource(R.drawable.nav_item_background)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
