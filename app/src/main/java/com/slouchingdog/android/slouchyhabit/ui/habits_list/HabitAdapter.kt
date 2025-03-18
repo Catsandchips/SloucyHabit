@@ -1,8 +1,10 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slouchingdog.android.slouchyhabit.R
+import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import java.util.Locale
 

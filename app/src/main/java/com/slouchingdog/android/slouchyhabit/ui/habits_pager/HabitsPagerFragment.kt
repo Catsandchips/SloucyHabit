@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.habits_pager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.slouchingdog.android.slouchyhabit.R
+import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsPagerBinding
+import com.slouchingdog.android.slouchyhabit.ui.create_habit.CreateHabitFragment
 
 class HabitsPagerFragment : Fragment() {
     lateinit var binding: FragmentHabitsPagerBinding
@@ -36,7 +39,7 @@ class HabitsPagerFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        setFragmentResultListener(CreateHabitFragment.REQUEST_KEY_SUCCESS) { _, _ ->
+        setFragmentResultListener(CreateHabitFragment.SAVE_HABIT_SUCCESS) { _, _ ->
             activity?.let { updateAdapter(it) }
         }
 
@@ -48,6 +51,5 @@ class HabitsPagerFragment : Fragment() {
             val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP(habit)
             findNavController().navigate(action)
         }
-
     }
 }

@@ -1,6 +1,7 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.data
 
 import androidx.annotation.StringRes
+import com.slouchingdog.android.slouchyhabit.R
 
 enum class HabitType(
     @StringRes

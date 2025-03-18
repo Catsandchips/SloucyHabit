@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,10 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import com.slouchingdog.android.slouchyhabit.R
+import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
 
@@ -34,8 +38,8 @@ class CreateHabitFragment : Fragment() {
         val habitArgument = args.habit
         var habitId: Int
         if (habitArgument != null) {
-            (requireActivity() as AppCompatActivity).supportActionBar?.title =
-                "Редактировать привычку"
+            (activity as AppCompatActivity).supportActionBar?.title =
+                resources.getString(R.string.edit_habit_title)
             val habit = habitArgument
             habitId = habit.id
             binding.etHabitNameField.setText(habit.title)
@@ -86,7 +90,11 @@ class CreateHabitFragment : Fragment() {
 
         binding.btnSaveHabit.setOnClickListener {
             if (binding.etHabitNameField.text.isEmpty() || binding.etHabitDescriptionField.text.isEmpty() || binding.etRepetitionsField.text.isEmpty() || binding.etDaysCountField.text.isEmpty()) {
-                Snackbar.make(binding.root, "Заполните все поля", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.root,
+                    resources.getString(R.string.form_validation_text),
+                    Snackbar.LENGTH_LONG
+                ).show()
             } else {
                 val habitName = binding.etHabitNameField.text.toString()
                 val habitDescription = binding.etHabitDescriptionField.text.toString()
@@ -115,9 +123,8 @@ class CreateHabitFragment : Fragment() {
                 } else
                     HabitsStorage.habits.add(newHabit)
 
-                setFragmentResult(REQUEST_KEY_SUCCESS, Bundle())
+                setFragmentResult(SAVE_HABIT_SUCCESS, Bundle())
                 findNavController().navigateUp()
-
             }
         }
 
@@ -125,6 +132,6 @@ class CreateHabitFragment : Fragment() {
     }
 
     companion object {
-        const val REQUEST_KEY_SUCCESS = "REQUEST_KEY_SUCCESS"
+        const val SAVE_HABIT_SUCCESS = "SAVE_HABIT_SUCCESS"
     }
 }

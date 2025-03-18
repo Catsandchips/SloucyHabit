@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import java.io.Serializable
 
@@ -26,7 +29,7 @@ class HabitsListFragment() : Fragment() {
             } else {
                 it.getSerializable(HABIT_TYPE_PARAM) as HabitType?
             }
-            onCardClick = it.getSerializable(CARD_CLICK_PARAM) as (habit: Habit) -> Unit
+            onCardClick = it.getSerializable(CARD_CLICK_PARAM) as ((habit: Habit) -> Unit)
         }
     }
 

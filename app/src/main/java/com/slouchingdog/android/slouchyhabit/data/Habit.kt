@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.data
 
 import android.graphics.Color
 import java.io.Serializable

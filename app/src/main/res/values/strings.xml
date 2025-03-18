@@ -20,4 +20,6 @@
     <string name="habits_list_title">Список привычек</string>
     <string name="about_title">О приложении</string>
     <string name="create_habit_title">Создать привычку</string>
+    <string name="edit_habit_title">Редактировать привычку</string>
+    <string name="form_validation_text">Заполните все поля</string>
 </resources>

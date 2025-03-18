@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.data
 
 class HabitsStorage {
     companion object {
