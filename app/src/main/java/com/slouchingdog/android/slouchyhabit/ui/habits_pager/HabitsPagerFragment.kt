@@ -1,6 +1,7 @@
 package com.slouchingdog.android.slouchyhabit.ui.habits_pager
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,16 +24,13 @@ class HabitsPagerFragment : Fragment() {
     ): View? {
         binding = FragmentHabitsPagerBinding.inflate(layoutInflater)
 
-        activity?.let { activity ->
-            updateAdapter(activity)
-            TabLayoutMediator(
-                binding.habitsPagerTabLayout,
-                binding.habitsPagerViewPager
-            ) { tab, position ->
-                if (position == 0) tab.text = resources.getString(R.string.good_habits_tab_title)
-                else tab.text = resources.getString(R.string.bad_habits_tab_title)
-            }.attach()
-        }
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.let { updateAdapter(it) }
 
         binding.fabCreateHabit.setOnClickListener {
             val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP(null)
@@ -43,7 +41,6 @@ class HabitsPagerFragment : Fragment() {
             activity?.let { updateAdapter(it) }
         }
 
-        return binding.root
     }
 
     private fun updateAdapter(activity: FragmentActivity) {
@@ -51,5 +48,15 @@ class HabitsPagerFragment : Fragment() {
             val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP(habit)
             findNavController().navigate(action)
         }
+        TabLayoutMediator(
+            binding.habitsPagerTabLayout,
+            binding.habitsPagerViewPager,
+            true
+        ) { tab, position ->
+            when (position) {
+                0 -> tab.text = resources.getString(R.string.good_habits_tab_title)
+                1 -> tab.text = resources.getString(R.string.bad_habits_tab_title)
+            }
+        }.attach()
     }
 }

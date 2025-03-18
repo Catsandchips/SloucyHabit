@@ -13,8 +13,11 @@ class PagerAdapter(
     val onCardClick: (habit: Habit) -> Unit
 ) : FragmentStateAdapter(activity) {
     override fun createFragment(position: Int): Fragment =
-        if (position == 0) HabitsListFragment.newInstance(HabitType.GOOD, onCardClick)
-        else HabitsListFragment.newInstance(HabitType.BAD, onCardClick)
+        when (position) {
+            0 -> HabitsListFragment.newInstance(HabitType.GOOD, onCardClick)
+            1 -> HabitsListFragment.newInstance(HabitType.BAD, onCardClick)
+            else -> throw IllegalArgumentException("Illegal position")
+        }
 
     override fun getItemCount(): Int = 2
 
