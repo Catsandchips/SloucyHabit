@@ -2,6 +2,8 @@ package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.data.Habit
@@ -10,7 +12,6 @@ import java.util.Locale
 
 class HabitAdapter(
     val habits: List<Habit>,
-    val onHabitClicked: (habit: Habit) -> Unit
 ) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,13 +27,13 @@ class HabitAdapter(
         position: Int
     ) {
         val habit = habits[position]
-        holder.bind(habit, onHabitClicked)
+        holder.bind(habit)
     }
 
     override fun getItemCount() = habits.size
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(habit: Habit, onHabitClicked: (habit: Habit) -> Unit) {
+        fun bind(habit: Habit) {
             binding.tvHabitItemTitle.text = habit.title
             binding.tvHabitItemDescription.text = habit.description
             binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
@@ -52,7 +53,8 @@ class HabitAdapter(
             binding.root.setCardBackgroundColor(habit.color)
 
             binding.root.setOnClickListener {
-                onHabitClicked(habit)
+                val bundle = bundleOf("HABIT" to habit)
+                itemView.findNavController().navigate(R.id.nav_create, bundle)
             }
         }
     }

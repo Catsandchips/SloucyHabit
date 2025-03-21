@@ -1,5 +1,6 @@
 package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,20 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
-import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
 
 class CreateHabitFragment : Fragment() {
 
     lateinit var binding: FragmentCreateHabitBinding
-    val args: CreateHabitFragmentArgs by navArgs()
+    val viewModel: CreateHabitViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,13 +35,15 @@ class CreateHabitFragment : Fragment() {
         binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
         binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)
 
-        val habitArgument = args.habit
-        var habitId: Int
+        val habitArgument = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getSerializable("HABIT", Habit::class.java)
+        } else {
+            arguments?.getSerializable("HABIT") as Habit
+        }
         if (habitArgument != null) {
             (activity as AppCompatActivity).supportActionBar?.title =
                 resources.getString(R.string.edit_habit_title)
             val habit = habitArgument
-            habitId = habit.id
             binding.etHabitNameField.setText(habit.title)
             binding.etHabitDescriptionField.setText(habit.description)
             val spinnerTypes = resources.getStringArray(R.array.types_array)
@@ -70,8 +72,6 @@ class CreateHabitFragment : Fragment() {
             )
             binding.tvDaysCountFieldText.text =
                 resources.getQuantityString(R.plurals.days, habit.periodicityDays)
-        } else {
-            habitId = HabitsStorage.habits.size
         }
 
         binding.etRepetitionsField.addTextChangedListener(afterTextChanged = { p0 ->
@@ -96,32 +96,20 @@ class CreateHabitFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 ).show()
             } else {
-                val habitName = binding.etHabitNameField.text.toString()
-                val habitDescription = binding.etHabitDescriptionField.text.toString()
-                val checkedHabitTypeRadio = binding.rgHabitTypeField.checkedRadioButtonId
-                val habitType = when (checkedHabitTypeRadio) {
-                    binding.rbGoodHabitRadio.id -> HabitType.GOOD
-                    binding.rbBadHabitRadio.id -> HabitType.BAD
-                    else -> HabitType.GOOD
-                }
-                val habitPriority = binding.habitPrioritySpinner.selectedItem.toString()
-                val periodicityTimes = binding.etRepetitionsField.text.toString().toInt()
-                val periodicityDays = binding.etDaysCountField.text.toString().toInt()
+                viewModel.addHabit(
+                    id = habitArgument?.id,
+                    title = binding.etHabitNameField.text.toString(),
+                    description = binding.etHabitDescriptionField.text.toString(),
+                    type = when (binding.rgHabitTypeField.checkedRadioButtonId) {
+                        binding.rbGoodHabitRadio.id -> HabitType.GOOD
+                        binding.rbBadHabitRadio.id -> HabitType.BAD
+                        else -> HabitType.GOOD
+                    },
+                    priority = binding.habitPrioritySpinner.selectedItem.toString(),
+                    periodicityTimes = binding.etRepetitionsField.text.toString().toInt(),
+                    periodicityDays = binding.etDaysCountField.text.toString().toInt()
 
-                val newHabit = Habit(
-                    habitId,
-                    habitName,
-                    habitDescription,
-                    habitType,
-                    habitPriority,
-                    periodicityTimes,
-                    periodicityDays
                 )
-
-                if (habitArgument != null) {
-                    HabitsStorage.habits[habitId] = newHabit
-                } else
-                    HabitsStorage.habits.add(newHabit)
 
                 setFragmentResult(SAVE_HABIT_SUCCESS, Bundle())
                 findNavController().navigateUp()

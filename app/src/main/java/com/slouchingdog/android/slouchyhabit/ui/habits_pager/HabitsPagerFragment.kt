@@ -33,7 +33,7 @@ class HabitsPagerFragment : Fragment() {
         activity?.let { updateAdapter(it) }
 
         binding.fabCreateHabit.setOnClickListener {
-            val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP(null)
+            val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP()
             findNavController().navigate(action)
         }
 
@@ -44,10 +44,7 @@ class HabitsPagerFragment : Fragment() {
     }
 
     private fun updateAdapter(activity: FragmentActivity) {
-        binding.habitsPagerViewPager.adapter = PagerAdapter(activity) { habit: Habit ->
-            val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP(habit)
-            findNavController().navigate(action)
-        }
+        binding.habitsPagerViewPager.adapter = PagerAdapter(activity)
         TabLayoutMediator(
             binding.habitsPagerTabLayout,
             binding.habitsPagerViewPager,

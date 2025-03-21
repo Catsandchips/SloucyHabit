@@ -12,22 +12,14 @@
         tools:layout="@layout/fragment_habits_pager">
         <action
             android:id="@+id/action_goToHabitFromVP"
-            app:destination="@id/createHabitFragment" />
+            app:destination="@id/nav_create" />
     </fragment>
 
     <fragment
-        android:id="@+id/habitsListFragment"
-        android:name="com.slouchingdog.android.slouchyhabit.ui.habits_list.HabitsListFragment" />
-
-    <fragment
-        android:id="@+id/createHabitFragment"
+        android:id="@+id/nav_create"
         android:name="com.slouchingdog.android.slouchyhabit.ui.create_habit.CreateHabitFragment"
-        android:label="@string/create_habit_title">
-        <argument
-            android:name="Habit"
-            app:argType="com.slouchingdog.android.slouchyhabit.data.Habit"
-            app:nullable="true" />
-    </fragment>
+        android:label="@string/create_habit_title" />
+
     <fragment
         android:id="@+id/nav_about"
         android:name="com.slouchingdog.android.slouchyhabit.ui.app_info.AppInfoFragment"
