@@ -1,39 +1,50 @@
 package com.slouchingdog.android.slouchyhabit
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import com.slouchingdog.android.slouchyhabit.databinding.ActivityMainBinding
 
-const val CURRENT_HABIT = "CURRENT HABIT"
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.habitRecyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = HabitAdapter(HabitsStorage.habits) { habit: Habit ->
-            val intent = Intent(this, CreateHabitActivity::class.java)
-            intent.putExtra(CURRENT_HABIT, habit)
-            startActivity(intent)
-        }
-        binding.habitRecyclerView.adapter = adapter
+        setSupportActionBar(binding.appBarMain.toolbar)
+
+        val drawerLayout: DrawerLayout = binding.navigationDrawerLayout
+        val navView: NavigationView = binding.navView
+        navView.setItemBackgroundResource(R.drawable.nav_item_background)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_about
+            ), drawerLayout
+
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        binding.fabCreateHabit.setOnClickListener {
-            val intent = Intent(this, CreateHabitActivity::class.java)
-            startActivity(intent)
-        }
-
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

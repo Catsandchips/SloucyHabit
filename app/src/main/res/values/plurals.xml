@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="days">
+        <item quantity="zero">дней</item>
+        <item quantity="one">день</item>
+        <item quantity="two">дня</item>
+        <item quantity="few">дня</item>
+        <item quantity="many">дней</item>
+        <item quantity="other">дней</item>
+    </plurals>
+    <plurals name="times">
+        <item quantity="zero">раз в</item>
+        <item quantity="one">раз в</item>
+        <item quantity="two">раза в</item>
+        <item quantity="few">раза в</item>
+        <item quantity="many">раз в</item>
+        <item quantity="other">раз в</item>
+    </plurals>
+</resources>

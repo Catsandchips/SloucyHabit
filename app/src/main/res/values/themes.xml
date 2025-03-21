@@ -1,9 +1,13 @@
 <resources>
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.SlouchyHabit" parent="Theme.Material3.Dark.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="fontFamily">@font/amatic_sc_bold</item>
         <item name="android:textSize">24sp</item>
+        <item name="colorPrimaryDark">@color/background_color</item>
+    </style>
+
+    <style name="Base.Theme.SlouchyHabit.ToolbarText">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/headers_color</item>
     </style>
 </resources>

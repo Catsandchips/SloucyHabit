@@ -1,35 +1,46 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
-import com.slouchingdog.android.slouchyhabit.databinding.ActivityCreateHabitBinding
+import com.slouchingdog.android.slouchyhabit.R
+import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
+import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 import java.util.Locale
 
-class CreateHabitActivity : AppCompatActivity() {
-    lateinit var binding: ActivityCreateHabitBinding
+class CreateHabitFragment : Fragment() {
 
+    lateinit var binding: FragmentCreateHabitBinding
+    val args: CreateHabitFragmentArgs by navArgs()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityCreateHabitBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentCreateHabitBinding.inflate(layoutInflater)
 
-        binding.rbGoodHabitRadio.text = HabitType.GOOD.title
-        binding.rbBadHabitRadio.text = HabitType.BAD.title
+        binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
+        binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)
 
-        val habitExtra = intent.getSerializableExtra(CURRENT_HABIT)
+        val habitArgument = args.habit
         var habitId: Int
-        if (habitExtra != null) {
-            val habit = habitExtra as Habit
+        if (habitArgument != null) {
+            (activity as AppCompatActivity).supportActionBar?.title =
+                resources.getString(R.string.edit_habit_title)
+            val habit = habitArgument
             habitId = habit.id
             binding.etHabitNameField.setText(habit.title)
             binding.etHabitDescriptionField.setText(habit.description)
@@ -49,7 +60,7 @@ class CreateHabitActivity : AppCompatActivity() {
                 )
             )
             binding.tvRepetitionsFieldText.text =
-                setDeclension(habit.periodicityTimes, "раз в", "раза в", "раз в")
+                resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
             binding.etDaysCountField.setText(
                 String.format(
                     Locale.getDefault(),
@@ -58,33 +69,32 @@ class CreateHabitActivity : AppCompatActivity() {
                 )
             )
             binding.tvDaysCountFieldText.text =
-                setDeclension(habit.periodicityDays, "день", "дня", "дней")
+                resources.getQuantityString(R.plurals.days, habit.periodicityDays)
         } else {
             habitId = HabitsStorage.habits.size
         }
 
         binding.etRepetitionsField.addTextChangedListener(afterTextChanged = { p0 ->
+            val count = if (p0.isNullOrEmpty()) 0 else p0.toString().toInt()
             binding.tvRepetitionsFieldText.text =
-                if (!p0.isNullOrEmpty()) {
-                    setDeclension(p0.toString().toInt(), "раз в", "раза в", "раз в")
-                } else {
-                    "раз в"
-                }
+                resources.getQuantityString(R.plurals.times, count)
+
         })
 
         binding.etDaysCountField.addTextChangedListener(afterTextChanged = { p0 ->
+            val count = if (p0.isNullOrEmpty()) 0 else p0.toString().toInt()
             binding.tvDaysCountFieldText.text =
-                if (!p0.isNullOrEmpty()) {
-                    setDeclension(p0.toString().toInt(), "день", "дня", "дней")
-                } else {
-                    "дней"
-                }
+                resources.getQuantityString(R.plurals.days, count)
         })
 
 
         binding.btnSaveHabit.setOnClickListener {
             if (binding.etHabitNameField.text.isEmpty() || binding.etHabitDescriptionField.text.isEmpty() || binding.etRepetitionsField.text.isEmpty() || binding.etDaysCountField.text.isEmpty()) {
-                Snackbar.make(binding.root, "Заполните все поля", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.root,
+                    resources.getString(R.string.form_validation_text),
+                    Snackbar.LENGTH_LONG
+                ).show()
             } else {
                 val habitName = binding.etHabitNameField.text.toString()
                 val habitDescription = binding.etHabitDescriptionField.text.toString()
@@ -108,14 +118,20 @@ class CreateHabitActivity : AppCompatActivity() {
                     periodicityDays
                 )
 
-                if (habitExtra != null) {
+                if (habitArgument != null) {
                     HabitsStorage.habits[habitId] = newHabit
                 } else
                     HabitsStorage.habits.add(newHabit)
 
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+                setFragmentResult(SAVE_HABIT_SUCCESS, Bundle())
+                findNavController().navigateUp()
             }
         }
+
+        return binding.root
+    }
+
+    companion object {
+        const val SAVE_HABIT_SUCCESS = "SAVE_HABIT_SUCCESS"
     }
 }

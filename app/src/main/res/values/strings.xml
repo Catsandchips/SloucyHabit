@@ -3,8 +3,8 @@
     <string name="habit_screen_title">Ваша привычка</string>
     <string name="habit_title_hint">Введите название</string>
     <string name="habit_description_hint">Введите описание</string>
-    <string name="bad_habit_radio">Полезная</string>
-    <string name="good_habit_radio">Вредная</string>
+    <string name="bad_habit_radio">Плохая</string>
+    <string name="good_habit_radio">Хорошая</string>
     <string name="habit_type_header">Тип привычки</string>
     <string name="add_habit_button_description">Add habit</string>
     <string name="priority_title">Приоритет</string>
@@ -14,4 +14,12 @@
     <string name="days_count_field_hint">6</string>
     <string name="repetitions_field_base_text">раз в</string>
     <string name="days_count_field_base_text">дней</string>
+    <string name="good_habits_tab_title">Хорошие</string>
+    <string name="bad_habits_tab_title">Плохие</string>
+    <string name="tab_placeholder">типы привычек</string>
+    <string name="habits_list_title">Список привычек</string>
+    <string name="about_title">О приложении</string>
+    <string name="create_habit_title">Создать привычку</string>
+    <string name="edit_habit_title">Редактировать привычку</string>
+    <string name="form_validation_text">Заполните все поля</string>
 </resources>

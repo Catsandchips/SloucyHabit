@@ -1,8 +1,10 @@
-package com.slouchingdog.android.slouchyhabit
+package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slouchingdog.android.slouchyhabit.R
+import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import java.util.Locale
 
@@ -33,13 +35,15 @@ class HabitAdapter(
         fun bind(habit: Habit, onHabitClicked: (habit: Habit) -> Unit) {
             binding.tvHabitItemTitle.text = habit.title
             binding.tvHabitItemDescription.text = habit.description
-            binding.tvHabitItemType.text = habit.type.title
+            binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
             binding.tvHabitItemPriority.text = habit.priority
-            val timesCountString = setDeclension(habit.periodicityTimes, "раз", "раза", "раз")
-            val daysCountString = setDeclension(habit.periodicityDays, "день", "дня", "дней")
+            val timesCountString =
+                itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
+            val daysCountString =
+                itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
             binding.tvHabitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
-                "%d %s в %d %s",
+                "%d %s %d %s",
                 habit.periodicityTimes,
                 timesCountString,
                 habit.periodicityDays,
