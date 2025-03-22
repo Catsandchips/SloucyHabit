@@ -6,26 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
-import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 
 private const val HABIT_TYPE_PARAM = "HABIT_TYPE_PARAM"
 
 class HabitsListFragment() : Fragment() {
     lateinit var binding: FragmentHabitsListBinding
-    private var habitsType: HabitType? = null
+
+    var habitTypeArgument: HabitType? = null
+    lateinit var habitsListViewModel: HabitsListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            habitsType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            habitTypeArgument = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 it.getSerializable(HABIT_TYPE_PARAM, HabitType::class.java)
             } else {
                 it.getSerializable(HABIT_TYPE_PARAM) as HabitType?
             }
         }
+
+        val viewModelFactory = HabitsListViewModelFactory(habitTypeArgument)
+        habitsListViewModel =
+            ViewModelProvider(this, viewModelFactory)[HabitsListViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -35,11 +43,19 @@ class HabitsListFragment() : Fragment() {
         binding = FragmentHabitsListBinding.inflate(layoutInflater)
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = HabitAdapter(HabitsStorage.getHabitsWithType(habitsType))
+        val adapter = HabitAdapter()
         binding.habitRecyclerView.adapter = adapter
+
+        habitsListViewModel.habits.observe(viewLifecycleOwner, object : Observer<List<Habit>> {
+            override fun onChanged(value: List<Habit>) {
+                adapter.updateHabits(value)
+                binding.habitRecyclerView.adapter = adapter
+            }
+        })
 
         return binding.root
     }
+
 
     companion object {
         @JvmStatic

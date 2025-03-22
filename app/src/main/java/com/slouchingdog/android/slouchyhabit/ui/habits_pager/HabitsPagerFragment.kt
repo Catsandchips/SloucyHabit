@@ -1,7 +1,6 @@
 package com.slouchingdog.android.slouchyhabit.ui.habits_pager
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsPagerBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.CreateHabitFragment
 

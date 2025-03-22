@@ -7,7 +7,7 @@ import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import java.util.UUID
 
 class CreateHabitViewModel : ViewModel() {
-    private var currentHabitId: UUID? = null
+    var currentHabitId: UUID? = null
     var currentHabit = HabitsStorage.habits.filter { it.id == currentHabitId }
 
     fun addHabit(

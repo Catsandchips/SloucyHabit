@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
+import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ARG
 import java.util.Locale
 
-class HabitAdapter(
-    val habits: List<Habit>,
-) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+    private var habits: List<Habit> = emptyList()
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -31,6 +33,12 @@ class HabitAdapter(
     }
 
     override fun getItemCount() = habits.size
+
+    fun updateHabits(newHabits: List<Habit>) {
+        val diffResult = DiffUtil.calculateDiff(HabitDiffCallback(habits, newHabits))
+        habits = newHabits
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: Habit) {
@@ -53,7 +61,7 @@ class HabitAdapter(
             binding.root.setCardBackgroundColor(habit.color)
 
             binding.root.setOnClickListener {
-                val bundle = bundleOf("HABIT" to habit)
+                val bundle = bundleOf(HABIT_ARG to habit)
                 itemView.findNavController().navigate(R.id.nav_create, bundle)
             }
         }

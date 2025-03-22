@@ -2,17 +2,18 @@ package com.slouchingdog.android.slouchyhabit.data
 
 class HabitsStorage {
     companion object {
-        val habits = mutableListOf<Habit>()
-
-        fun getHabitsWithType(habitType: HabitType?) = habits.filter { it.type == habitType }
+        private val _habits = mutableListOf<Habit>()
+        val habits = _habits
 
         fun addHabit(habit: Habit) {
-            val index = habits.indexOfFirst { it.id == habit.id }
+            val index = _habits.indexOfFirst { it.id == habit.id }
             if (index != -1) {
-                habits[index] = habit
+                _habits[index] = habit
             } else {
-                habits.add(habit)
+                _habits.add(habit)
             }
         }
+
+        fun getHabitsWithType(habitType: HabitType?) = habits.filter { it.type == habitType }
     }
 }
