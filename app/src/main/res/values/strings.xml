@@ -22,4 +22,5 @@
     <string name="create_habit_title">Создать привычку</string>
     <string name="edit_habit_title">Редактировать привычку</string>
     <string name="form_validation_text">Заполните все поля</string>
+    <string name="open_filter_button_description">open filter</string>
 </resources>

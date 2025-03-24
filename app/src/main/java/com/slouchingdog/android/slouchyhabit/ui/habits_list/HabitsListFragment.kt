@@ -31,7 +31,7 @@ class HabitsListFragment() : Fragment() {
                 it.getSerializable(HABIT_TYPE_PARAM) as HabitType?
             }
         }
-        binding = FragmentHabitsListBinding.inflate(layoutInflater)
+        binding = FragmentHabitsListBinding.inflate(inflater)
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = HabitAdapter()

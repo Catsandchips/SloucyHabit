@@ -24,15 +24,12 @@ class CreateHabitFragment : Fragment() {
 
     lateinit var binding: FragmentCreateHabitBinding
     val viewModel: CreateHabitViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCreateHabitBinding.inflate(layoutInflater)
+        binding = FragmentCreateHabitBinding.inflate(inflater)
 
         binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
         binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)

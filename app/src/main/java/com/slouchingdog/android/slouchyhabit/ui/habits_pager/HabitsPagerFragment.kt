@@ -6,21 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsPagerBinding
+import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBinding
+import com.slouchingdog.android.slouchyhabit.ui.FilterBottomSheetFragment
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.CreateHabitFragment
+import com.slouchingdog.android.slouchyhabit.ui.habits_list.HabitsListViewModel
 
 class HabitsPagerFragment : Fragment() {
     lateinit var binding: FragmentHabitsPagerBinding
+    val viewModel: HabitsListViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHabitsPagerBinding.inflate(layoutInflater)
+        binding = FragmentHabitsPagerBinding.inflate(inflater)
 
         return binding.root
     }
@@ -30,6 +36,10 @@ class HabitsPagerFragment : Fragment() {
 
         activity?.let { updateAdapter(it) }
 
+        binding.fabOpenFilter.setOnClickListener{
+            showFilterBottomSheet()
+        }
+
         binding.fabCreateHabit.setOnClickListener {
             val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP()
             findNavController().navigate(action)
@@ -38,7 +48,13 @@ class HabitsPagerFragment : Fragment() {
         setFragmentResultListener(CreateHabitFragment.SAVE_HABIT_SUCCESS) { _, _ ->
             activity?.let { updateAdapter(it) }
         }
+    }
 
+    private fun showFilterBottomSheet() {
+        val bottomSheet = FilterBottomSheetFragment { filters ->
+            viewModel.setFilters(filters)
+        }
+        bottomSheet.show(parentFragmentManager, "FilterBottomSheet")
     }
 
     private fun updateAdapter(activity: FragmentActivity) {
