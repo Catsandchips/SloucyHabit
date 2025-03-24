@@ -8,7 +8,6 @@ import java.util.UUID
 
 class CreateHabitViewModel : ViewModel() {
     var currentHabitId: UUID? = null
-    var currentHabit = HabitsStorage.habits.filter { it.id == currentHabitId }
 
     fun addHabit(
         id: UUID?,

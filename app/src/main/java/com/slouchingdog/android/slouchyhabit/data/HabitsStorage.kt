@@ -1,19 +1,22 @@
 package com.slouchingdog.android.slouchyhabit.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
 class HabitsStorage {
     companion object {
-        private val _habits = mutableListOf<Habit>()
-        val habits = _habits
+        private val _habits = MutableLiveData<List<Habit>>(mutableListOf())
+        val habits: LiveData<List<Habit>> = _habits
 
         fun addHabit(habit: Habit) {
-            val index = _habits.indexOfFirst { it.id == habit.id }
+            val currentList = _habits.value.orEmpty().toMutableList()
+            val index = currentList.indexOfFirst { it.id == habit.id }
             if (index != -1) {
-                _habits[index] = habit
+                currentList[index] = habit
             } else {
-                _habits.add(habit)
+                currentList.add(habit)
             }
+            _habits.value = currentList
         }
-
-        fun getHabitsWithType(habitType: HabitType?) = habits.filter { it.type == habitType }
     }
 }
