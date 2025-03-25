@@ -48,7 +48,6 @@ class HabitsListFragment() : Fragment() {
         return binding.root
     }
 
-
     companion object {
         @JvmStatic
         fun newInstance(habitsType: HabitType): HabitsListFragment =

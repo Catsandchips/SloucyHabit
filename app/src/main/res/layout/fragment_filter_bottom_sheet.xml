@@ -65,8 +65,9 @@
 
         <ToggleButton
             android:id="@+id/btnSortByPriorityDesc"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:background="@color/transparent"
             android:button="@drawable/button_desc_toggle_selector"
             android:textOff=""
@@ -74,9 +75,10 @@
 
         <ToggleButton
             android:id="@+id/btnSortByPriorityAsc"
-            android:layout_width="wrap_content"
+            android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
+            android:layout_marginStart="16dp"
             android:button="@drawable/button_asc_toggle_selector"
             android:textOff=""
             android:textOn="" />

@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/headers_color"
+        android:backgroundTint="@color/light_violet"
         android:contentDescription="@string/open_filter_button_description"
         android:src="@drawable/ic_search_button"
         app:layout_constraintBottom_toTopOf="@id/fabCreateHabit"

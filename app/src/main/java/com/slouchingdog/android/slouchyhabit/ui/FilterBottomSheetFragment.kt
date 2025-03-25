@@ -38,7 +38,6 @@ class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
             } else {
                 viewModel.resetPrioritySorting()
             }
-
         }
 
         binding.btnSortByPriorityAsc.setOnClickListener {
@@ -49,7 +48,6 @@ class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
             } else {
                 viewModel.resetPrioritySorting()
             }
-
         }
 
         return binding.root

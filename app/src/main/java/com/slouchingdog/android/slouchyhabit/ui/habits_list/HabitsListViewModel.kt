@@ -20,7 +20,8 @@ class HabitsListViewModel() : ViewModel() {
         }
     }
 
-    fun getHabits(habitTypeFilter: HabitType?): LiveData<List<Habit>> = filteredHabits.map { habits ->
+    fun getHabits(habitTypeFilter: HabitType?): LiveData<List<Habit>> =
+        filteredHabits.map { habits ->
             habits.filter { it.type == habitTypeFilter }
         }
 
@@ -32,7 +33,7 @@ class HabitsListViewModel() : ViewModel() {
             (titleQuery.isNullOrEmpty() || habit.title.contains(titleQuery, true))
         }
 
-        if (sortingData.needSorting){
+        if (sortingData.needSorting) {
             filteredList = sortHabits(filteredList)
         }
 
