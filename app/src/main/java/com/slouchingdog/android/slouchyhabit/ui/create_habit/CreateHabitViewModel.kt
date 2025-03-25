@@ -7,14 +7,12 @@ import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 import java.util.UUID
 
 class CreateHabitViewModel : ViewModel() {
-    var currentHabitId: UUID? = null
-
     fun addHabit(
         id: UUID?,
         title: String,
         description: String,
         type: HabitType,
-        priority: String,
+        priority: Int,
         periodicityTimes: Int,
         periodicityDays: Int
     ) {
@@ -30,5 +28,4 @@ class CreateHabitViewModel : ViewModel() {
 
         HabitsStorage.addHabit(habit)
     }
-
 }

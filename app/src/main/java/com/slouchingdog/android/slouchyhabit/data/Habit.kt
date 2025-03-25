@@ -9,7 +9,7 @@ class Habit(
     var title: String,
     var description: String,
     var type: HabitType,
-    var priority: String,
+    var priority: Int,
     var periodicityTimes: Int,
     var periodicityDays: Int,
     val color: Int = Color.parseColor("#424242")

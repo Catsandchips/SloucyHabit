@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -45,8 +44,7 @@ class CreateHabitFragment : Fragment() {
                 resources.getString(R.string.edit_habit_title)
             binding.etHabitNameField.setText(passedHabit.title)
             binding.etHabitDescriptionField.setText(passedHabit.description)
-            val spinnerTypes = resources.getStringArray(R.array.types_array)
-            binding.habitPrioritySpinner.setSelection(spinnerTypes.indexOf(passedHabit.priority))
+            binding.habitPrioritySpinner.setSelection(passedHabit.priority)
             binding.rgHabitTypeField.check(
                 when (passedHabit.type) {
                     HabitType.GOOD -> binding.rbGoodHabitRadio.id
@@ -104,21 +102,17 @@ class CreateHabitFragment : Fragment() {
                         binding.rbBadHabitRadio.id -> HabitType.BAD
                         else -> HabitType.GOOD
                     },
-                    priority = binding.habitPrioritySpinner.selectedItem.toString(),
+                    priority = resources.getStringArray(R.array.priorities_array)
+                        .indexOf(binding.habitPrioritySpinner.selectedItem),
                     periodicityTimes = binding.etRepetitionsField.text.toString().toInt(),
                     periodicityDays = binding.etDaysCountField.text.toString().toInt()
 
                 )
 
-                setFragmentResult(SAVE_HABIT_SUCCESS, Bundle())
                 findNavController().navigateUp()
             }
         }
 
         return binding.root
-    }
-
-    companion object {
-        const val SAVE_HABIT_SUCCESS = "SAVE_HABIT_SUCCESS"
     }
 }

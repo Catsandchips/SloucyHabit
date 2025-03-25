@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBinding
-import com.slouchingdog.android.slouchyhabit.ui.habits_list.HabitFilters
+import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBottomSheetBinding
 import com.slouchingdog.android.slouchyhabit.ui.habits_list.HabitsListViewModel
 
-class FilterBottomSheetFragment(
-    private val onFiltersApplied: (HabitFilters) -> Unit
-) : BottomSheetDialogFragment() {
-    lateinit var binding: FragmentFilterBinding
+class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
+    lateinit var binding: FragmentFilterBottomSheetBinding
     val viewModel: HabitsListViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -23,24 +19,27 @@ class FilterBottomSheetFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFilterBinding.inflate(inflater)
+        binding = FragmentFilterBottomSheetBinding.inflate(inflater)
 
-        binding.btnSearch.setOnClickListener {
-            val filters = HabitFilters(
-//                nameQuery = binding.nameEditText.text.toString().takeIf { it.isNotBlank() },
-//                type = binding.typeSpinner.selectedItem?.toString()?.takeIf { it.isNotBlank() },
-                priority = binding.habitPriorityFilter.selectedItem?.toString()
-                    ?.takeIf { it.isNotBlank() }
-            )
-            onFiltersApplied(filters)
+        binding.etTitleFilter.setText(viewModel.titleQuery)
+
+        binding.etTitleFilter.addTextChangedListener(afterTextChanged = { text ->
+            viewModel.setFilters(text.toString())
+        })
+
+        binding.btnClearFilter.setOnClickListener {
+            binding.etTitleFilter.text.clear()
+        }
+
+        binding.btnSortByPriorityDesc.setOnClickListener {
+            viewModel.setPrioritySorting(sortAsc = false)
+        }
+
+        binding.btnSortByPriorityAsc.setOnClickListener {
+            viewModel.setPrioritySorting(sortAsc = true)
         }
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
     }
 }
 

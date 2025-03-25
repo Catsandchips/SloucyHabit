@@ -8,16 +8,15 @@ import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
 
-class HabitsListViewModel : ViewModel() {
-    private val _filteredHabits = MutableLiveData<List<Habit>>()
-    val filteredHabits: LiveData<List<Habit>> = _filteredHabits
+class HabitsListViewModel() : ViewModel() {
+    val filteredHabits = MutableLiveData<List<Habit>>()
+    var titleQuery: String? = null
 
-    private val _filters = MutableLiveData<HabitFilters>()
-    val filters: LiveData<HabitFilters> = _filters
 
     init {
         HabitsStorage.habits.observeForever { habits ->
-            applyFilters(habits, _filters.value)
+            filteredHabits.value = habits ?: emptyList()
+            titleQuery = null
         }
     }
 
@@ -26,28 +25,23 @@ class HabitsListViewModel : ViewModel() {
             habits.filter { it.type == habitTypeFilter }
         }
 
-    fun setFilters(filters: HabitFilters) {
-        _filters.value = filters
-        applyFilters(HabitsStorage.habits.value ?: emptyList(), filters)
-    }
-
-    private fun applyFilters(habits: List<Habit>, filters: HabitFilters?) {
-        if (filters == null) {
-            _filteredHabits.value = habits
-            return
-        }
+    fun setFilters(titleQuery: String?) {
+        this.titleQuery = titleQuery
+        var habits = HabitsStorage.habits.value ?: emptyList()
 
         val filteredList = habits.filter { habit ->
-            (filters.type == null || habit.type == filters.type) &&
-                    (filters.priority.isNullOrEmpty() || habit.priority == filters.priority)
+            (titleQuery.isNullOrEmpty() || habit.title.contains(titleQuery, true))
         }
 
-        _filteredHabits.value = filteredList
+        filteredHabits.value = filteredList
+    }
+
+    fun setPrioritySorting(sortAsc: Boolean) {
+        val habits = filteredHabits.value ?: emptyList()
+
+        val sortedList =
+            if (sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
+
+        filteredHabits.value = sortedList
     }
 }
-
-data class HabitFilters(
-    val nameQuery: String? = null,
-    val type: HabitType? = null,
-    val priority: String? = null
-)
