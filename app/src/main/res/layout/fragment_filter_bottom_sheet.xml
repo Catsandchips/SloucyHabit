@@ -28,7 +28,6 @@
             android:id="@+id/etTitleFilter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:hint="@string/find_habit_hint"
             android:iconifiedByDefault="false"
             android:inputType="text"
@@ -47,7 +46,6 @@
 
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/prioritySortHandler"
         android:layout_width="wrap_content"
@@ -65,21 +63,23 @@
             android:text="@string/sort_by_priority_title"
             android:textColor="@color/headers_color" />
 
-        <ImageButton
+        <ToggleButton
             android:id="@+id/btnSortByPriorityDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="sort desc"
-            android:src="@drawable/ic_sort_button_desc" />
+            android:background="@color/transparent"
+            android:button="@drawable/button_desc_toggle_selector"
+            android:textOff=""
+            android:textOn="" />
 
-        <ImageButton
+        <ToggleButton
             android:id="@+id/btnSortByPriorityAsc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="sort asc"
-            android:src="@drawable/ic_sort_button_asc" />
+            android:background="@color/transparent"
+            android:button="@drawable/button_asc_toggle_selector"
+            android:textOff=""
+            android:textOn="" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

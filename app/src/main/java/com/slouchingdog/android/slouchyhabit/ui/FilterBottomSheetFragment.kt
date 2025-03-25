@@ -32,11 +32,24 @@ class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
         }
 
         binding.btnSortByPriorityDesc.setOnClickListener {
-            viewModel.setPrioritySorting(sortAsc = false)
+            if (binding.btnSortByPriorityDesc.isChecked) {
+                binding.btnSortByPriorityAsc.isChecked = false
+                viewModel.setPrioritySorting(sortAsc = false)
+            } else {
+                viewModel.resetPrioritySorting()
+            }
+
         }
 
         binding.btnSortByPriorityAsc.setOnClickListener {
-            viewModel.setPrioritySorting(sortAsc = true)
+            if (binding.btnSortByPriorityAsc.isChecked) {
+                binding.btnSortByPriorityDesc.isChecked = false
+                viewModel.setPrioritySorting(sortAsc = true)
+
+            } else {
+                viewModel.resetPrioritySorting()
+            }
+
         }
 
         return binding.root
