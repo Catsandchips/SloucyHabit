@@ -29,6 +29,11 @@ class CreateHabitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateHabitBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
         binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)
@@ -112,7 +117,5 @@ class CreateHabitFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-
-        return binding.root
     }
 }

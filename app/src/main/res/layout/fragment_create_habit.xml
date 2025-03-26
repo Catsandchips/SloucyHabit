@@ -126,7 +126,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
-                    android:hint="@string/repetitions_field_hint"
                     android:inputType="number"
                     android:textSize="24sp" />
 
@@ -143,7 +142,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
-                    android:hint="@string/days_count_field_hint"
                     android:inputType="number"
                     android:textSize="24sp" />
 

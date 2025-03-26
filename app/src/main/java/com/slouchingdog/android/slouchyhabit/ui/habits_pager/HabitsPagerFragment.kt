@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsPagerBinding
-import com.slouchingdog.android.slouchyhabit.ui.FilterBottomSheetFragment
+import com.slouchingdog.android.slouchyhabit.ui.habits_list.FilterBottomSheetFragment
 
 class HabitsPagerFragment : Fragment() {
     lateinit var binding: FragmentHabitsPagerBinding
@@ -19,7 +19,6 @@ class HabitsPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHabitsPagerBinding.inflate(inflater)
-
         return binding.root
     }
 

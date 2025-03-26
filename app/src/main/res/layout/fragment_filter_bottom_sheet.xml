@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background_color"
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/find_habit_hint"
             android:iconifiedByDefault="false"
+            android:importantForAutofill="no"
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -41,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:backgroundTint="@color/transparent"
-            android:contentDescription="clear filter"
+            android:contentDescription="@string/clear_filter_button_description"
             android:src="@drawable/ic_clear_field_button" />
 
     </RelativeLayout>
@@ -65,23 +67,28 @@
 
         <ToggleButton
             android:id="@+id/btnSortByPriorityDesc"
-            android:layout_width="24dp"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:background="@color/transparent"
-            android:button="@drawable/button_desc_toggle_selector"
+            android:drawableStart="@drawable/button_desc_toggle_selector"
+            android:paddingStart="16dp"
             android:textOff=""
-            android:textOn="" />
+            android:textOn=""
+            tools:ignore="RtlSymmetry" />
 
         <ToggleButton
             android:id="@+id/btnSortByPriorityAsc"
-            android:layout_width="24dp"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
             android:layout_marginStart="16dp"
-            android:button="@drawable/button_asc_toggle_selector"
+            android:background="@color/transparent"
+            android:drawableStart="@drawable/button_asc_toggle_selector"
+            android:paddingStart="16dp"
             android:textOff=""
-            android:textOn="" />
+            android:textOn=""
+            tools:ignore="RtlSymmetry" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,12 @@ class HabitsListFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentHabitsListBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         var habitTypeArgument: HabitType? = null
         arguments?.let {
             habitTypeArgument = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -31,7 +37,6 @@ class HabitsListFragment() : Fragment() {
                 it.getSerializable(HABIT_TYPE_PARAM) as HabitType?
             }
         }
-        binding = FragmentHabitsListBinding.inflate(inflater)
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = HabitAdapter()
@@ -44,8 +49,6 @@ class HabitsListFragment() : Fragment() {
                     binding.habitRecyclerView.adapter = adapter
                 }
             })
-
-        return binding.root
     }
 
     companion object {

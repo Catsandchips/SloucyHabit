@@ -25,4 +25,6 @@
     <string name="open_filter_button_description">open filter</string>
     <string name="sort_by_priority_title">Отсортировать по приоритету</string>
     <string name="find_habit_hint">Найти привычку</string>
+    <string name="version_text">Slouchy habit, ver. 3.0</string>
+    <string name="clear_filter_button_description">clear filter</string>
 </resources>
