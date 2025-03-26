@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.slouchingdog.android.slouchyhabit.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration

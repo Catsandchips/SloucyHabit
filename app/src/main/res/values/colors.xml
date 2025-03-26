@@ -6,4 +6,6 @@
     <color name="highlight_color">#424242</color>
     <color name="background_color">#302E2E</color>
     <color name="hint_color">#999999</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="light_violet">#C38BFF</color>
 </resources>
