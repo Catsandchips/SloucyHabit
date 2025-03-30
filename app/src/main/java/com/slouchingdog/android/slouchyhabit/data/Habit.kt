@@ -3,9 +3,9 @@ package com.slouchingdog.android.slouchyhabit.data
 import android.graphics.Color
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 const val HABITS_TABLE_NAME = "habits"
+
 @Entity(tableName = HABITS_TABLE_NAME)
 class Habit(
     @PrimaryKey(autoGenerate = true) val id: Int? = null,
@@ -16,4 +16,4 @@ class Habit(
     val periodicityTimes: Int,
     val periodicityDays: Int,
     val color: Int = Color.parseColor("#424242")
-) : Serializable
+)

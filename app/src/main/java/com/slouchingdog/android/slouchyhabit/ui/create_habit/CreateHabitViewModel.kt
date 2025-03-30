@@ -1,31 +1,76 @@
 package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.HabitsRepository
+import kotlinx.coroutines.launch
 
-class CreateHabitViewModel : ViewModel() {
+class CreateHabitViewModel() : ViewModel() {
     private val habitsRepository = HabitsRepository.get()
-    fun addHabit(
-        id: Int?,
-        title: String,
-        description: String,
-        type: HabitType,
-        priority: Int,
-        periodicityTimes: Int,
-        periodicityDays: Int
-    ) {
+    var habitState: HabitState = HabitState()
+
+    fun setHabitState(habitId: Int) {
+        viewModelScope.launch {
+            val habit = habitsRepository.getHabitById(habitId)
+            habitState = HabitState(
+                habit.id,
+                habit.title,
+                habit.description,
+                habit.type,
+                habit.priority,
+                habit.periodicityTimes,
+                habit.periodicityDays
+            )
+        }
+    }
+
+    fun addHabit() {
         val habit = Habit(
-            id = id,
-            title = title,
-            description = description,
-            type = type,
-            priority = priority,
-            periodicityTimes = periodicityTimes,
-            periodicityDays = periodicityDays,
+            id = habitState.id,
+            title = habitState.title,
+            description = habitState.description,
+            type = habitState.type,
+            priority = habitState.priority,
+            periodicityTimes = habitState.periodicityTimes,
+            periodicityDays = habitState.periodicityDays
         )
 
         habitsRepository.addHabit(habit)
     }
+
+    fun onTitleChange(newTitle: String) {
+        habitState = habitState.copy(title = newTitle)
+    }
+
+    fun onDescriptionChange(newDescription: String) {
+        habitState = habitState.copy(description = newDescription)
+    }
+
+    fun onTypeChange(newType: HabitType) {
+        habitState = habitState.copy(type = newType)
+    }
+
+    fun onPriorityChange(newPriority: Int) {
+        habitState = habitState.copy(priority = newPriority)
+    }
+
+    fun onPeriodicityTimesChange(newPeriodicityTimes: Int) {
+        habitState = habitState.copy(periodicityTimes = newPeriodicityTimes)
+    }
+
+    fun onPeriodicityDaysChange(newPeriodicityDays: Int) {
+        habitState = habitState.copy(periodicityDays = newPeriodicityDays)
+    }
 }
+
+data class HabitState(
+    val id: Int? = null,
+    val title: String = "",
+    val description: String = "",
+    val type: HabitType = HabitType.GOOD,
+    val priority: Int = 0,
+    val periodicityTimes: Int = 0,
+    val periodicityDays: Int = 0
+)

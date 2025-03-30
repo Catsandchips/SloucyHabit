@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import kotlinx.coroutines.launch
@@ -42,26 +40,17 @@ class HabitsListFragment() : Fragment() {
             }
         }
 
-
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = HabitAdapter()
         binding.habitRecyclerView.adapter = adapter
 
-        lifecycleScope.launch{
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                habitsListViewModel.getHabitsFlow(habitTypeArgument).collect{habits ->
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                habitsListViewModel.getHabitsFlow(habitTypeArgument).collect { habits ->
                     adapter.updateHabits(habits)
                 }
             }
         }
-
-//        habitsListViewModel.getHabits(habitTypeArgument)
-//            .observe(viewLifecycleOwner, object : Observer<List<Habit>> {
-//                override fun onChanged(value: List<Habit>) {
-//                    adapter.updateHabits(value)
-//                    binding.habitRecyclerView.adapter = adapter
-//                }
-//            })
     }
 
     companion object {

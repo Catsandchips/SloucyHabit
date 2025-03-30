@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
-import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ARG
+import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
 class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
@@ -62,7 +62,7 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
             binding.root.setCardBackgroundColor(habit.color)
 
             binding.root.setOnClickListener {
-                val bundle = bundleOf(HABIT_ARG to habit)
+                val bundle = bundleOf(HABIT_ID_ARG to habit.id)
                 itemView.findNavController().navigate(R.id.nav_create, bundle)
             }
         }

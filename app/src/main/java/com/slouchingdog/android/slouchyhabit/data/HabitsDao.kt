@@ -12,7 +12,7 @@ interface HabitsDao {
     fun getHabits(): Flow<List<Habit>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
-    fun getHabitById(id: Int): Flow<Habit>
+    fun getHabitById(id: Int): Habit
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     fun addHabit(habit: Habit)
