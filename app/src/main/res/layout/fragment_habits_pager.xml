@@ -22,11 +22,23 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/habitsPagerViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/habitsPagerTabLayout" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabOpenFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/habitsPagerTabLayout"
-        app:layout_constraintTop_toBottomOf="@+id/habitsPagerTabLayout" />
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_violet"
+        android:contentDescription="@string/open_filter_button_description"
+        android:src="@drawable/ic_search_button"
+        app:layout_constraintBottom_toTopOf="@id/fabCreateHabit"
+        app:layout_constraintEnd_toEndOf="@id/fabCreateHabit"
+        app:maxImageSize="32dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCreateHabit"

@@ -2,14 +2,15 @@ package com.slouchingdog.android.slouchyhabit.data
 
 import android.graphics.Color
 import java.io.Serializable
+import java.util.UUID
 
 class Habit(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val type: HabitType,
-    val priority: String,
-    val periodicityTimes: Int,
-    val periodicityDays: Int,
+    var id: UUID,
+    var title: String,
+    var description: String,
+    var type: HabitType,
+    var priority: Int,
+    var periodicityTimes: Int,
+    var periodicityDays: Int,
     val color: Int = Color.parseColor("#424242")
 ) : Serializable
