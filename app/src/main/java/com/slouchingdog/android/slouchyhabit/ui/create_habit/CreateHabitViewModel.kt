@@ -3,12 +3,12 @@ package com.slouchingdog.android.slouchyhabit.ui.create_habit
 import androidx.lifecycle.ViewModel
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
-import com.slouchingdog.android.slouchyhabit.data.HabitsStorage
-import java.util.UUID
+import com.slouchingdog.android.slouchyhabit.data.HabitsRepository
 
 class CreateHabitViewModel : ViewModel() {
+    private val habitsRepository = HabitsRepository.get()
     fun addHabit(
-        id: UUID?,
+        id: Int?,
         title: String,
         description: String,
         type: HabitType,
@@ -17,15 +17,15 @@ class CreateHabitViewModel : ViewModel() {
         periodicityDays: Int
     ) {
         val habit = Habit(
-            id ?: UUID.randomUUID(),
-            title,
-            description,
-            type,
-            priority,
-            periodicityTimes,
-            periodicityDays
+            id = id,
+            title = title,
+            description = description,
+            type = type,
+            priority = priority,
+            periodicityTimes = periodicityTimes,
+            periodicityDays = periodicityDays,
         )
 
-        HabitsStorage.addHabit(habit)
+        habitsRepository.addHabit(habit)
     }
 }
