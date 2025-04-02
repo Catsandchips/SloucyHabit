@@ -29,19 +29,19 @@
         app:layout_constraintTop_toBottomOf="@+id/habitsPagerTabLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabOpenFilter"
+        android:id="@+id/openFilterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/light_violet"
         android:contentDescription="@string/open_filter_button_description"
         android:src="@drawable/ic_search_button"
-        app:layout_constraintBottom_toTopOf="@id/fabCreateHabit"
-        app:layout_constraintEnd_toEndOf="@id/fabCreateHabit"
+        app:layout_constraintBottom_toTopOf="@id/createHabitButton"
+        app:layout_constraintEnd_toEndOf="@id/createHabitButton"
         app:maxImageSize="32dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCreateHabit"
+        android:id="@+id/createHabitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

@@ -42,16 +42,16 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: Habit) {
-            binding.tvHabitItemTitle.text = habit.title
-            binding.tvHabitItemDescription.text = habit.description
-            binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
-            binding.tvHabitItemPriority.text =
+            binding.habitItemTitle.text = habit.title
+            binding.habitItemDescription.text = habit.description
+            binding.habitItemType.text = itemView.resources.getString(habit.type.title)
+            binding.habitItemPriority.text =
                 itemView.resources.getStringArray(R.array.priorities_array)[habit.priority]
             val timesCountString =
                 itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
             val daysCountString =
                 itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
-            binding.tvHabitItemPeriodicity.text = String.format(
+            binding.habitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
                 "%d %s %d %s",
                 habit.periodicityTimes,

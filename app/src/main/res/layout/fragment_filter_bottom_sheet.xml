@@ -16,37 +16,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/titleFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:hint="@string/find_habit_hint"
+        app:endIconDrawable="@drawable/ic_clear_field_button"
+        app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="@id/bottomSheetDragHandle"
         app:layout_constraintTop_toBottomOf="@id/bottomSheetDragHandle">
 
-        <EditText
-            android:id="@+id/etTitleFilter"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/titleFilterField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/find_habit_hint"
-            android:iconifiedByDefault="false"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btnClearFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
-            android:backgroundTint="@color/transparent"
-            android:contentDescription="@string/clear_filter_button_description"
-            android:src="@drawable/ic_clear_field_button" />
-
-    </RelativeLayout>
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/prioritySortHandler"
@@ -66,7 +52,7 @@
             android:textColor="@color/headers_color" />
 
         <ToggleButton
-            android:id="@+id/btnSortByPriorityDesc"
+            android:id="@+id/sortByPriorityDescButton"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -79,7 +65,7 @@
             tools:ignore="RtlSymmetry" />
 
         <ToggleButton
-            android:id="@+id/btnSortByPriorityAsc"
+            android:id="@+id/sortByPriorityAscButton"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

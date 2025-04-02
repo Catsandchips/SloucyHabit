@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 class HabitsListViewModel() : ViewModel() {
     private val habitRepository = HabitsRepository.get()
     private val _baseHabits: MutableStateFlow<List<Habit>> = MutableStateFlow(emptyList())
+    private var sortingData: SortingData = SortingData(false, false)
     private val _habits: MutableStateFlow<List<Habit>> = MutableStateFlow(emptyList())
     val habits: StateFlow<List<Habit>> = _habits.asStateFlow()
-    var sortingData: SortingData = SortingData(false, false)
     var titleQuery: String? = null
 
     init {

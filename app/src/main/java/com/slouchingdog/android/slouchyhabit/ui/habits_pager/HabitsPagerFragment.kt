@@ -41,11 +41,11 @@ class HabitsPagerFragment : Fragment() {
 
         val bottomSheet = FilterBottomSheetFragment()
 
-        binding.fabOpenFilter.setOnClickListener {
+        binding.openFilterButton.setOnClickListener {
             bottomSheet.show(parentFragmentManager, "FilterBottomSheet")
         }
 
-        binding.fabCreateHabit.setOnClickListener {
+        binding.createHabitButton.setOnClickListener {
             val action = HabitsPagerFragmentDirections.actionGoToHabitFromVP()
             findNavController().navigate(action)
         }

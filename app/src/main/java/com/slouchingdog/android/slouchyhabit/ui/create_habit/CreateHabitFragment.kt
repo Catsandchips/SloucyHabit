@@ -28,8 +28,8 @@ class CreateHabitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateHabitBinding.inflate(inflater)
-        binding.rbGoodHabitRadio.text = resources.getString(HabitType.GOOD.title)
-        binding.rbBadHabitRadio.text = resources.getString(HabitType.BAD.title)
+        binding.goodHabitRadioButton.text = resources.getString(HabitType.GOOD.title)
+        binding.badHabitRadioButton.text = resources.getString(HabitType.BAD.title)
         setCurrentFormState()
         return binding.root
     }
@@ -47,13 +47,13 @@ class CreateHabitFragment : Fragment() {
     }
 
     private fun onHabitTitleChange() {
-        binding.etHabitNameField.addTextChangedListener(afterTextChanged = {
+        binding.habitNameField.addTextChangedListener(afterTextChanged = {
             viewModel.onTitleChange(it.toString())
         })
     }
 
     private fun onHabitDescriptionChange() {
-        binding.etHabitDescriptionField.addTextChangedListener(afterTextChanged = {
+        binding.habitDescriptionField.addTextChangedListener(afterTextChanged = {
             viewModel.onDescriptionChange(it.toString())
         })
     }
@@ -75,10 +75,10 @@ class CreateHabitFragment : Fragment() {
     }
 
     private fun onHabitTypeChange() {
-        binding.rgHabitTypeField.setOnCheckedChangeListener { _, checkedRadioButtonId ->
+        binding.habitTypeRadioGroup.setOnCheckedChangeListener { _, checkedRadioButtonId ->
             val type = when (checkedRadioButtonId) {
-                binding.rbGoodHabitRadio.id -> HabitType.GOOD
-                binding.rbBadHabitRadio.id -> HabitType.BAD
+                binding.goodHabitRadioButton.id -> HabitType.GOOD
+                binding.badHabitRadioButton.id -> HabitType.BAD
                 else -> HabitType.GOOD
             }
             viewModel.onTypeChange(type)
@@ -86,25 +86,25 @@ class CreateHabitFragment : Fragment() {
     }
 
     private fun onHabitPeriodicityTimesChange() {
-        binding.etRepetitionsField.addTextChangedListener(afterTextChanged = { input ->
+        binding.repetitionsField.addTextChangedListener(afterTextChanged = { input ->
             val count = if (input.isNullOrEmpty()) 0 else input.toString().toInt()
-            binding.tvRepetitionsFieldText.text =
+            binding.repetitionsFieldText.text =
                 resources.getQuantityString(R.plurals.times, count)
             viewModel.onPeriodicityTimesChange(count)
         })
     }
 
     private fun onHabitPeriodicityDaysChange() {
-        binding.etDaysCountField.addTextChangedListener(afterTextChanged = { input ->
+        binding.daysCountField.addTextChangedListener(afterTextChanged = { input ->
             val count = if (input.isNullOrEmpty()) 0 else input.toString().toInt()
-            binding.tvDaysCountFieldText.text = resources.getQuantityString(R.plurals.days, count)
+            binding.daysCountFieldText.text = resources.getQuantityString(R.plurals.days, count)
             viewModel.onPeriodicityDaysChange(count)
         })
     }
 
-    private fun onSaveButtonClick(){
-        binding.btnSaveHabit.setOnClickListener {
-            if (binding.etHabitNameField.text.isEmpty() || binding.etHabitDescriptionField.text.isEmpty() || binding.etRepetitionsField.text.isEmpty() || binding.etDaysCountField.text.isEmpty()) {
+    private fun onSaveButtonClick() {
+        binding.saveHabitButton.setOnClickListener {
+            if (binding.habitNameField.text.isEmpty() || binding.habitDescriptionField.text.isEmpty() || binding.repetitionsField.text.isEmpty() || binding.daysCountField.text.isEmpty()) {
                 Snackbar.make(
                     binding.root,
                     resources.getString(R.string.form_validation_text),
@@ -130,21 +130,21 @@ class CreateHabitFragment : Fragment() {
     private fun prefillFormWithState() {
         (activity as AppCompatActivity).supportActionBar?.title =
             resources.getString(R.string.edit_habit_title)
-        binding.etHabitNameField.setText(viewModel.habitState.title)
-        binding.etHabitDescriptionField.setText(viewModel.habitState.description)
+        binding.habitNameField.setText(viewModel.habitState.title)
+        binding.habitDescriptionField.setText(viewModel.habitState.description)
         binding.habitPrioritySpinner.setSelection(viewModel.habitState.priority)
-        binding.rgHabitTypeField.check(
+        binding.habitTypeRadioGroup.check(
             when (viewModel.habitState.type) {
-                HabitType.GOOD -> binding.rbGoodHabitRadio.id
-                HabitType.BAD -> binding.rbBadHabitRadio.id
+                HabitType.GOOD -> binding.goodHabitRadioButton.id
+                HabitType.BAD -> binding.badHabitRadioButton.id
             }
         )
-        binding.etRepetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
-        binding.tvRepetitionsFieldText.text =
+        binding.repetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
+        binding.repetitionsFieldText.text =
             resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes)
 
-        binding.etDaysCountField.setText(viewModel.habitState.periodicityDays.toString())
-        binding.tvDaysCountFieldText.text =
+        binding.daysCountField.setText(viewModel.habitState.periodicityDays.toString())
+        binding.daysCountFieldText.text =
             resources.getQuantityString(R.plurals.days, viewModel.habitState.periodicityDays)
     }
 }

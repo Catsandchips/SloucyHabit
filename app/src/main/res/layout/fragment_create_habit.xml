@@ -12,7 +12,7 @@
         tools:context=".CreateHabitActivity">
 
         <EditText
-            android:id="@+id/etHabitNameField"
+            android:id="@+id/habitNameField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -26,25 +26,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/etHabitDescriptionField"
+            android:id="@+id/habitDescriptionField"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/amatic_sc_bold"
             android:hint="@string/habit_description_hint"
             android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="@+id/etHabitNameField"
-            app:layout_constraintStart_toStartOf="@+id/etHabitNameField"
-            app:layout_constraintTop_toBottomOf="@+id/etHabitNameField" />
+            app:layout_constraintEnd_toEndOf="@+id/habitNameField"
+            app:layout_constraintStart_toStartOf="@+id/habitNameField"
+            app:layout_constraintTop_toBottomOf="@+id/habitNameField" />
 
         <LinearLayout
-            android:id="@+id/llPriority"
+            android:id="@+id/prioritySelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="@+id/etHabitDescriptionField"
-            app:layout_constraintTop_toBottomOf="@+id/etHabitDescriptionField">
+            app:layout_constraintStart_toStartOf="@+id/habitDescriptionField"
+            app:layout_constraintTop_toBottomOf="@+id/habitDescriptionField">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,13 +63,13 @@
         </LinearLayout>
 
         <RadioGroup
-            android:id="@+id/rgHabitTypeField"
+            android:id="@+id/habitTypeRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:checkedButton="@id/rbGoodHabitRadio"
-            app:layout_constraintStart_toStartOf="@+id/llPriority"
-            app:layout_constraintTop_toBottomOf="@+id/llPriority">
+            android:checkedButton="@id/goodHabitRadioButton"
+            app:layout_constraintStart_toStartOf="@+id/prioritySelector"
+            app:layout_constraintTop_toBottomOf="@+id/prioritySelector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                 android:textSize="34sp" />
 
             <RadioButton
-                android:id="@+id/rbGoodHabitRadio"
+                android:id="@+id/goodHabitRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/headers_color"
@@ -88,7 +88,7 @@
                 android:textSize="24sp" />
 
             <RadioButton
-                android:id="@+id/rbBadHabitRadio"
+                android:id="@+id/badHabitRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/headers_color"
@@ -97,13 +97,13 @@
         </RadioGroup>
 
         <LinearLayout
-            android:id="@+id/llPeriodicity"
+            android:id="@+id/periodicitySelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="@+id/rgHabitTypeField"
-            app:layout_constraintTop_toBottomOf="@+id/rgHabitTypeField">
+            app:layout_constraintStart_toStartOf="@+id/habitTypeRadioGroup"
+            app:layout_constraintTop_toBottomOf="@+id/habitTypeRadioGroup">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,15 +114,15 @@
                 android:textSize="34sp" />
 
             <LinearLayout
-                android:id="@+id/llPeriodicityFields"
+                android:id="@+id/periodicityFields"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="@+id/rgHabitTypeField"
-                app:layout_constraintTop_toBottomOf="@+id/rgHabitTypeField">
+                app:layout_constraintStart_toStartOf="@+id/habitTypeRadioGroup"
+                app:layout_constraintTop_toBottomOf="@+id/habitTypeRadioGroup">
 
                 <EditText
-                    android:id="@+id/etRepetitionsField"
+                    android:id="@+id/repetitionsField"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
@@ -130,7 +130,7 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/tvRepetitionsFieldText"
+                    android:id="@+id/repetitionsFieldText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
@@ -138,7 +138,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/etDaysCountField"
+                    android:id="@+id/daysCountField"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
@@ -146,7 +146,7 @@
                     android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/tvDaysCountFieldText"
+                    android:id="@+id/daysCountFieldText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/amatic_sc_bold"
@@ -156,7 +156,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btnSaveHabit"
+            android:id="@+id/saveHabitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -165,8 +165,8 @@
             android:text="@string/save_habit_button_text"
             android:textColor="@color/background_color"
             android:textSize="34sp"
-            app:layout_constraintStart_toStartOf="@+id/llPeriodicity"
-            app:layout_constraintTop_toBottomOf="@+id/llPeriodicity" />
+            app:layout_constraintStart_toStartOf="@+id/periodicitySelector"
+            app:layout_constraintTop_toBottomOf="@+id/periodicitySelector" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
