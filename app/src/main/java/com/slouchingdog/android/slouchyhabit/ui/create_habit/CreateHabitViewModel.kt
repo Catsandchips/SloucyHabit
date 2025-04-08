@@ -1,29 +1,25 @@
 package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.HabitsRepository
-import kotlinx.coroutines.launch
 
 class CreateHabitViewModel() : ViewModel() {
     private val habitsRepository = HabitsRepository.get()
     var habitState: HabitState = HabitState()
 
     fun setHabitState(habitId: Int) {
-        viewModelScope.launch {
-            val habit = habitsRepository.getHabitById(habitId)
-            habitState = HabitState(
-                habit.id,
-                habit.title,
-                habit.description,
-                habit.type,
-                habit.priority,
-                habit.periodicityTimes,
-                habit.periodicityDays
-            )
-        }
+        val habit = habitsRepository.getHabitById(habitId)
+        habitState = HabitState(
+            habit.id,
+            habit.title,
+            habit.description,
+            habit.type,
+            habit.priority,
+            habit.periodicityTimes,
+            habit.periodicityDays
+        )
     }
 
     fun addHabit() {
