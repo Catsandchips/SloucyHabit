@@ -15,5 +15,5 @@ interface HabitsDao {
     fun getHabitById(id: Int): Habit
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    fun addHabit(habit: Habit)
+    suspend fun addHabit(habit: Habit)
 }

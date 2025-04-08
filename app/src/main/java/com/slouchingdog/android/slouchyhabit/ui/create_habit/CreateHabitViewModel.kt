@@ -1,9 +1,12 @@
 package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.HabitsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CreateHabitViewModel() : ViewModel() {
     private val habitsRepository = HabitsRepository.get()
@@ -23,17 +26,21 @@ class CreateHabitViewModel() : ViewModel() {
     }
 
     fun addHabit() {
-        val habit = Habit(
-            id = habitState.id,
-            title = habitState.title,
-            description = habitState.description,
-            type = habitState.type,
-            priority = habitState.priority,
-            periodicityTimes = habitState.periodicityTimes,
-            periodicityDays = habitState.periodicityDays
-        )
+        viewModelScope.launch{
+            launch(Dispatchers.IO){
+                val habit = Habit(
+                    id = habitState.id,
+                    title = habitState.title,
+                    description = habitState.description,
+                    type = habitState.type,
+                    priority = habitState.priority,
+                    periodicityTimes = habitState.periodicityTimes,
+                    periodicityDays = habitState.periodicityDays
+                )
 
-        habitsRepository.addHabit(habit)
+                habitsRepository.addHabit(habit)
+            }
+        }
     }
 
     fun onTitleChange(newTitle: String) {

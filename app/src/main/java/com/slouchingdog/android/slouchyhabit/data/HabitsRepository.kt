@@ -15,7 +15,7 @@ class HabitsRepository private constructor(context: Context) {
 
     fun getHabits(): Flow<List<Habit>> = database.habitsDao().getHabits()
     fun getHabitById(id: Int): Habit = database.habitsDao().getHabitById(id)
-    fun addHabit(habit: Habit) = database.habitsDao().addHabit(habit)
+    suspend fun addHabit(habit: Habit) = database.habitsDao().addHabit(habit)
 
     companion object {
         private var INSTANCE: HabitsRepository? = null
