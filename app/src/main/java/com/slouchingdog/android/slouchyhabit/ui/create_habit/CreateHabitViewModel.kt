@@ -1,6 +1,7 @@
 package com.slouchingdog.android.slouchyhabit.ui.create_habit
 
 import android.text.Editable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,8 @@ import kotlin.text.isNullOrEmpty
 class CreateHabitViewModel(habitId: Int?) : ViewModel() {
     private val habitsRepository = HabitsRepository.get()
     var habitState: HabitState = HabitState()
-    val createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
+    private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
+    val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
 
     init {
         if (habitId != null && habitId != -1) {
@@ -29,7 +31,7 @@ class CreateHabitViewModel(habitId: Int?) : ViewModel() {
                 habit.periodicityDays
             )
 
-            createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
+            _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
         }
     }
 
@@ -76,7 +78,7 @@ class CreateHabitViewModel(habitId: Int?) : ViewModel() {
     }
 
     fun onSaveButtonClick() {
-        createHabitEvent.value =
+        _createHabitEvent.value =
             if (habitState.title.isEmpty() || habitState.description.isEmpty() || habitState.periodicityTimes == null || habitState.periodicityDays == null) {
                 CreateHabitEvent.ShowSnackBarSomeFieldsEmpty
             } else {
