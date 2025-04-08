@@ -21,7 +21,14 @@ const val HABIT_ID_ARG = "HABIT_ARG"
 class CreateHabitFragment : Fragment() {
 
     lateinit var binding: FragmentCreateHabitBinding
-    val viewModel: CreateHabitViewModel by viewModels()
+    val viewModel: CreateHabitViewModel by viewModels {
+        CreateHabitViewModelFactory(
+            arguments?.getInt(
+                HABIT_ID_ARG,
+                -1
+            )
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +37,25 @@ class CreateHabitFragment : Fragment() {
         binding = FragmentCreateHabitBinding.inflate(inflater)
         binding.goodHabitRadioButton.text = resources.getString(HabitType.GOOD.title)
         binding.badHabitRadioButton.text = resources.getString(HabitType.BAD.title)
-        setCurrentFormState()
+
+        viewModel.createHabitEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                CreateHabitEvent.PrefillFormWithPassedHabit -> prefillFormWithState()
+                CreateHabitEvent.ShowSnackBarSomeFieldsEmpty -> {
+                    Snackbar.make(
+                        binding.root,
+                        resources.getString(R.string.form_validation_text),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                CreateHabitEvent.SaveHabitWithCorrectData -> {
+                    viewModel.addHabit()
+                    findNavController().navigateUp()
+                }
+            }
+        }
+
         return binding.root
     }
 
@@ -87,42 +112,28 @@ class CreateHabitFragment : Fragment() {
 
     private fun onHabitPeriodicityTimesChange() {
         binding.repetitionsField.addTextChangedListener(afterTextChanged = { input ->
-            val count = if (input.isNullOrEmpty()) 0 else input.toString().toInt()
             binding.repetitionsFieldText.text =
-                resources.getQuantityString(R.plurals.times, count)
-            viewModel.onPeriodicityTimesChange(count)
+                resources.getQuantityString(
+                    R.plurals.times,
+                    viewModel.getPeriodicityForPlurals(input)
+                )
+            viewModel.onPeriodicityTimesChange(viewModel.getPeriodicityForState(input))
         })
     }
 
     private fun onHabitPeriodicityDaysChange() {
         binding.daysCountField.addTextChangedListener(afterTextChanged = { input ->
-            val count = if (input.isNullOrEmpty()) 0 else input.toString().toInt()
-            binding.daysCountFieldText.text = resources.getQuantityString(R.plurals.days, count)
-            viewModel.onPeriodicityDaysChange(count)
+            binding.daysCountFieldText.text = resources.getQuantityString(
+                R.plurals.days,
+                viewModel.getPeriodicityForPlurals(input)
+            )
+            viewModel.onPeriodicityDaysChange(viewModel.getPeriodicityForState(input))
         })
     }
 
     private fun onSaveButtonClick() {
         binding.saveHabitButton.setOnClickListener {
-            if (binding.habitNameField.text.isEmpty() || binding.habitDescriptionField.text.isEmpty() || binding.repetitionsField.text.isEmpty() || binding.daysCountField.text.isEmpty()) {
-                Snackbar.make(
-                    binding.root,
-                    resources.getString(R.string.form_validation_text),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            } else {
-                viewModel.addHabit()
-
-                findNavController().navigateUp()
-            }
-        }
-    }
-
-    private fun setCurrentFormState() {
-        val passedHabitId = arguments?.getInt(HABIT_ID_ARG, -1)
-        if (passedHabitId != null && passedHabitId != -1) {
-            viewModel.setHabitState(passedHabitId)
-            prefillFormWithState()
+            viewModel.onSaveButtonClick()
         }
     }
 
@@ -139,12 +150,13 @@ class CreateHabitFragment : Fragment() {
                 HabitType.BAD -> binding.badHabitRadioButton.id
             }
         )
+        binding.habitTypeRadioGroup.jumpDrawablesToCurrentState()
         binding.repetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
         binding.repetitionsFieldText.text =
-            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes)
+            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes ?: 0)
 
         binding.daysCountField.setText(viewModel.habitState.periodicityDays.toString())
         binding.daysCountFieldText.text =
-            resources.getQuantityString(R.plurals.days, viewModel.habitState.periodicityDays)
+            resources.getQuantityString(R.plurals.days, viewModel.habitState.periodicityDays ?: 0)
     }
 }
