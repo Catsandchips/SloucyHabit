@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.data.Habit
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
-import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ARG
+import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
 class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
@@ -42,16 +42,16 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: Habit) {
-            binding.tvHabitItemTitle.text = habit.title
-            binding.tvHabitItemDescription.text = habit.description
-            binding.tvHabitItemType.text = itemView.resources.getString(habit.type.title)
-            binding.tvHabitItemPriority.text =
+            binding.habitItemTitle.text = habit.title
+            binding.habitItemDescription.text = habit.description
+            binding.habitItemType.text = itemView.resources.getString(habit.type.title)
+            binding.habitItemPriority.text =
                 itemView.resources.getStringArray(R.array.priorities_array)[habit.priority]
             val timesCountString =
                 itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
             val daysCountString =
                 itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
-            binding.tvHabitItemPeriodicity.text = String.format(
+            binding.habitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
                 "%d %s %d %s",
                 habit.periodicityTimes,
@@ -62,7 +62,7 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
             binding.root.setCardBackgroundColor(habit.color)
 
             binding.root.setOnClickListener {
-                val bundle = bundleOf(HABIT_ARG to habit)
+                val bundle = bundleOf(HABIT_ID_ARG to habit.id)
                 itemView.findNavController().navigate(R.id.nav_create, bundle)
             }
         }

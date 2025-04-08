@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tvHabitItemTitle"
+            android:id="@+id/habitItemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -25,24 +25,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvHabitItemDescription"
+            android:id="@+id/habitItemDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/headers_color"
-            app:layout_constraintStart_toStartOf="@+id/tvHabitItemTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvHabitItemTitle" />
+            app:layout_constraintStart_toStartOf="@+id/habitItemTitle"
+            app:layout_constraintTop_toBottomOf="@+id/habitItemTitle" />
 
         <TextView
-            android:id="@+id/tvHabitItemType"
+            android:id="@+id/habitItemType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvHabitItemDescription"
-            app:layout_constraintTop_toBottomOf="@+id/tvHabitItemDescription" />
+            app:layout_constraintStart_toStartOf="@+id/habitItemDescription"
+            app:layout_constraintTop_toBottomOf="@+id/habitItemDescription" />
 
         <View
             android:id="@+id/firstTextSeparator"
@@ -50,18 +50,18 @@
             android:layout_height="4dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/devider_dot"
-            app:layout_constraintBottom_toBottomOf="@+id/tvHabitItemType"
-            app:layout_constraintStart_toEndOf="@+id/tvHabitItemType"
-            app:layout_constraintTop_toTopOf="@+id/tvHabitItemType" />
+            app:layout_constraintBottom_toBottomOf="@+id/habitItemType"
+            app:layout_constraintStart_toEndOf="@+id/habitItemType"
+            app:layout_constraintTop_toTopOf="@+id/habitItemType" />
 
         <TextView
-            android:id="@+id/tvHabitItemPeriodicity"
+            android:id="@+id/habitItemPeriodicity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/secondTextSeparator"
-            app:layout_constraintTop_toTopOf="@+id/tvHabitItemPriority" />
+            app:layout_constraintTop_toTopOf="@+id/habitItemPriority" />
 
         <View
             android:id="@+id/secondTextSeparator"
@@ -69,17 +69,17 @@
             android:layout_height="4dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/devider_dot"
-            app:layout_constraintBottom_toBottomOf="@+id/tvHabitItemPriority"
-            app:layout_constraintStart_toEndOf="@+id/tvHabitItemPriority"
-            app:layout_constraintTop_toTopOf="@+id/tvHabitItemPriority" />
+            app:layout_constraintBottom_toBottomOf="@+id/habitItemPriority"
+            app:layout_constraintStart_toEndOf="@+id/habitItemPriority"
+            app:layout_constraintTop_toTopOf="@+id/habitItemPriority" />
 
         <TextView
-            android:id="@+id/tvHabitItemPriority"
+            android:id="@+id/habitItemPriority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/firstTextSeparator"
-            app:layout_constraintTop_toTopOf="@+id/tvHabitItemType" />
+            app:layout_constraintTop_toTopOf="@+id/habitItemType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
