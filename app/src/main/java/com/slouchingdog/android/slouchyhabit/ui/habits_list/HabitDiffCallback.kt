@@ -1,11 +1,11 @@
 package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
 
 class HabitDiffCallback(
-    private val oldList: List<Habit>,
-    private val newList: List<Habit>
+    private val oldList: List<HabitDBEntity>,
+    private val newList: List<HabitDBEntity>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

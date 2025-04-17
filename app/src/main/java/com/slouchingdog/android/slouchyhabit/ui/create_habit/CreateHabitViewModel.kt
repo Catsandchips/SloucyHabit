@@ -5,24 +5,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
+import com.slouchingdog.android.slouchyhabit.data.HabitForSave
 import com.slouchingdog.android.slouchyhabit.data.HabitType
-import com.slouchingdog.android.slouchyhabit.data.HabitsRepository
+import com.slouchingdog.android.slouchyhabit.data.repository.HabitsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.UUID
 import kotlin.text.isNullOrEmpty
 
-class CreateHabitViewModel(habitId: Int?) : ViewModel() {
+class CreateHabitViewModel(val habitId: String?) : ViewModel() {
     private val habitsRepository = HabitsRepository.get()
     var habitState: HabitState = HabitState()
     private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
     val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
 
     init {
-        if (habitId != null && habitId != -1) {
-            val habit = habitsRepository.getHabitById(habitId)
+        if (habitId != null) {
+            val habit = habitsRepository.getHabitById(UUID.fromString(habitId))
             habitState = HabitState(
-                habit.id,
                 habit.title,
                 habit.description,
                 habit.type,
@@ -36,19 +37,35 @@ class CreateHabitViewModel(habitId: Int?) : ViewModel() {
     }
 
     fun addHabit() {
+
         viewModelScope.launch {
             launch(Dispatchers.IO) {
-                val habit = Habit(
-                    id = habitState.id,
-                    title = habitState.title,
-                    description = habitState.description,
-                    type = habitState.type,
-                    priority = habitState.priority,
-                    periodicityTimes = habitState.periodicityTimes ?: 0,
-                    periodicityDays = habitState.periodicityDays ?: 0
-                )
+                if (habitId != null){
+                    val habit = HabitDBEntity(
+                        id = UUID.fromString(habitId),
+                        title = habitState.title,
+                        description = habitState.description,
+                        type = habitState.type,
+                        priority = habitState.priority,
+                        periodicityTimes = habitState.periodicityTimes ?: 0,
+                        periodicityDays = habitState.periodicityDays ?: 0
+                    )
 
-                habitsRepository.addHabit(habit)
+                    habitsRepository.updateHabit(habit)
+                }
+                else{
+                    val habitForSave = HabitForSave(
+                        title = habitState.title,
+                        description = habitState.description,
+                        type = habitState.type,
+                        priority = habitState.priority,
+                        periodicityTimes = habitState.periodicityTimes ?: 0,
+                        periodicityDays = habitState.periodicityDays ?: 0
+                    )
+
+                    habitsRepository.addHabit(habitForSave)
+                }
+
             }
         }
     }
@@ -97,7 +114,7 @@ class CreateHabitViewModel(habitId: Int?) : ViewModel() {
 
 @Suppress("UNCHECKED_CAST")
 class CreateHabitViewModelFactory(
-    private val habitId: Int?
+    private val habitId: String?
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CreateHabitViewModel(habitId) as T
@@ -105,7 +122,6 @@ class CreateHabitViewModelFactory(
 }
 
 data class HabitState(
-    val id: Int? = null,
     val title: String = "",
     val description: String = "",
     val type: HabitType = HabitType.GOOD,

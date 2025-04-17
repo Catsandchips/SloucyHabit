@@ -23,9 +23,8 @@ class CreateHabitFragment : Fragment() {
     lateinit var binding: FragmentCreateHabitBinding
     val viewModel: CreateHabitViewModel by viewModels {
         CreateHabitViewModelFactory(
-            arguments?.getInt(
-                HABIT_ID_ARG,
-                -1
+            arguments?.getString(
+                HABIT_ID_ARG
             )
         )
     }
