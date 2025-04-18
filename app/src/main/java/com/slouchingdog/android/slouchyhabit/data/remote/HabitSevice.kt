@@ -11,7 +11,7 @@ import java.util.UUID
 
 interface HabitService {
     @Headers(
-        "Authorization: cea1b0e6-147e-4bc9-b26d-35d66ac89182"
+        
     )
     @GET("habit")
     suspend fun getHabits(): Response<List<HabitDBEntity>>
@@ -19,6 +19,7 @@ interface HabitService {
     @PUT("habit")
     suspend fun updateHabit(@Body habit: HabitDBEntity)
 
+    @Headers("Content-Type: application/json", "accept: application/json")
     @PUT("habit")
     suspend fun addHabit(@Body habit: HabitForSave): Response<String>
 
