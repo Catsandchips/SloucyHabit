@@ -49,7 +49,6 @@ class CreateHabitFragment : Fragment() {
                 }
 
                 CreateHabitEvent.SaveHabitWithCorrectData -> {
-                    viewModel.addHabit()
                     findNavController().navigateUp()
                 }
             }
