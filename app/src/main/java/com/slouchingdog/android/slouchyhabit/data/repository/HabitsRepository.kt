@@ -32,8 +32,11 @@ class HabitsRepository private constructor(context: Context) {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+    private val retryInterceptor = RetryInterceptor()
+
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .addInterceptor(retryInterceptor)
         .build()
 
     private val retrofit = Retrofit.Builder()
@@ -54,8 +57,9 @@ class HabitsRepository private constructor(context: Context) {
     suspend fun getHabits(): Flow<List<HabitDBEntity>> {
         try {
             val habits = service.getHabits().body()
-            if (habits != null)
+            if (habits != null) {
                 database.habitsDao().addHabitsList(habits)
+            }
         } catch (e: Exception) {
             Log.e("GET HABITS ERROR", e.toString())
         }

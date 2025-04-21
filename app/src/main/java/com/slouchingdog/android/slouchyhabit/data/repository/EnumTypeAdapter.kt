@@ -24,8 +24,8 @@ class EnumTypeAdapter : JsonSerializer<HabitType>, JsonDeserializer<HabitType> {
         context: JsonDeserializationContext?
     ): HabitType? {
         val habitTypeOrdinal = json?.asInt
-        if (habitTypeOrdinal != null) {
-            return HabitType.entries[habitTypeOrdinal]
-        } else return null
+        return if (habitTypeOrdinal != null) {
+            HabitType.entries[habitTypeOrdinal]
+        } else null
     }
 }
