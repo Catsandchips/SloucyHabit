@@ -21,9 +21,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         android:background="@color/background_color"
         app:itemTextAppearance="@style/Base.Theme.SlouchyHabit"
+        app:headerLayout="@layout/navigation_view_header"
         app:menu="@menu/menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
