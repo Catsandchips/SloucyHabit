@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.util.Date
 import kotlin.text.isNullOrEmpty
 
 class CreateHabitViewModel(val habitId: String?) : ViewModel() {
@@ -23,14 +23,15 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
 
     init {
         if (habitId != null) {
-            val habit = habitsRepository.getHabitById(UUID.fromString(habitId))
+            val habit = habitsRepository.getHabitById(habitId)
             habitState = HabitState(
                 habit.title,
                 habit.description,
                 habit.type,
                 habit.priority,
                 habit.periodicityTimes,
-                habit.periodicityDays
+                habit.periodicityDays,
+                habit.date
             )
 
             _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
@@ -39,27 +40,28 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
 
     fun addHabit() {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-            if (habitId != null){
+            if (habitId != null) {
                 val habit = HabitDBEntity(
-                    id = UUID.fromString(habitId),
+                    id = habitId,
                     title = habitState.title,
                     description = habitState.description,
                     type = habitState.type,
                     priority = habitState.priority,
                     periodicityTimes = habitState.periodicityTimes ?: 0,
-                    periodicityDays = habitState.periodicityDays ?: 0
+                    periodicityDays = habitState.periodicityDays ?: 0,
+                    date = habitState.date
                 )
 
                 habitsRepository.updateHabit(habit)
-            }
-            else{
+            } else {
                 val habitForSave = HabitForSave(
                     title = habitState.title,
                     description = habitState.description,
                     type = habitState.type,
                     priority = habitState.priority,
                     periodicityTimes = habitState.periodicityTimes ?: 0,
-                    periodicityDays = habitState.periodicityDays ?: 0
+                    periodicityDays = habitState.periodicityDays ?: 0,
+                    date = habitState.date
                 )
 
                 habitsRepository.addHabit(habitForSave)
@@ -125,5 +127,6 @@ data class HabitState(
     val type: HabitType = HabitType.GOOD,
     val priority: Int = 0,
     val periodicityTimes: Int? = null,
-    val periodicityDays: Int? = null
+    val periodicityDays: Int? = null,
+    val date: Long = Date().time
 )

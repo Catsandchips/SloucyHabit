@@ -5,19 +5,21 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 
 @Dao
 interface HabitsDao {
-    @Query("SELECT * FROM $HABITS_TABLE_NAME")
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY date DESC")
     fun getHabits(): Flow<List<HabitDBEntity>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
-    fun getHabitById(id: UUID): HabitDBEntity
+    fun getHabitById(id: String): HabitDBEntity
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addHabit(habit: HabitDBEntity)
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addHabitsList(habits: List<HabitDBEntity>)
+
+    @Query("DELETE FROM $HABITS_TABLE_NAME")
+    suspend fun deleteAllHabits()
 }

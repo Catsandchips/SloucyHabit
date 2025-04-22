@@ -24,7 +24,7 @@
         android:fitsSystemWindows="false"
         android:background="@color/background_color"
         app:itemTextAppearance="@style/Base.Theme.SlouchyHabit"
-        app:headerLayout="@layout/navigation_view_header"
+        app:headerLayout="@layout/nav_view_header"
         app:menu="@menu/menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -61,7 +61,7 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
             )
 
             binding.root.setOnClickListener {
-                val bundle = bundleOf(HABIT_ID_ARG to habit.id.toString())
+                val bundle = bundleOf(HABIT_ID_ARG to habit.id)
                 itemView.findNavController().navigate(R.id.nav_create, bundle)
             }
         }

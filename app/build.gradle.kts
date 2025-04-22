@@ -56,6 +56,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.glide)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.converter.scalars)

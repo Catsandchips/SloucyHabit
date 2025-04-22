@@ -1,17 +1,17 @@
 package com.slouchingdog.android.slouchyhabit.data
 
 import androidx.room.TypeConverter
-import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class HabitTypeConverters {
     @TypeConverter
-    fun fromIntArray(array: IntArray?): String?{
+    fun fromIntArray(array: IntArray?): String? {
         return array?.let { Gson().toJson(it) }
     }
 
     @TypeConverter
-    fun fromJsonString(json: String?): IntArray?{
+    fun toIntArray(json: String?): IntArray? {
         return json?.let {
             val type = object : TypeToken<IntArray>() {}.type
             Gson().fromJson(json, type)

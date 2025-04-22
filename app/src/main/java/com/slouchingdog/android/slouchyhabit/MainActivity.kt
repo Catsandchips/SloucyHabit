@@ -1,6 +1,7 @@
 package com.slouchingdog.android.slouchyhabit
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
@@ -8,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.slouchingdog.android.slouchyhabit.databinding.ActivityMainBinding
 
@@ -25,6 +27,17 @@ class MainActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.navigationDrawerLayout
         val navView: NavigationView = binding.navView
+        val headerView = navView.getHeaderView(0)
+        val imgHeader = headerView.findViewById<ImageView>(R.id.user_pic)
+
+        Glide.with(this)
+            .load("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA8Kti_6N_r_53feMNX-wiVvp9ujv7NXsCvw&s")
+            .circleCrop()
+            .error(R.mipmap.user_pic_placeholder)
+            .placeholder(R.mipmap.user_pic_placeholder)
+            .override(250, 250)
+            .into(imgHeader)
+
         navView.setItemBackgroundResource(R.drawable.nav_item_background)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
