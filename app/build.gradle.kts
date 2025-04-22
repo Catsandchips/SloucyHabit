@@ -22,7 +22,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-
         var properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
         buildConfigField(
