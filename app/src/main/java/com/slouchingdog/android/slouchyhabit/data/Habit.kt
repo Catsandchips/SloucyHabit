@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 const val HABITS_TABLE_NAME = "habits"
 
 @Entity(tableName = HABITS_TABLE_NAME)
-data class HabitDBEntity(
+data class HabitDBO(
     @SerializedName("uid")
     @PrimaryKey val id: String,
     val title: String,
@@ -24,21 +24,21 @@ data class HabitDBEntity(
     @SerializedName("done_dates")
     val doneDates: IntArray? = null
 ) {
-    constructor(id: String, habitForSave: HabitForSave) : this(
+    constructor(id: String, habitDTO: HabitDTO) : this(
         id,
-        habitForSave.title,
-        habitForSave.description,
-        habitForSave.priority,
-        habitForSave.type,
-        habitForSave.periodicityTimes,
-        habitForSave.periodicityDays,
-        habitForSave.color,
-        habitForSave.date,
-        habitForSave.doneDates
+        habitDTO.title,
+        habitDTO.description,
+        habitDTO.priority,
+        habitDTO.type,
+        habitDTO.periodicityTimes,
+        habitDTO.periodicityDays,
+        habitDTO.color,
+        habitDTO.date,
+        habitDTO.doneDates
     )
 }
 
-data class HabitForSave(
+data class HabitDTO(
     val title: String,
     val description: String,
     val priority: Int,

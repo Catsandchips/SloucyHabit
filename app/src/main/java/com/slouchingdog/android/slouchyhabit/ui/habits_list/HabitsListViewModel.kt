@@ -2,7 +2,7 @@ package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
+import com.slouchingdog.android.slouchyhabit.data.HabitDBO
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.repository.HabitsRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,10 +14,10 @@ import kotlinx.coroutines.launch
 
 class HabitsListViewModel() : ViewModel() {
     private val habitRepository = HabitsRepository.get()
-    private val _baseHabits: MutableStateFlow<List<HabitDBEntity>> = MutableStateFlow(emptyList())
+    private val _baseHabits: MutableStateFlow<List<HabitDBO>> = MutableStateFlow(emptyList())
     private var sortingData: SortingData = SortingData(false, false)
-    private val _habits: MutableStateFlow<List<HabitDBEntity>> = MutableStateFlow(emptyList())
-    val habits: StateFlow<List<HabitDBEntity>> = _habits.asStateFlow()
+    private val _habits: MutableStateFlow<List<HabitDBO>> = MutableStateFlow(emptyList())
+    val habits: StateFlow<List<HabitDBO>> = _habits.asStateFlow()
     var titleQuery: String? = null
 
     init {
@@ -31,7 +31,7 @@ class HabitsListViewModel() : ViewModel() {
         }
     }
 
-    fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitDBEntity>> =
+    fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitDBO>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
     fun filterHabits(titleQuery: String?) {
@@ -62,7 +62,7 @@ class HabitsListViewModel() : ViewModel() {
         filterHabits(titleQuery)
     }
 
-    private fun sortHabitsByPriority(habits: List<HabitDBEntity>) =
+    private fun sortHabitsByPriority(habits: List<HabitDBO>) =
         if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
 }
 

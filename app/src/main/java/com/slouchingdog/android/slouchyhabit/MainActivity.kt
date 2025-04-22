@@ -3,14 +3,12 @@ package com.slouchingdog.android.slouchyhabit
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.google.android.material.navigation.NavigationView
 import com.slouchingdog.android.slouchyhabit.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -22,12 +20,25 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
+        setupNavigationView()
 
-        val drawerLayout: DrawerLayout = binding.navigationDrawerLayout
-        val navView: NavigationView = binding.navView
-        val headerView = navView.getHeaderView(0)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_about
+            ), binding.navigationDrawerLayout
+
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
+    }
+
+    fun setupNavigationView() {
+        val headerView = binding.navView.getHeaderView(0)
         val imgHeader = headerView.findViewById<ImageView>(R.id.user_pic)
 
         Glide.with(this)
@@ -38,19 +49,7 @@ class MainActivity : AppCompatActivity() {
             .override(250, 250)
             .into(imgHeader)
 
-        navView.setItemBackgroundResource(R.drawable.nav_item_background)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_about
-            ), drawerLayout
-
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        binding.navView.setItemBackgroundResource(R.drawable.nav_item_background)
     }
 
     override fun onSupportNavigateUp(): Boolean {

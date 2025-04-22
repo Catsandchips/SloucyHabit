@@ -4,14 +4,14 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
 import com.google.gson.Strictness
-import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
+import com.slouchingdog.android.slouchyhabit.data.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.HabitDTO
 import com.slouchingdog.android.slouchyhabit.data.HabitDatabase
-import com.slouchingdog.android.slouchyhabit.data.HabitForSave
 import com.slouchingdog.android.slouchyhabit.data.remote.HabitService
 import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -25,14 +25,20 @@ class HabitsRepository private constructor(context: Context) {
         .fallbackToDestructiveMigration()
         .build()
 
+    private val loggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
     private val retryInterceptor = RetryInterceptor()
 
     private val okHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(retryInterceptor)
+            .addInterceptor(loggingInterceptor)
             .build()
 
-    private val retrofit = Retrofit.Builder().baseUrl(HabitService.BASE_URL).client(okHttpClient)
+    private val retrofit = Retrofit
+        .Builder()
+        .baseUrl(HabitService.BASE_URL)
+        .client(okHttpClient)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(
             GsonConverterFactory.create(
@@ -43,12 +49,12 @@ class HabitsRepository private constructor(context: Context) {
         ).build()
     private val service = retrofit.create(HabitService::class.java)
 
+    fun getHabitById(id: String): HabitDBO = database.habitsDao().getHabitById(id)
 
-    suspend fun getHabits(): Flow<List<HabitDBEntity>> {
+    suspend fun getHabits(): Flow<List<HabitDBO>> {
         try {
             val habits = service.getHabits()
-            database.habitsDao().deleteAllHabits()
-            database.habitsDao().addHabitsList(habits)
+            database.habitsDao().replaceHabitsList(habits)
         } catch (e: Exception) {
             Log.e("GET HABITS ERROR", e.toString())
         }
@@ -56,9 +62,8 @@ class HabitsRepository private constructor(context: Context) {
         return database.habitsDao().getHabits()
     }
 
-    fun getHabitById(id: String): HabitDBEntity = database.habitsDao().getHabitById(id)
 
-    suspend fun updateHabit(habit: HabitDBEntity) {
+    suspend fun updateHabit(habit: HabitDBO) {
         try {
             database.habitsDao().addHabit(habit)
             service.updateHabit(habit)
@@ -67,11 +72,10 @@ class HabitsRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun addHabit(habitForSave: HabitForSave) {
+    suspend fun addHabit(habitDTO: HabitDTO) {
         try {
-            val habitIdJson = service.addHabit(habitForSave)
-            val habitId = JsonParser.parseString(habitIdJson).asJsonObject.get("uid").asString
-            val habit = HabitDBEntity(habitId, habitForSave)
+            val habitId = service.addHabit(habitDTO)
+            val habit = HabitDBO(habitId.uid, habitDTO)
             database.habitsDao().addHabit(habit)
         } catch (e: Exception) {
             Log.e("ADD HABIT ERROR", e.toString())

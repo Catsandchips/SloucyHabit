@@ -4,8 +4,8 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
-import com.slouchingdog.android.slouchyhabit.data.HabitForSave
+import com.slouchingdog.android.slouchyhabit.data.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.HabitDTO
 import com.slouchingdog.android.slouchyhabit.data.HabitType
 import com.slouchingdog.android.slouchyhabit.data.repository.HabitsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -30,8 +30,7 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
                 habit.type,
                 habit.priority,
                 habit.periodicityTimes,
-                habit.periodicityDays,
-                habit.date
+                habit.periodicityDays
             )
 
             _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
@@ -41,30 +40,30 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
     fun addHabit() {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
             if (habitId != null) {
-                val habit = HabitDBEntity(
+                val habit = HabitDBO(
                     id = habitId,
                     title = habitState.title,
                     description = habitState.description,
                     type = habitState.type,
                     priority = habitState.priority,
-                    periodicityTimes = habitState.periodicityTimes ?: 0,
-                    periodicityDays = habitState.periodicityDays ?: 0,
+                    periodicityTimes = habitState.periodicityTimes,
+                    periodicityDays = habitState.periodicityDays,
                     date = habitState.date
                 )
 
                 habitsRepository.updateHabit(habit)
             } else {
-                val habitForSave = HabitForSave(
+                val habitDTO = HabitDTO(
                     title = habitState.title,
                     description = habitState.description,
                     type = habitState.type,
                     priority = habitState.priority,
-                    periodicityTimes = habitState.periodicityTimes ?: 0,
-                    periodicityDays = habitState.periodicityDays ?: 0,
+                    periodicityTimes = habitState.periodicityTimes,
+                    periodicityDays = habitState.periodicityDays,
                     date = habitState.date
                 )
 
-                habitsRepository.addHabit(habitForSave)
+                habitsRepository.addHabit(habitDTO)
             }
         }
     }
@@ -85,17 +84,17 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
         habitState = habitState.copy(priority = newPriority)
     }
 
-    fun onPeriodicityTimesChange(newPeriodicityTimes: Int?) {
+    fun onPeriodicityTimesChange(newPeriodicityTimes: Int) {
         habitState = habitState.copy(periodicityTimes = newPeriodicityTimes)
     }
 
-    fun onPeriodicityDaysChange(newPeriodicityDays: Int?) {
+    fun onPeriodicityDaysChange(newPeriodicityDays: Int) {
         habitState = habitState.copy(periodicityDays = newPeriodicityDays)
     }
 
     fun onSaveButtonClick() {
         _createHabitEvent.value =
-            if (habitState.title.isEmpty() || habitState.description.isEmpty() || habitState.periodicityTimes == null || habitState.periodicityDays == null) {
+            if (habitState.title.isEmpty() || habitState.description.isEmpty() || habitState.periodicityTimes == 0 || habitState.periodicityDays == 0) {
                 CreateHabitEvent.ShowSnackBarSomeFieldsEmpty
             } else {
                 addHabit()
@@ -104,12 +103,11 @@ class CreateHabitViewModel(val habitId: String?) : ViewModel() {
 
     }
 
-    fun getPeriodicityForPlurals(input: Editable?) =
+    fun getPeriodicityForPlurals(input: Editable?): Int =
         if (input.isNullOrEmpty()) 0 else input.toString().toInt()
 
-    fun getPeriodicityForState(input: Editable?) =
-        if (input.isNullOrEmpty()) null else input.toString().toInt()
-
+    fun getPeriodicityForState(input: Editable?): Int =
+        if (input.isNullOrEmpty()) 0 else input.toString().toInt()
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -126,7 +124,7 @@ data class HabitState(
     val description: String = "",
     val type: HabitType = HabitType.GOOD,
     val priority: Int = 0,
-    val periodicityTimes: Int? = null,
-    val periodicityDays: Int? = null,
+    val periodicityTimes: Int = 0,
+    val periodicityDays: Int = 0,
     val date: Long = Date().time
 )

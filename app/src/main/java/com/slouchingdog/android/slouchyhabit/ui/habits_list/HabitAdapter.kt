@@ -7,13 +7,13 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.HabitDBEntity
+import com.slouchingdog.android.slouchyhabit.data.HabitDBO
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
 class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
-    private var habits: List<HabitDBEntity> = emptyList()
+    private var habits: List<HabitDBO> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,14 +34,14 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     override fun getItemCount() = habits.size
 
-    fun updateHabits(newHabits: List<HabitDBEntity>) {
+    fun updateHabits(newHabits: List<HabitDBO>) {
         val diffResult = DiffUtil.calculateDiff(HabitDiffCallback(habits, newHabits))
         habits = newHabits
         diffResult.dispatchUpdatesTo(this)
     }
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(habit: HabitDBEntity) {
+        fun bind(habit: HabitDBO) {
             binding.habitItemTitle.text = habit.title
             binding.habitItemDescription.text = habit.description
             binding.habitItemType.text = itemView.resources.getString(habit.type.title)
