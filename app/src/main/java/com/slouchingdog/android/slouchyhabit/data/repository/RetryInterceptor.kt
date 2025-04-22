@@ -26,7 +26,6 @@ class RetryInterceptor(private val retryDelayMillis: Long = 3000L) : Interceptor
                 response?.close()
             }
             Thread.sleep(retryDelayMillis)
-//            Log.d("RETRY", "Request ${request.method} ${request.url}")
         }
         return response
     }
