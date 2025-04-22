@@ -1,8 +1,8 @@
 package com.slouchingdog.android.slouchyhabit.data.remote
 
-import com.slouchingdog.android.slouchyhabit.data.HabitDBO
-import com.slouchingdog.android.slouchyhabit.data.HabitDTO
-import com.slouchingdog.android.slouchyhabit.data.UID
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDTO
+import com.slouchingdog.android.slouchyhabit.data.entity.UID
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PUT

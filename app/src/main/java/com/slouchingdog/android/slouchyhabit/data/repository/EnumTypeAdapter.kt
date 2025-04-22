@@ -6,7 +6,7 @@ import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import java.lang.reflect.Type
 
 class EnumTypeAdapter : JsonSerializer<HabitType>, JsonDeserializer<HabitType> {

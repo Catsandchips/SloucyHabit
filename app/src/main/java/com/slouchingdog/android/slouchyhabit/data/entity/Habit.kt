@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.data
+package com.slouchingdog.android.slouchyhabit.data.entity
 
 import android.graphics.Color
 import androidx.room.Entity

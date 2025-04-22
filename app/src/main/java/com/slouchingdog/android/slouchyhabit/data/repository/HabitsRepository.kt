@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
-import com.slouchingdog.android.slouchyhabit.data.HabitDBO
-import com.slouchingdog.android.slouchyhabit.data.HabitDTO
-import com.slouchingdog.android.slouchyhabit.data.HabitDatabase
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDTO
+import com.slouchingdog.android.slouchyhabit.data.local.HabitDatabase
 import com.slouchingdog.android.slouchyhabit.data.remote.HabitService
 import kotlinx.coroutines.flow.Flow
 import okhttp3.OkHttpClient

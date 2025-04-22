@@ -7,7 +7,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale

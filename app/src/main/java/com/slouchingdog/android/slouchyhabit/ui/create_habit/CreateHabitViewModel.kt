@@ -4,9 +4,9 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.slouchingdog.android.slouchyhabit.data.HabitDBO
-import com.slouchingdog.android.slouchyhabit.data.HabitDTO
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDTO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.data.repository.HabitsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

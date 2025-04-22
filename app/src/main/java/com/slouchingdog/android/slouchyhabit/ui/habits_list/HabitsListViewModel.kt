@@ -2,8 +2,8 @@ package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.slouchingdog.android.slouchyhabit.data.HabitDBO
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.data.repository.HabitsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

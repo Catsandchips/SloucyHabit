@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 
 const val HABIT_ID_ARG = "HABIT_ARG"

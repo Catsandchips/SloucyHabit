@@ -1,10 +1,12 @@
-package com.slouchingdog.android.slouchyhabit.data
+package com.slouchingdog.android.slouchyhabit.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.slouchingdog.android.slouchyhabit.data.entity.HABITS_TABLE_NAME
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
 import kotlinx.coroutines.flow.Flow
 
 @Dao

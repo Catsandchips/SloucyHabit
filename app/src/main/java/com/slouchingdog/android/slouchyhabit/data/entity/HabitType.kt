@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.data
+package com.slouchingdog.android.slouchyhabit.data.entity
 
 import androidx.annotation.StringRes
 import com.google.gson.annotations.JsonAdapter
