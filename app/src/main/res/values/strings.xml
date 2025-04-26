@@ -27,4 +27,5 @@
     <string name="find_habit_hint">Найти привычку</string>
     <string name="version_text">Slouchy habit, ver. 3.0</string>
     <string name="clear_filter_button_description">clear filter</string>
+    <string name="user_picture">User picture</string>
 </resources>

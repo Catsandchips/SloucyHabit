@@ -11,7 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import kotlinx.coroutines.launch
 

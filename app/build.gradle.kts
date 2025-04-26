@@ -1,3 +1,7 @@
+import org.gradle.kotlin.dsl.android
+import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -17,7 +21,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        var properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField(
+            "String",
+            "AUTHORIZATION_KEY",
+            "${properties.getProperty("AUTHORIZATION_KEY")}"
+        )
     }
+
 
     buildTypes {
         release {
@@ -30,6 +43,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -41,6 +55,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.glide)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
+    implementation(libs.converter.scalars)
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)

@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.HabitType
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
 
 const val HABIT_ID_ARG = "HABIT_ARG"
@@ -23,9 +23,8 @@ class CreateHabitFragment : Fragment() {
     lateinit var binding: FragmentCreateHabitBinding
     val viewModel: CreateHabitViewModel by viewModels {
         CreateHabitViewModelFactory(
-            arguments?.getInt(
-                HABIT_ID_ARG,
-                -1
+            arguments?.getString(
+                HABIT_ID_ARG
             )
         )
     }
@@ -37,25 +36,7 @@ class CreateHabitFragment : Fragment() {
         binding = FragmentCreateHabitBinding.inflate(inflater)
         binding.goodHabitRadioButton.text = resources.getString(HabitType.GOOD.title)
         binding.badHabitRadioButton.text = resources.getString(HabitType.BAD.title)
-
-        viewModel.createHabitEvent.observe(viewLifecycleOwner) { event ->
-            when (event) {
-                CreateHabitEvent.PrefillFormWithPassedHabit -> prefillFormWithState()
-                CreateHabitEvent.ShowSnackBarSomeFieldsEmpty -> {
-                    Snackbar.make(
-                        binding.root,
-                        resources.getString(R.string.form_validation_text),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-
-                CreateHabitEvent.SaveHabitWithCorrectData -> {
-                    viewModel.addHabit()
-                    findNavController().navigateUp()
-                }
-            }
-        }
-
+        observeCreationEvent()
         return binding.root
     }
 
@@ -137,6 +118,25 @@ class CreateHabitFragment : Fragment() {
         }
     }
 
+    private fun observeCreationEvent() {
+        viewModel.createHabitEvent.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                CreateHabitEvent.PrefillFormWithPassedHabit -> prefillFormWithState()
+                CreateHabitEvent.ShowSnackBarSomeFieldsEmpty -> {
+                    Snackbar.make(
+                        binding.root,
+                        resources.getString(R.string.form_validation_text),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                CreateHabitEvent.SaveHabitWithCorrectData -> {
+                    findNavController().navigateUp()
+                }
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun prefillFormWithState() {
         (activity as AppCompatActivity).supportActionBar?.title =
@@ -153,10 +153,10 @@ class CreateHabitFragment : Fragment() {
         binding.habitTypeRadioGroup.jumpDrawablesToCurrentState()
         binding.repetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
         binding.repetitionsFieldText.text =
-            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes ?: 0)
+            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes)
 
         binding.daysCountField.setText(viewModel.habitState.periodicityDays.toString())
         binding.daysCountFieldText.text =
-            resources.getQuantityString(R.plurals.days, viewModel.habitState.periodicityDays ?: 0)
+            resources.getQuantityString(R.plurals.days, viewModel.habitState.periodicityDays)
     }
 }

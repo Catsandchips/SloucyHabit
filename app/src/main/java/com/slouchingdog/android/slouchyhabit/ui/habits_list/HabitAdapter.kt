@@ -7,13 +7,13 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.data.Habit
+import com.slouchingdog.android.slouchyhabit.data.entity.HabitDBO
 import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
 class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
-    private var habits: List<Habit> = emptyList()
+    private var habits: List<HabitDBO> = emptyList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -34,14 +34,14 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
 
     override fun getItemCount() = habits.size
 
-    fun updateHabits(newHabits: List<Habit>) {
+    fun updateHabits(newHabits: List<HabitDBO>) {
         val diffResult = DiffUtil.calculateDiff(HabitDiffCallback(habits, newHabits))
         habits = newHabits
         diffResult.dispatchUpdatesTo(this)
     }
 
     class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(habit: Habit) {
+        fun bind(habit: HabitDBO) {
             binding.habitItemTitle.text = habit.title
             binding.habitItemDescription.text = habit.description
             binding.habitItemType.text = itemView.resources.getString(habit.type.title)
@@ -59,7 +59,6 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
                 habit.periodicityDays,
                 daysCountString
             )
-            binding.root.setCardBackgroundColor(habit.color)
 
             binding.root.setOnClickListener {
                 val bundle = bundleOf(HABIT_ID_ARG to habit.id)
