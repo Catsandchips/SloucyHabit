@@ -1,6 +1,6 @@
 package com.slouchingdog.android.common2
 
-enum class HabitType() {
-    GOOD,
-    BAD
+enum class HabitType(val title: String) {
+    GOOD("Хорошая"),
+    BAD("Плохая")
 }

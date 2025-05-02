@@ -13,7 +13,9 @@ import com.slouchingdog.android.slouchyhabit.di.AppComponent
 
 class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
     lateinit var binding: FragmentFilterBottomSheetBinding
-    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
+    val appComponent: AppComponent by lazy {
+        (requireActivity().application as SlouchyHabitApplication).appComponent
+    }
     val viewModel: HabitsListViewModel by activityViewModels {
         HabitsListViewModelFactory(appComponent.getGetHabitsUseCase())
     }

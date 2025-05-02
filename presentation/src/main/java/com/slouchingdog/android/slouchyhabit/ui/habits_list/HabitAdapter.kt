@@ -44,7 +44,7 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
         fun bind(habit: HabitDBO) {
             binding.habitItemTitle.text = habit.title
             binding.habitItemDescription.text = habit.description
-//            binding.habitItemType.text = itemView.resources.getString(habit.type.title)
+            binding.habitItemType.text = habit.type.title
             binding.habitItemPriority.text =
                 itemView.resources.getStringArray(R.array.priorities_array)[habit.priority]
             val timesCountString =

@@ -107,7 +107,6 @@ class CreateHabitViewModel(
                 addHabit()
                 CreateHabitEvent.SaveHabitWithCorrectData
             }
-
     }
 
     fun getPeriodicityForPlurals(input: Editable?): Int =

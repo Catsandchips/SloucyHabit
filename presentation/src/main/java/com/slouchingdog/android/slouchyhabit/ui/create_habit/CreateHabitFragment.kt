@@ -38,8 +38,8 @@ class CreateHabitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCreateHabitBinding.inflate(inflater)
-        binding.goodHabitRadioButton.text = resources.getString(R.string.good_habit_radio)
-        binding.badHabitRadioButton.text = resources.getString(R.string.good_habit_radio)
+        binding.goodHabitRadioButton.text = HabitType.GOOD.title
+        binding.badHabitRadioButton.text = HabitType.BAD.title
         observeCreationEvent()
         return binding.root
     }
