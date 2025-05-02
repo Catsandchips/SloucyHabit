@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
+import com.slouchingdog.android.common2.HabitType
 import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.data2.entity.mapToDBO
 import com.slouchingdog.android.data2.entity.mapToDTO
@@ -49,6 +50,7 @@ class HabitsRepository(context: Context) : HabitRepository {
         .addConverterFactory(
             GsonConverterFactory.create(
                 GsonBuilder()
+                    .registerTypeAdapter(HabitType::class.java, EnumTypeAdapter())
                     .setStrictness(Strictness.LENIENT)
                     .create()
             )
