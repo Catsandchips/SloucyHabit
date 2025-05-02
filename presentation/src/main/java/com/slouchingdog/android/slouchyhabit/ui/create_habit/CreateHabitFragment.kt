@@ -9,42 +9,28 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.common2.HabitType
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
+import com.slouchingdog.android.slouchyhabit.di.AppComponent
 
 const val HABIT_ID_ARG = "HABIT_ARG"
 
 class CreateHabitFragment : Fragment() {
 
     lateinit var binding: FragmentCreateHabitBinding
-    lateinit var viewModel: CreateHabitViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val application = requireActivity().application as SlouchyHabitApplication
-        val getHabitByIdUseCase = application.appComponent.getGetHabitByIdUseCase()
-        val addHabitUseCase = application.appComponent.getAddHabitUseCase()
-        val updateHabitUseCase = application.appComponent.getUpdateHabitUseCase()
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CreateHabitViewModel(
-                    arguments?.getString(HABIT_ID_ARG),
-                    addHabitUseCase,
-                    updateHabitUseCase,
-                    getHabitByIdUseCase
-                ) as T
-            }
-        })[CreateHabitViewModel::class.java]
-
-
+    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
+    val viewModel: CreateHabitViewModel by viewModels {
+        CreateHabitViewModelFactory(
+            arguments?.getString(HABIT_ID_ARG),
+            appComponent.getAddHabitUseCase(),
+            appComponent.getUpdateHabitUseCase(),
+            appComponent.getGetHabitByIdUseCase()
+        )
     }
 
     override fun onCreateView(

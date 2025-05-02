@@ -7,11 +7,16 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.slouchingdog.android.slouchyhabit.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBottomSheetBinding
+import com.slouchingdog.android.slouchyhabit.di.AppComponent
 
 class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
     lateinit var binding: FragmentFilterBottomSheetBinding
-    val viewModel: HabitsListViewModel by activityViewModels()
+    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
+    val viewModel: HabitsListViewModel by activityViewModels {
+        HabitsListViewModelFactory(appComponent.getGetHabitsUseCase())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

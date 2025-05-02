@@ -6,9 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,25 +15,16 @@ import com.slouchingdog.android.common2.HabitType
 import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.slouchyhabit.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
+import com.slouchingdog.android.slouchyhabit.di.AppComponent
 import kotlinx.coroutines.launch
 
 private const val HABIT_TYPE_PARAM = "HABIT_TYPE_PARAM"
 
 class HabitsListFragment() : Fragment() {
     lateinit var binding: FragmentHabitsListBinding
-    lateinit var viewModel: HabitsListViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val appComponent = (requireActivity().application as SlouchyHabitApplication).appComponent
-        val getHabitByIdUseCase = appComponent.getGetHabitsUseCase()
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HabitsListViewModel(getHabitByIdUseCase) as T
-            }
-        })[HabitsListViewModel::class.java]
+    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
+    val viewModel: HabitsListViewModel by activityViewModels {
+        HabitsListViewModelFactory(appComponent.getGetHabitsUseCase())
     }
 
     override fun onCreateView(
