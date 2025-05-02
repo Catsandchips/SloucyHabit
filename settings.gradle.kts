@@ -20,5 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "SlouchyHabit"
-include(":app")
- 
+include(":presentation")
+include(":domain2")
+include(":data2")
+include(":common2")
