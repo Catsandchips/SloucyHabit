@@ -30,7 +30,7 @@ interface HabitsDao {
     fun getNotSyncedHabits(): List<HabitDBO>
 
     @Transaction
-    suspend fun replaceHabitsList(habits: List<HabitDBO>){
+    suspend fun replaceHabitsList(habits: List<HabitDBO>) {
         deleteAllHabits()
         addHabitsList(habits)
     }

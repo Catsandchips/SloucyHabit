@@ -1,6 +1,5 @@
 package com.slouchingdog.android.data2.repository
 
-import android.R
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
@@ -57,7 +56,8 @@ class HabitsRepository(context: Context) : HabitRepository {
         try {
             val addHabitResponse = service.addHabit(habit.mapToDTO().copy(id = null))
             if (addHabitResponse.isSuccessful) {
-                database.habitsDao().addHabit(habit.mapToDBO().copy(id = addHabitResponse.body()!!.uid))
+                database.habitsDao()
+                    .addHabit(habit.mapToDBO().copy(id = addHabitResponse.body()!!.uid))
             } else {
                 database.habitsDao().addHabit(habit.mapToDBO().copy(syncType = SyncType.ADD))
             }

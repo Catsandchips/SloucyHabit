@@ -1,6 +1,5 @@
 package com.slouchingdog.android.data2.remote
 
-import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.data2.entity.HabitDTO
 import com.slouchingdog.android.data2.entity.UID
 import retrofit2.Response

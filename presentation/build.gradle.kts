@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     alias(libs.plugins.android.application)

@@ -43,7 +43,7 @@ class Service {
         return habitService.getHabits()
     }
 
-    suspend fun updateHabit(habitDTO: HabitDTO): Response<Unit>{
+    suspend fun updateHabit(habitDTO: HabitDTO): Response<Unit> {
         return habitService.updateHabit(habitDTO)
     }
 
