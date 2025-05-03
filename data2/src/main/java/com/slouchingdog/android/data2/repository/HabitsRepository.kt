@@ -39,22 +39,18 @@ class HabitsRepository(context: Context) : HabitRepository {
     }
 
     override suspend fun updateHabit(habit: HabitEntity) {
-        try {
-            val habitDBO = habit.mapToDBO()
-            val updateHabitsResponse = service.updateHabit(habit.mapToDTO())
-            if (!updateHabitsResponse.isSuccessful && habitDBO.syncType != SyncType.ADD) {
-                database.habitsDao().addHabit(habitDBO.copy(syncType = SyncType.UPDATE))
-            } else {
-                database.habitsDao().addHabit(habit.mapToDBO())
-            }
-        } catch (e: Exception) {
-            Log.e("UPDATE HABIT ERROR", e.toString())
+        val habitDBO = habit.mapToDBO()
+        val updateHabitsResponse = service.updateHabit(habit.mapToDTO())
+        if (!updateHabitsResponse.isSuccess && habitDBO.syncType != SyncType.ADD) {
+            database.habitsDao().addHabit(habitDBO.copy(syncType = SyncType.UPDATE))
+        } else {
+            database.habitsDao().addHabit(habitDBO)
         }
     }
 
     override suspend fun addHabit(habit: HabitEntity) {
         try {
-            val addHabitResponse = service.addHabit(habit.mapToDTO().copy(id = null))
+            val addHabitResponse = service.addHabit(habit.mapToDTO())
             if (addHabitResponse.isSuccessful) {
                 database.habitsDao()
                     .addHabit(habit.mapToDBO().copy(id = addHabitResponse.body()!!.uid))
@@ -62,7 +58,7 @@ class HabitsRepository(context: Context) : HabitRepository {
                 database.habitsDao().addHabit(habit.mapToDBO().copy(syncType = SyncType.ADD))
             }
         } catch (e: Exception) {
-            Log.e("ADD HABIT ERROR", e.toString())
+            Log.e("ADD HABIT ERROR", e.stackTrace.toString())
         }
     }
 
@@ -70,7 +66,7 @@ class HabitsRepository(context: Context) : HabitRepository {
         try {
             database.habitsDao().deleteHabitById(id)
             service.deleteHabit(id)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("DELETE HABIT ERROR", e.toString())
         }
     }
@@ -87,8 +83,8 @@ class HabitsRepository(context: Context) : HabitRepository {
             }
 
             for (habit in notSyncedHabits.filter { it.syncType == SyncType.UPDATE }) {
-                val updateHabitResponse = service.updateHabit(habit.mapToDTO().copy(id = null))
-                if (updateHabitResponse.isSuccessful) {
+                val updateHabitResponse = service.updateHabit(habit.mapToDTO())
+                if (updateHabitResponse.isSuccess) {
                     database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
                 }
             }
@@ -98,7 +94,7 @@ class HabitsRepository(context: Context) : HabitRepository {
                 database.habitsDao().replaceHabitsList(getHabitsResponse.body()!!.mapToDBOList())
             }
         } catch (e: Exception) {
-            Log.e("SYNCHRONIZATION HABITS ERROR", e.toString())
+            Log.e("SYNCHRONIZATION HABITS ERROR", e.stackTrace.toString())
 
         }
     }

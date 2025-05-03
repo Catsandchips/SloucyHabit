@@ -5,7 +5,10 @@ import com.slouchingdog.android.data2.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class RetryInterceptor(private val retryDelayMillis: Long = 3000L) : Interceptor {
+class RetryInterceptor(
+    private val retryDelayMillis: Long = 3000L,
+    private var retryTimes: Int = 2
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain
             .request()
@@ -14,18 +17,18 @@ class RetryInterceptor(private val retryDelayMillis: Long = 3000L) : Interceptor
             .build()
 
         var response: Response? = null
-        while (response == null || !response.isSuccessful) {
+        while (response == null || !response.isSuccessful && retryTimes > 0) {
+            response?.close()
             try {
                 response = chain.proceed(request)
                 if (response.isSuccessful) {
                     return response
                 }
-                response.close()
             } catch (e: Exception) {
                 Log.e("API REQUEST ERROR", e.toString())
-                response?.close()
             }
             Thread.sleep(retryDelayMillis)
+            retryTimes--
         }
         return response
     }

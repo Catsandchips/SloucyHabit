@@ -3,7 +3,6 @@ package com.slouchingdog.android.data2.repository
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.slouchingdog.android.common2.HabitType
-import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.data2.entity.HabitDTO
 import com.slouchingdog.android.data2.entity.UID
 import com.slouchingdog.android.data2.remote.HabitService
@@ -38,21 +37,26 @@ class Service {
                     .create()
             )
         ).build()
-    private val habitService = retrofit.create(HabitService::class.java)
+    private val apiClient = retrofit.create(HabitService::class.java)
 
     suspend fun getHabits(): Response<List<HabitDTO>> {
-        return habitService.getHabits()
+        return apiClient.getHabits()
     }
 
-    suspend fun updateHabit(habitDTO: HabitDTO): Response<Unit> {
-        return habitService.updateHabit(habitDTO)
+    suspend fun updateHabit(habitDTO: HabitDTO): Result<Unit> {
+        val response = apiClient.updateHabit(habitDTO)
+        if (response.isSuccessful){
+            return Result.success(Unit)
+        }
+
+        return Result.failure(Exception("bad http status code: ${response.message()}"))
     }
 
     suspend fun addHabit(habitDTO: HabitDTO): Response<UID> {
-        return habitService.addHabit(habitDTO)
+        return apiClient.addHabit(habitDTO)
     }
 
     suspend fun deleteHabit(id: String): Response<Unit> {
-        return habitService.deleteHabit(UID(id))
+        return apiClient.deleteHabit(UID(id))
     }
 }

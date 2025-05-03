@@ -1,11 +1,9 @@
 package com.slouchingdog.android.data2.remote
 
-import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.data2.entity.HabitDTO
 import com.slouchingdog.android.data2.entity.UID
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.PUT

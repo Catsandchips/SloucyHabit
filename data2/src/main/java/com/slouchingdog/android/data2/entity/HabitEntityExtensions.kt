@@ -22,7 +22,7 @@ fun HabitDBO.mapToDomainModel() = HabitEntity(
 )
 
 fun HabitDBO.mapToDTO() = HabitDTO(
-    null,
+    id,
     title,
     description,
     priority,
