@@ -5,9 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.slouchingdog.android.common2.HabitType
-import com.slouchingdog.android.data2.entity.HabitDBO
-import com.slouchingdog.android.data2.entity.HabitDTO
-import com.slouchingdog.android.data2.entity.mapToDomainModel
+import com.slouchingdog.android.common2.SyncType
+import com.slouchingdog.android.domain2.HabitEntity
 import com.slouchingdog.android.domain2.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain2.usecases.GetHabitByIdUseCase
 import com.slouchingdog.android.domain2.usecases.UpdateHabitUseCase
@@ -46,31 +45,24 @@ class CreateHabitViewModel(
 
     fun addHabit() {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+            val habitEntity = HabitEntity(
+                id = habitId,
+                title = habitState.title,
+                description = habitState.description,
+                type = habitState.type,
+                priority = habitState.priority,
+                periodicityTimes = habitState.periodicityTimes,
+                periodicityDays = habitState.periodicityDays,
+                date = habitState.date,
+                doneDates = habitState.doneDates,
+                color = habitState.color,
+                syncType = habitState.syncType
+            )
+
             if (habitId != null) {
-                val habit = HabitDBO(
-                    id = habitId,
-                    title = habitState.title,
-                    description = habitState.description,
-                    type = habitState.type,
-                    priority = habitState.priority,
-                    periodicityTimes = habitState.periodicityTimes,
-                    periodicityDays = habitState.periodicityDays,
-                    date = habitState.date
-                )
-
-                updateHabitUseCase.execute(habit.mapToDomainModel())
+                updateHabitUseCase.execute(habitEntity)
             } else {
-                val habitDTO = HabitDTO(
-                    title = habitState.title,
-                    description = habitState.description,
-                    type = habitState.type,
-                    priority = habitState.priority,
-                    periodicityTimes = habitState.periodicityTimes,
-                    periodicityDays = habitState.periodicityDays,
-                    date = habitState.date
-                )
-
-                addHabitUseCase.execute(habitDTO.mapToDomainModel())
+                addHabitUseCase.execute(habitEntity)
             }
         }
     }
@@ -140,5 +132,8 @@ data class HabitState(
     val priority: Int = 0,
     val periodicityTimes: Int = 0,
     val periodicityDays: Int = 0,
-    val date: Long = Date().time
+    val date: Long = Date().time,
+    val doneDates: IntArray = IntArray(0),
+    val color: Int = 0,
+    val syncType: SyncType = SyncType.NOT_NEED
 )

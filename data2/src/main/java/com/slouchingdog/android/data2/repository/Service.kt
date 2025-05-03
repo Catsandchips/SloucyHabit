@@ -1,0 +1,53 @@
+package com.slouchingdog.android.data2.repository
+
+import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
+import com.slouchingdog.android.common2.HabitType
+import com.slouchingdog.android.data2.entity.HabitDTO
+import com.slouchingdog.android.data2.entity.UID
+import com.slouchingdog.android.data2.remote.HabitService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
+
+class Service {
+    private val loggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    private val retryInterceptor = RetryInterceptor()
+
+    private val okHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(retryInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+    private val retrofit = Retrofit
+        .Builder()
+        .baseUrl(HabitService.BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(
+            GsonConverterFactory.create(
+                GsonBuilder()
+                    .registerTypeAdapter(HabitType::class.java, EnumTypeAdapter())
+                    .setStrictness(Strictness.LENIENT)
+                    .create()
+            )
+        ).build()
+    private val habitService = retrofit.create(HabitService::class.java)
+
+    suspend fun getHabits(): Response<List<HabitDTO>> {
+        return habitService.getHabits()
+    }
+
+    suspend fun updateHabit(habitDTO: HabitDTO): Response<Unit>{
+        return habitService.updateHabit(habitDTO)
+    }
+
+    suspend fun addHabit(habitDTO: HabitDTO): Response<UID> {
+        return habitService.addHabit(habitDTO)
+    }
+}

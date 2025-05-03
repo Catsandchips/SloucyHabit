@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.common2.HabitType
-import com.slouchingdog.android.data2.entity.HabitDBO
-import com.slouchingdog.android.data2.entity.mapToDBOList
+import com.slouchingdog.android.domain2.HabitEntity
 import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,24 +14,24 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class HabitsListViewModel(val getHabitsUseCase: GetHabitsUseCase) : ViewModel() {
-    private val _baseHabits: MutableStateFlow<List<HabitDBO>> = MutableStateFlow(emptyList())
+    private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
     private var sortingData: SortingData = SortingData(false, false)
-    private val _habits: MutableStateFlow<List<HabitDBO>> = MutableStateFlow(emptyList())
-    val habits: StateFlow<List<HabitDBO>> = _habits.asStateFlow()
+    private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
+    val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
     var titleQuery: String? = null
 
     init {
         viewModelScope.launch {
             getHabitsUseCase.execute().collect {
-                _baseHabits.value = it.mapToDBOList()
-                _habits.value = it.mapToDBOList()
+                _baseHabits.value = it
+                _habits.value = it
                 titleQuery = null
                 sortingData.needSorting = false
             }
         }
     }
 
-    fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitDBO>> =
+    fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
     fun filterHabits(titleQuery: String?) {
@@ -63,7 +62,7 @@ class HabitsListViewModel(val getHabitsUseCase: GetHabitsUseCase) : ViewModel() 
         filterHabits(titleQuery)
     }
 
-    private fun sortHabitsByPriority(habits: List<HabitDBO>) =
+    private fun sortHabitsByPriority(habits: List<HabitEntity>) =
         if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
 }
 

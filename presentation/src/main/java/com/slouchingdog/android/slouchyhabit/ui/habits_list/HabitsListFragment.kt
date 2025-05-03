@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.slouchingdog.android.common2.HabitType
-import com.slouchingdog.android.data2.entity.HabitDBO
+import com.slouchingdog.android.domain2.HabitEntity
 import com.slouchingdog.android.slouchyhabit.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import com.slouchingdog.android.slouchyhabit.di.AppComponent
@@ -53,7 +53,7 @@ class HabitsListFragment() : Fragment() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getHabitsFlow(habitTypeArgument)
-                    .collect { habits: List<HabitDBO> ->
+                    .collect { habits: List<HabitEntity> ->
                         adapter.updateHabits(habits)
                     }
             }

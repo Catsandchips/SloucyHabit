@@ -1,12 +1,11 @@
 package com.slouchingdog.android.data2.entity
 
+import com.slouchingdog.android.common2.SyncType
 import com.slouchingdog.android.domain2.HabitEntity
 import java.util.UUID
 
 typealias HabitsDBOList = List<HabitDBO>
-typealias HabitsDomainModelList = List<HabitEntity>
 typealias HabitsDTOList = List<HabitDTO>
-
 
 fun HabitDBO.mapToDomainModel() = HabitEntity(
     id,
@@ -18,11 +17,12 @@ fun HabitDBO.mapToDomainModel() = HabitEntity(
     periodicityDays,
     color,
     date,
-    doneDates
+    doneDates,
+    syncType
 )
 
-fun HabitDTO.mapToDomainModel() = HabitEntity(
-    UUID.randomUUID().toString(),
+fun HabitDBO.mapToDTO() = HabitDTO(
+    null,
     title,
     description,
     priority,
@@ -32,10 +32,24 @@ fun HabitDTO.mapToDomainModel() = HabitEntity(
     color,
     date,
     doneDates
+)
+
+fun HabitDTO.mapToDBO() = HabitDBO(
+    id ?: UUID.randomUUID().toString(),
+    title,
+    description,
+    priority,
+    type,
+    periodicityTimes,
+    periodicityDays,
+    color,
+    date,
+    doneDates,
+    SyncType.NOT_NEED
 )
 
 fun HabitEntity.mapToDBO() = HabitDBO(
-    id,
+    id ?: UUID.randomUUID().toString(),
     title,
     description,
     priority,
@@ -44,10 +58,12 @@ fun HabitEntity.mapToDBO() = HabitDBO(
     periodicityDays,
     color,
     date,
-    doneDates
+    doneDates,
+    syncType
 )
 
 fun HabitEntity.mapToDTO() = HabitDTO(
+    id,
     title,
     description,
     priority,
@@ -60,7 +76,7 @@ fun HabitEntity.mapToDTO() = HabitDTO(
 )
 
 fun HabitsDBOList.mapToDomainModels() = map { it.mapToDomainModel() }
-fun HabitsDomainModelList.mapToDBOList() = map { it.mapToDBO() }
-fun HabitsDomainModelList.mapToDTOList() = map { it.mapToDTO() }
+fun HabitsDTOList.mapToDBOList() = map { it.mapToDBO() }
+
 
 
