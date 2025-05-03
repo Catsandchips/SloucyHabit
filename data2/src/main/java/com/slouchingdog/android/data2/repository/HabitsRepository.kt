@@ -66,6 +66,15 @@ class HabitsRepository(context: Context) : HabitRepository {
         }
     }
 
+    override suspend fun deleteHabit(id: String) {
+        try {
+            database.habitsDao().deleteHabitById(id)
+            service.deleteHabit(id)
+        }catch (e: Exception){
+            Log.e("DELETE HABIT ERROR", e.toString())
+        }
+    }
+
     suspend fun syncHabits() {
         try {
             val notSyncedHabits = database.habitsDao().getNotSyncedHabits()

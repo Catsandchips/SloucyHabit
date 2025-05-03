@@ -3,6 +3,7 @@ package com.slouchingdog.android.data2.repository
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.slouchingdog.android.common2.HabitType
+import com.slouchingdog.android.data2.entity.HabitDBO
 import com.slouchingdog.android.data2.entity.HabitDTO
 import com.slouchingdog.android.data2.entity.UID
 import com.slouchingdog.android.data2.remote.HabitService
@@ -49,5 +50,9 @@ class Service {
 
     suspend fun addHabit(habitDTO: HabitDTO): Response<UID> {
         return habitService.addHabit(habitDTO)
+    }
+
+    suspend fun deleteHabit(id: String): Response<Unit> {
+        return habitService.deleteHabit(UID(id))
     }
 }

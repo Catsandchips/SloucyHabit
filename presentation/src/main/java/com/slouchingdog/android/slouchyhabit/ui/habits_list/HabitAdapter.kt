@@ -12,7 +12,7 @@ import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
-class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+class HabitAdapter(val onDeleteButtonClick: (habitId: String) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     private var habits: List<HabitEntity> = emptyList()
 
     override fun onCreateViewHolder(
@@ -21,7 +21,7 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     ): HabitViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHabitBinding.inflate(inflater, parent, false)
-        return HabitViewHolder(binding)
+        return HabitViewHolder(binding, onDeleteButtonClick)
     }
 
     override fun onBindViewHolder(
@@ -40,7 +40,8 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class HabitViewHolder(val binding: ItemHabitBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HabitViewHolder(val binding: ItemHabitBinding, val onDeleteButtonClick: (habitId: String) -> Unit) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: HabitEntity) {
             binding.habitItemTitle.text = habit.title
             binding.habitItemDescription.text = habit.description
@@ -63,6 +64,10 @@ class HabitAdapter() : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
             binding.root.setOnClickListener {
                 val bundle = bundleOf(HABIT_ID_ARG to habit.id)
                 itemView.findNavController().navigate(R.id.nav_create, bundle)
+            }
+
+            binding.deleteHabitButton.setOnClickListener {
+                onDeleteButtonClick(habit.id!!)
             }
         }
     }

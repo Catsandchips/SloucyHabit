@@ -26,6 +26,9 @@ interface HabitsDao {
     @Query("DELETE FROM $HABITS_TABLE_NAME")
     suspend fun deleteAllHabits()
 
+    @Query("DELETE FROM $HABITS_TABLE_NAME WHERE id=:id")
+    suspend fun deleteHabitById(id: String)
+
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE syncType != 0")
     fun getNotSyncedHabits(): List<HabitDBO>
 

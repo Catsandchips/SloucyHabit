@@ -24,7 +24,10 @@ class HabitsListFragment() : Fragment() {
     lateinit var binding: FragmentHabitsListBinding
     val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
     val viewModel: HabitsListViewModel by activityViewModels {
-        HabitsListViewModelFactory(appComponent.getGetHabitsUseCase())
+        HabitsListViewModelFactory(
+            appComponent.getGetHabitsUseCase(),
+            appComponent.getDeleteHabitUseCase()
+        )
     }
 
     override fun onCreateView(
@@ -47,7 +50,7 @@ class HabitsListFragment() : Fragment() {
         }
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = HabitAdapter()
+        val adapter = HabitAdapter { habitId -> onDeleteButtonClick(habitId) }
         binding.habitRecyclerView.adapter = adapter
 
         lifecycleScope.launch {
@@ -58,6 +61,10 @@ class HabitsListFragment() : Fragment() {
                     }
             }
         }
+    }
+
+    fun onDeleteButtonClick(habitId: String) {
+        viewModel.deleteHabit(habitId)
     }
 
     companion object {

@@ -2,6 +2,7 @@ package com.slouchingdog.android.slouchyhabit.di
 
 import com.slouchingdog.android.domain2.HabitRepository
 import com.slouchingdog.android.domain2.usecases.AddHabitUseCase
+import com.slouchingdog.android.domain2.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain2.usecases.GetHabitByIdUseCase
 import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
 import com.slouchingdog.android.domain2.usecases.UpdateHabitUseCase
@@ -28,5 +29,10 @@ class DomainModule {
     @Provides
     fun provideUpdateHabitsUseCase(repository: HabitRepository): UpdateHabitUseCase {
         return UpdateHabitUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteHabitUseCase(repository: HabitRepository): DeleteHabitUseCase{
+        return DeleteHabitUseCase(repository)
     }
 }

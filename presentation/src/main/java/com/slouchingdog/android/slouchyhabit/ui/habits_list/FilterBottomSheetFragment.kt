@@ -17,7 +17,10 @@ class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
         (requireActivity().application as SlouchyHabitApplication).appComponent
     }
     val viewModel: HabitsListViewModel by activityViewModels {
-        HabitsListViewModelFactory(appComponent.getGetHabitsUseCase())
+        HabitsListViewModelFactory(
+            appComponent.getGetHabitsUseCase(),
+            appComponent.getDeleteHabitUseCase()
+        )
     }
 
     override fun onCreateView(

@@ -28,6 +28,7 @@ data class HabitDBO(
 )
 
 data class HabitDTO(
+    @SerializedName("uid")
     val id: String?,
     val title: String,
     val description: String,

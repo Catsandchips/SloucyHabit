@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.common2.HabitType
 import com.slouchingdog.android.domain2.HabitEntity
+import com.slouchingdog.android.domain2.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class HabitsListViewModel(val getHabitsUseCase: GetHabitsUseCase) : ViewModel() {
+class HabitsListViewModel(
+    val getHabitsUseCase: GetHabitsUseCase,
+    val deleteHabitUseCase: DeleteHabitUseCase
+) : ViewModel() {
     private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
     private var sortingData: SortingData = SortingData(false, false)
     private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
@@ -62,16 +66,23 @@ class HabitsListViewModel(val getHabitsUseCase: GetHabitsUseCase) : ViewModel() 
         filterHabits(titleQuery)
     }
 
+    fun deleteHabit(habitId: String) {
+        viewModelScope.launch {
+            deleteHabitUseCase.execute(habitId)
+        }
+    }
+
     private fun sortHabitsByPriority(habits: List<HabitEntity>) =
         if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
 }
 
 @Suppress("UNCHECKED_CAST")
 class HabitsListViewModelFactory(
-    val getHabitsUseCase: GetHabitsUseCase
+    val getHabitsUseCase: GetHabitsUseCase,
+    val deleteHabitUseCase: DeleteHabitUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HabitsListViewModel(getHabitsUseCase) as T
+        return HabitsListViewModel(getHabitsUseCase, deleteHabitUseCase) as T
     }
 }
 
