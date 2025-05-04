@@ -48,7 +48,6 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(project(":common"))
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
     implementation(libs.converter.scalars)

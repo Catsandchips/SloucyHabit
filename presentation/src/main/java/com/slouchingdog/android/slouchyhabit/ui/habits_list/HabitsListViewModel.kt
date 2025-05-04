@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.slouchingdog.android.common2.HabitType
-import com.slouchingdog.android.domain2.HabitEntity
-import com.slouchingdog.android.domain2.usecases.AddHabitDoneDateUseCase
-import com.slouchingdog.android.domain2.usecases.DeleteHabitUseCase
-import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
+import com.slouchingdog.android.domain.entity.HabitType
+import com.slouchingdog.android.domain.entity.HabitEntity
+import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
+import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
+import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

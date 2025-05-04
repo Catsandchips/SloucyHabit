@@ -1,7 +1,7 @@
 package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.slouchingdog.android.domain2.HabitEntity
+import com.slouchingdog.android.domain.entity.HabitEntity
 
 class HabitDiffCallback(
     private val oldList: List<HabitEntity>,

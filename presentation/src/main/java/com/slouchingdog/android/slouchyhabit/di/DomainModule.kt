@@ -1,12 +1,12 @@
 package com.slouchingdog.android.slouchyhabit.di
 
-import com.slouchingdog.android.domain2.HabitRepository
-import com.slouchingdog.android.domain2.usecases.AddHabitDoneDateUseCase
-import com.slouchingdog.android.domain2.usecases.AddHabitUseCase
-import com.slouchingdog.android.domain2.usecases.DeleteHabitUseCase
-import com.slouchingdog.android.domain2.usecases.GetHabitByIdUseCase
-import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
-import com.slouchingdog.android.domain2.usecases.UpdateHabitUseCase
+import com.slouchingdog.android.domain.HabitRepository
+import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
+import com.slouchingdog.android.domain.usecases.AddHabitUseCase
+import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
+import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
+import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
+import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase
 import dagger.Module
 import dagger.Provides
 

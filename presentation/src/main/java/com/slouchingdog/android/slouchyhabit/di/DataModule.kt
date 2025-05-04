@@ -1,8 +1,8 @@
 package com.slouchingdog.android.slouchyhabit.di
 
 import android.content.Context
-import com.slouchingdog.android.data2.repository.HabitsRepository
-import com.slouchingdog.android.domain2.HabitRepository
+import com.slouchingdog.android.data.repository.HabitsRepository
+import com.slouchingdog.android.domain.HabitRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -23,4 +23,3 @@ rootProject.name = "SlouchyHabit"
 include(":presentation")
 include(":domain")
 include(":data")
-include(":common")

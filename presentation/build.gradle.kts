@@ -54,10 +54,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(libs.dagger)// замените x на актуальную версию
+    implementation(libs.dagger)
     ksp(libs.dagger.compiler)
     implementation(libs.glide)
     implementation(libs.logging.interceptor)
