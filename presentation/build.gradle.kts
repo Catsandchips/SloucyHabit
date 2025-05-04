@@ -54,9 +54,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":common2"))
-    implementation(project(":domain2"))
-    implementation(project(":data2"))
+    implementation(project(":common"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
     implementation(libs.dagger)// замените x на актуальную версию
     ksp(libs.dagger.compiler)
     implementation(libs.glide)

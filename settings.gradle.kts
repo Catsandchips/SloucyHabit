@@ -21,6 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "SlouchyHabit"
 include(":presentation")
-include(":domain2")
-include(":data2")
-include(":common2")
+include(":domain")
+include(":data")
+include(":common")
