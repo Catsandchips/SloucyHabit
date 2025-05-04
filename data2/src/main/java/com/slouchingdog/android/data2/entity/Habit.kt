@@ -23,7 +23,7 @@ data class HabitDBO(
     val color: Int,
     val date: Long,
     @SerializedName("done_dates")
-    val doneDates: IntArray,
+    val doneDates: MutableList<Long>,
     val syncType: SyncType
 )
 
@@ -41,5 +41,5 @@ data class HabitDTO(
     val color: Int,
     val date: Long,
     @SerializedName("done_dates")
-    val doneDates: IntArray
+    val doneDates: MutableList<Long>
 )

@@ -6,14 +6,14 @@ import com.google.gson.reflect.TypeToken
 
 class HabitTypeConverters {
     @TypeConverter
-    fun fromIntArray(array: IntArray?): String? {
-        return array?.let { Gson().toJson(it) }
+    fun fromIntArray(mutableList: MutableList<Long>?): String? {
+        return mutableList?.let { Gson().toJson(it) }
     }
 
     @TypeConverter
-    fun toIntArray(json: String?): IntArray? {
+    fun toIntArray(json: String?): MutableList<Long>? {
         return json?.let {
-            val type = object : TypeToken<IntArray>() {}.type
+            val type = object : TypeToken<MutableList<Long>>() {}.type
             Gson().fromJson(json, type)
         }
     }

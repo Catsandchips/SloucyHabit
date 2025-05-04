@@ -12,7 +12,11 @@ import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
-class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+class HabitAdapter(
+    val onDeleteButtonClick: (habit: HabitEntity) -> Unit,
+    val onDoneButtonClick: (habitEntity: HabitEntity) -> Unit
+) :
+    RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     private var habits: List<HabitEntity> = emptyList()
 
     override fun onCreateViewHolder(
@@ -21,7 +25,7 @@ class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : Recy
     ): HabitViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHabitBinding.inflate(inflater, parent, false)
-        return HabitViewHolder(binding, onDeleteButtonClick)
+        return HabitViewHolder(binding, onDeleteButtonClick, onDoneButtonClick)
     }
 
     override fun onBindViewHolder(
@@ -40,7 +44,11 @@ class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : Recy
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class HabitViewHolder(val binding: ItemHabitBinding, val onDeleteButtonClick: (habitEntity: HabitEntity) -> Unit) :
+    class HabitViewHolder(
+        val binding: ItemHabitBinding,
+        val onDeleteButtonClick: (habitEntity: HabitEntity) -> Unit,
+        val onDoneButtonClick: (habitEntity: HabitEntity) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: HabitEntity) {
             binding.habitItemTitle.text = habit.title
@@ -54,7 +62,7 @@ class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : Recy
                 itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
             binding.habitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
-                "%d %s %d %s",
+                "%d %s в %d %s",
                 habit.periodicityTimes,
                 timesCountString,
                 habit.periodicityDays,
@@ -68,6 +76,10 @@ class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : Recy
 
             binding.deleteHabitButton.setOnClickListener {
                 onDeleteButtonClick(habit)
+            }
+
+            binding.habitDoneButton.setOnClickListener {
+                onDoneButtonClick(habit)
             }
         }
     }

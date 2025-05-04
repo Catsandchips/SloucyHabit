@@ -1,26 +1,35 @@
 package com.slouchingdog.android.slouchyhabit.ui.habits_list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.common2.HabitType
 import com.slouchingdog.android.domain2.HabitEntity
+import com.slouchingdog.android.domain2.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain2.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain2.usecases.GetHabitsUseCase
+import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class HabitsListViewModel(
-    val getHabitsUseCase: GetHabitsUseCase,
-    val deleteHabitUseCase: DeleteHabitUseCase
+    private val getHabitsUseCase: GetHabitsUseCase,
+    private val deleteHabitUseCase: DeleteHabitUseCase,
+    private val addHabitDoneDateUseCase: AddHabitDoneDateUseCase
 ) : ViewModel() {
+    private val _habitListEvent = SingleLiveEvent<HabitListEvent>()
     private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
     private var sortingData: SortingData = SortingData(false, false)
     private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
+    var availableExecutionsCount = 0
+    val habitListEvent: LiveData<HabitListEvent> = _habitListEvent
     val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
     var titleQuery: String? = null
 
@@ -72,6 +81,42 @@ class HabitsListViewModel(
         }
     }
 
+    private fun addHabitDoneDate(habitEntity: HabitEntity) {
+        viewModelScope.launch {
+            addHabitDoneDateUseCase.execute(
+                habitEntity,
+                LocalDateTime
+                    .now()
+                    .toEpochSecond(ZoneOffset.UTC)
+            )
+        }
+    }
+
+    fun onDoneButtonClick(habitEntity: HabitEntity) {
+        addHabitDoneDate(habitEntity)
+        val periodStart =
+            LocalDateTime
+                .now()
+                .minusDays(habitEntity.periodicityDays.toLong()).toEpochSecond(ZoneOffset.UTC)
+
+        val doneInPeriod = habitEntity.doneDates.filter { it >= periodStart }
+
+        if (doneInPeriod.size < habitEntity.periodicityTimes) {
+            availableExecutionsCount = habitEntity.periodicityTimes - doneInPeriod.size
+            if (habitEntity.type == HabitType.GOOD) {
+                _habitListEvent.value = HabitListEvent.GoodHabitDoneNormal
+            } else {
+                _habitListEvent.value = HabitListEvent.BadHabitDoneNormal
+            }
+        } else {
+            if (habitEntity.type == HabitType.GOOD) {
+                _habitListEvent.value = HabitListEvent.GoodHabitDoneExcessively
+            } else {
+                _habitListEvent.value = HabitListEvent.BadHabitDoneExcessively
+            }
+        }
+    }
+
     private fun sortHabitsByPriority(habits: List<HabitEntity>) =
         if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
 }
@@ -79,10 +124,15 @@ class HabitsListViewModel(
 @Suppress("UNCHECKED_CAST")
 class HabitsListViewModelFactory(
     val getHabitsUseCase: GetHabitsUseCase,
-    val deleteHabitUseCase: DeleteHabitUseCase
+    val deleteHabitUseCase: DeleteHabitUseCase,
+    val addHabitDoneDateUseCase: AddHabitDoneDateUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HabitsListViewModel(getHabitsUseCase, deleteHabitUseCase) as T
+        return HabitsListViewModel(
+            getHabitsUseCase,
+            deleteHabitUseCase,
+            addHabitDoneDateUseCase
+        ) as T
     }
 }
 

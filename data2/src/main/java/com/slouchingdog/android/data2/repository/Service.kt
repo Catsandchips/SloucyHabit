@@ -3,6 +3,7 @@ package com.slouchingdog.android.data2.repository
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.slouchingdog.android.common2.HabitType
+import com.slouchingdog.android.data2.entity.DoneDate
 import com.slouchingdog.android.data2.entity.HabitDTO
 import com.slouchingdog.android.data2.entity.UID
 import com.slouchingdog.android.data2.remote.HabitService
@@ -43,18 +44,17 @@ class Service {
     suspend fun getHabits(): Result<List<HabitDTO>> =
         getResult(apiClient.getHabits())
 
-
     suspend fun updateHabit(habitDTO: HabitDTO): Result<Unit> =
         getResult(apiClient.updateHabit(habitDTO))
-
 
     suspend fun addHabit(habitDTO: HabitDTO): Result<UID> =
         getResult(apiClient.addHabit(habitDTO))
 
-
     suspend fun deleteHabit(id: String): Result<Unit> =
         getResult(apiClient.deleteHabit(UID(id)))
 
+    suspend fun addHabitDoneDate(doneDate: DoneDate): Result<Unit> =
+        getResult(apiClient.addHabitDoneDate(doneDate))
 
     private fun <T> getResult(response: Response<T>): Result<T> {
         if (response.isSuccessful) {

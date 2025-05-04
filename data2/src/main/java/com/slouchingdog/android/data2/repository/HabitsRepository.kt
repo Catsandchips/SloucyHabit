@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.slouchingdog.android.common2.SyncType
+import com.slouchingdog.android.data2.entity.DoneDate
 import com.slouchingdog.android.data2.entity.mapToDBO
 import com.slouchingdog.android.data2.entity.mapToDBOList
 import com.slouchingdog.android.data2.entity.mapToDTO
@@ -63,9 +64,9 @@ class HabitsRepository(context: Context) : HabitRepository {
         }
     }
 
-    override suspend fun deleteHabit(habit: HabitEntity) {
+    override suspend fun deleteHabit(habitEntity: HabitEntity) {
         try {
-            val habitDBO = habit.mapToDBO()
+            val habitDBO = habitEntity.mapToDBO()
             val deleteHabitResult = service.deleteHabit(habitDBO.id)
             if (deleteHabitResult.isSuccess) {
                 database.habitsDao().deleteHabitById(habitDBO.id)
@@ -74,6 +75,21 @@ class HabitsRepository(context: Context) : HabitRepository {
             }
         } catch (e: Exception) {
             Log.e("DELETE HABIT ERROR", e.toString())
+        }
+    }
+
+    override suspend fun addHabitDoneDate(habitEntity: HabitEntity, doneDate: Long) {
+        try {
+            val habitDBO = habitEntity.mapToDBO()
+            habitDBO.doneDates.add(doneDate)
+            val addDoneDateResult = service.addHabitDoneDate(DoneDate(doneDate, habitDBO.id))
+            if (addDoneDateResult.isSuccess) {
+                database.habitsDao().addHabit(habitDBO)
+            } else {
+                database.habitsDao().addHabit(habitDBO.copy(syncType = SyncType.UPDATE))
+            }
+        } catch (e: Exception) {
+            Log.e("ADD HABIT DONE DATE ERROR", e.toString())
         }
     }
 

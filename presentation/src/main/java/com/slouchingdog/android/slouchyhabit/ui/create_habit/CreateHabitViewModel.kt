@@ -14,7 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.text.isNullOrEmpty
 
 class CreateHabitViewModel(
@@ -132,8 +133,8 @@ data class HabitState(
     val priority: Int = 0,
     val periodicityTimes: Int = 0,
     val periodicityDays: Int = 0,
-    val date: Long = Date().time,
-    val doneDates: IntArray = IntArray(0),
+    val date: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).epochSecond,
+    val doneDates: MutableList<Long> = mutableListOf<Long>(),
     val color: Int = 0,
     val syncType: SyncType = SyncType.NOT_NEED
 )

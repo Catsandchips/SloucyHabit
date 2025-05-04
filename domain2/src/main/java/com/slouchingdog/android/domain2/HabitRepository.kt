@@ -7,5 +7,6 @@ interface HabitRepository {
     suspend fun addHabit(habitEntity: HabitEntity)
     suspend fun updateHabit(habitEntity: HabitEntity)
     suspend fun deleteHabit(habitEntity: HabitEntity)
+    suspend fun addHabitDoneDate(habitEntity: HabitEntity, doneDate: Long)
     fun getHabitById(id: String): HabitEntity
 }

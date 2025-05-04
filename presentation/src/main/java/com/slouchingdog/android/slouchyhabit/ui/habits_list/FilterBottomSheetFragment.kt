@@ -19,7 +19,8 @@ class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
     val viewModel: HabitsListViewModel by activityViewModels {
         HabitsListViewModelFactory(
             appComponent.getGetHabitsUseCase(),
-            appComponent.getDeleteHabitUseCase()
+            appComponent.getDeleteHabitUseCase(),
+            appComponent.getAddHabitDoneDateUseCase()
         )
     }
 

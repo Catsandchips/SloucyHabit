@@ -13,6 +13,6 @@ data class HabitEntity(
     val periodicityDays: Int,
     val color: Int,
     val date: Long,
-    val doneDates: IntArray,
+    val doneDates: MutableList<Long>,
     val syncType: SyncType
 )

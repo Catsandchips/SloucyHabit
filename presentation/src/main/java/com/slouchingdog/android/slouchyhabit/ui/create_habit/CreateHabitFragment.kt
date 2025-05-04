@@ -97,11 +97,13 @@ class CreateHabitFragment : Fragment() {
 
     private fun onHabitPeriodicityTimesChange() {
         binding.repetitionsField.addTextChangedListener(afterTextChanged = { input ->
-            binding.repetitionsFieldText.text =
+            binding.repetitionsFieldText.text = "${
                 resources.getQuantityString(
                     R.plurals.times,
                     viewModel.getPeriodicityForPlurals(input)
                 )
+            } в"
+
             viewModel.onPeriodicityTimesChange(viewModel.getPeriodicityForState(input))
         })
     }
