@@ -66,9 +66,9 @@ class HabitsListViewModel(
         filterHabits(titleQuery)
     }
 
-    fun deleteHabit(habitId: String) {
+    fun deleteHabit(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            deleteHabitUseCase.execute(habitId)
+            deleteHabitUseCase.execute(habitEntity)
         }
     }
 

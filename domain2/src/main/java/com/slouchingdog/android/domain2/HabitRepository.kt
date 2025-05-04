@@ -6,6 +6,6 @@ interface HabitRepository {
     suspend fun getHabits(): Flow<List<HabitEntity>>
     suspend fun addHabit(habitEntity: HabitEntity)
     suspend fun updateHabit(habitEntity: HabitEntity)
-    suspend fun deleteHabit(id: String)
+    suspend fun deleteHabit(habitEntity: HabitEntity)
     fun getHabitById(id: String): HabitEntity
 }

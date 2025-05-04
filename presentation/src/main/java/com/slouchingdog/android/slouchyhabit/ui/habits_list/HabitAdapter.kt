@@ -12,7 +12,7 @@ import com.slouchingdog.android.slouchyhabit.databinding.ItemHabitBinding
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.HABIT_ID_ARG
 import java.util.Locale
 
-class HabitAdapter(val onDeleteButtonClick: (habitId: String) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
+class HabitAdapter(val onDeleteButtonClick: (habit: HabitEntity) -> Unit) : RecyclerView.Adapter<HabitAdapter.HabitViewHolder>() {
     private var habits: List<HabitEntity> = emptyList()
 
     override fun onCreateViewHolder(
@@ -40,7 +40,7 @@ class HabitAdapter(val onDeleteButtonClick: (habitId: String) -> Unit) : Recycle
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class HabitViewHolder(val binding: ItemHabitBinding, val onDeleteButtonClick: (habitId: String) -> Unit) :
+    class HabitViewHolder(val binding: ItemHabitBinding, val onDeleteButtonClick: (habitEntity: HabitEntity) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(habit: HabitEntity) {
             binding.habitItemTitle.text = habit.title
@@ -67,7 +67,7 @@ class HabitAdapter(val onDeleteButtonClick: (habitId: String) -> Unit) : Recycle
             }
 
             binding.deleteHabitButton.setOnClickListener {
-                onDeleteButtonClick(habit.id!!)
+                onDeleteButtonClick(habit)
             }
         }
     }

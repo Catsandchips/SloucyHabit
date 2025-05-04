@@ -28,6 +28,7 @@ class HabitsRepository(context: Context) : HabitRepository {
     override fun getHabitById(id: String): HabitEntity =
         database.habitsDao().getHabitById(id).mapToDomainModel()
 
+
     override suspend fun getHabits(): Flow<List<HabitEntity>> {
         try {
             syncHabits()
@@ -50,10 +51,10 @@ class HabitsRepository(context: Context) : HabitRepository {
 
     override suspend fun addHabit(habit: HabitEntity) {
         try {
-            val addHabitResponse = service.addHabit(habit.mapToDTO())
-            if (addHabitResponse.isSuccessful) {
+            val addHabitResult = service.addHabit(habit.mapToDTO())
+            if (addHabitResult.isSuccess) {
                 database.habitsDao()
-                    .addHabit(habit.mapToDBO().copy(id = addHabitResponse.body()!!.uid))
+                    .addHabit(habit.mapToDBO().copy(id = addHabitResult.getOrThrow().uid))
             } else {
                 database.habitsDao().addHabit(habit.mapToDBO().copy(syncType = SyncType.ADD))
             }
@@ -62,10 +63,15 @@ class HabitsRepository(context: Context) : HabitRepository {
         }
     }
 
-    override suspend fun deleteHabit(id: String) {
+    override suspend fun deleteHabit(habit: HabitEntity) {
         try {
-            database.habitsDao().deleteHabitById(id)
-            service.deleteHabit(id)
+            val habitDBO = habit.mapToDBO()
+            val deleteHabitResult = service.deleteHabit(habitDBO.id)
+            if (deleteHabitResult.isSuccess) {
+                database.habitsDao().deleteHabitById(habitDBO.id)
+            } else {
+                database.habitsDao().addHabit(habitDBO.copy(syncType = SyncType.DELETE))
+            }
         } catch (e: Exception) {
             Log.e("DELETE HABIT ERROR", e.toString())
         }
@@ -74,28 +80,40 @@ class HabitsRepository(context: Context) : HabitRepository {
     suspend fun syncHabits() {
         try {
             val notSyncedHabits = database.habitsDao().getNotSyncedHabits()
+            for (habit in notSyncedHabits) {
+                when (habit.syncType) {
+                    SyncType.UPDATE -> {
+                        val updateHabitResponse = service.updateHabit(habit.mapToDTO())
+                        if (updateHabitResponse.isSuccess) {
+                            database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
+                        }
+                    }
 
-            for (habit in notSyncedHabits.filter { it.syncType == SyncType.ADD }) {
-                val addHabitResponse = service.addHabit(habit.mapToDTO())
-                if (addHabitResponse.isSuccessful) {
-                    database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
-                }
-            }
+                    SyncType.ADD -> {
+                        val addHabitResponse = service.addHabit(habit.mapToDTO())
+                        if (addHabitResponse.isSuccess) {
+                            database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
+                        }
+                    }
 
-            for (habit in notSyncedHabits.filter { it.syncType == SyncType.UPDATE }) {
-                val updateHabitResponse = service.updateHabit(habit.mapToDTO())
-                if (updateHabitResponse.isSuccess) {
-                    database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
+                    SyncType.DELETE -> {
+                        val deleteHabitResponse = service.deleteHabit(habit.id)
+                        if (deleteHabitResponse.isSuccess) {
+                            database.habitsDao().deleteHabitById(habit.id)
+                        }
+                    }
+
+                    SyncType.NOT_NEED -> {}
                 }
             }
 
             val getHabitsResponse = service.getHabits()
-            if (getHabitsResponse.isSuccessful) {
-                database.habitsDao().replaceHabitsList(getHabitsResponse.body()!!.mapToDBOList())
+            if (getHabitsResponse.isSuccess) {
+                database.habitsDao()
+                    .replaceHabitsList(getHabitsResponse.getOrThrow().mapToDBOList())
             }
         } catch (e: Exception) {
             Log.e("SYNCHRONIZATION HABITS ERROR", e.stackTrace.toString())
-
         }
     }
 }

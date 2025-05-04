@@ -50,7 +50,7 @@ class HabitsListFragment() : Fragment() {
         }
 
         binding.habitRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = HabitAdapter { habitId -> onDeleteButtonClick(habitId) }
+        val adapter = HabitAdapter { habit -> onDeleteButtonClick(habit) }
         binding.habitRecyclerView.adapter = adapter
 
         lifecycleScope.launch {
@@ -63,8 +63,8 @@ class HabitsListFragment() : Fragment() {
         }
     }
 
-    fun onDeleteButtonClick(habitId: String) {
-        viewModel.deleteHabit(habitId)
+    fun onDeleteButtonClick(habitEntity: HabitEntity) {
+        viewModel.deleteHabit(habitEntity)
     }
 
     companion object {

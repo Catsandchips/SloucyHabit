@@ -37,26 +37,30 @@ class Service {
                     .create()
             )
         ).build()
+
     private val apiClient = retrofit.create(HabitService::class.java)
 
-    suspend fun getHabits(): Response<List<HabitDTO>> {
-        return apiClient.getHabits()
-    }
+    suspend fun getHabits(): Result<List<HabitDTO>> =
+        getResult(apiClient.getHabits())
 
-    suspend fun updateHabit(habitDTO: HabitDTO): Result<Unit> {
-        val response = apiClient.updateHabit(habitDTO)
-        if (response.isSuccessful){
-            return Result.success(Unit)
+
+    suspend fun updateHabit(habitDTO: HabitDTO): Result<Unit> =
+        getResult(apiClient.updateHabit(habitDTO))
+
+
+    suspend fun addHabit(habitDTO: HabitDTO): Result<UID> =
+        getResult(apiClient.addHabit(habitDTO))
+
+
+    suspend fun deleteHabit(id: String): Result<Unit> =
+        getResult(apiClient.deleteHabit(UID(id)))
+
+
+    private fun <T> getResult(response: Response<T>): Result<T> {
+        if (response.isSuccessful) {
+            return Result.success(response.body()!!)
         }
 
         return Result.failure(Exception("bad http status code: ${response.message()}"))
-    }
-
-    suspend fun addHabit(habitDTO: HabitDTO): Response<UID> {
-        return apiClient.addHabit(habitDTO)
-    }
-
-    suspend fun deleteHabit(id: String): Response<Unit> {
-        return apiClient.deleteHabit(UID(id))
     }
 }
