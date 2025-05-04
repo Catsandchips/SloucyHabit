@@ -5,10 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.slouchingdog.android.domain.entity.DELETE_SYNC
-import com.slouchingdog.android.domain.entity.NOT_NEED_SYNC
 import com.slouchingdog.android.data.entity.HABITS_TABLE_NAME
 import com.slouchingdog.android.data.entity.HabitDBO
+import com.slouchingdog.android.domain.entity.DELETE_SYNC
+import com.slouchingdog.android.domain.entity.NOT_NEED_SYNC
 import kotlinx.coroutines.flow.Flow
 
 @Dao

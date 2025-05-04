@@ -4,9 +4,9 @@ import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.SyncType
-import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
 import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase

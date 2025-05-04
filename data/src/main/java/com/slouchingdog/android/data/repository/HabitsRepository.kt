@@ -3,7 +3,6 @@ package com.slouchingdog.android.data.repository
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import com.slouchingdog.android.domain.entity.SyncType
 import com.slouchingdog.android.data.entity.DoneDate
 import com.slouchingdog.android.data.entity.mapToDBO
 import com.slouchingdog.android.data.entity.mapToDBOList
@@ -11,8 +10,9 @@ import com.slouchingdog.android.data.entity.mapToDTO
 import com.slouchingdog.android.data.entity.mapToDomainModel
 import com.slouchingdog.android.data.entity.mapToDomainModels
 import com.slouchingdog.android.data.local.HabitDatabase
-import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.HabitRepository
+import com.slouchingdog.android.domain.entity.HabitEntity
+import com.slouchingdog.android.domain.entity.SyncType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

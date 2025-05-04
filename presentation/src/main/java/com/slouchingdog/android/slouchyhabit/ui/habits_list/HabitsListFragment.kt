@@ -12,8 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.HabitEntity
+import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding

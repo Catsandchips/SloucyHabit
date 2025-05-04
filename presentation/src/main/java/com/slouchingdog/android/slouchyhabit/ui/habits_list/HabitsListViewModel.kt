@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.HabitEntity
+import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase

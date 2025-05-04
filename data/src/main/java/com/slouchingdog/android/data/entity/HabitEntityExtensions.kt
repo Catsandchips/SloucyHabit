@@ -1,7 +1,7 @@
 package com.slouchingdog.android.data.entity
 
-import com.slouchingdog.android.domain.entity.SyncType
 import com.slouchingdog.android.domain.entity.HabitEntity
+import com.slouchingdog.android.domain.entity.SyncType
 import java.util.UUID
 
 typealias HabitsDBOList = List<HabitDBO>

@@ -2,11 +2,11 @@ package com.slouchingdog.android.data.repository
 
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
-import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.data.entity.DoneDate
 import com.slouchingdog.android.data.entity.HabitDTO
 import com.slouchingdog.android.data.entity.UID
 import com.slouchingdog.android.data.remote.HabitService
+import com.slouchingdog.android.domain.entity.HabitType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
