@@ -1,6 +1,8 @@
-package com.slouchingdog.android.slouchyhabit.di
+package com.slouchingdog.android.data.di
 
 import android.content.Context
+import com.slouchingdog.android.data.local.HabitDatabase
+import com.slouchingdog.android.data.remote.HabitAPIService
 import com.slouchingdog.android.data.repository.HabitsRepository
 import com.slouchingdog.android.domain.HabitRepository
 import dagger.Module
@@ -14,7 +16,10 @@ class DataModule(val context: Context) {
 
     @Singleton
     @Provides
-    fun provideHabitRepository(context: Context): HabitRepository {
-        return HabitsRepository(context = context)
+    fun provideHabitRepository(
+        habitAPIService: HabitAPIService,
+        habitDatabase: HabitDatabase
+    ): HabitRepository {
+        return HabitsRepository(habitAPIService, habitDatabase)
     }
 }

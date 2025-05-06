@@ -1,5 +1,8 @@
 package com.slouchingdog.android.slouchyhabit.di
 
+import com.slouchingdog.android.data.di.DataModule
+import com.slouchingdog.android.data.di.DatabaseModule
+import com.slouchingdog.android.data.di.NetworkModule
 import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
@@ -9,7 +12,7 @@ import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase
 import dagger.Component
 import javax.inject.Singleton
 
-@Component(modules = [AppModule::class, DataModule::class, DomainModule::class])
+@Component(modules = [NetworkModule::class, DatabaseModule::class, DomainModule::class, DataModule::class])
 @Singleton
 interface AppComponent {
     fun getGetHabitByIdUseCase(): GetHabitByIdUseCase

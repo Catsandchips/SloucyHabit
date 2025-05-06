@@ -1,4 +1,4 @@
-package com.slouchingdog.android.data.repository
+package com.slouchingdog.android.data.remote
 
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext

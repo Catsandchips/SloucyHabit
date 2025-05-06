@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import com.slouchingdog.android.slouchyhabit.di.AppComponent
+import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 import kotlinx.coroutines.launch
 
 private const val HABIT_TYPE_PARAM = "HABIT_TYPE_PARAM"

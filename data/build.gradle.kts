@@ -48,11 +48,13 @@ android {
 
 dependencies {
     implementation(project(":domain"))
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
+    api(libs.logging.interceptor)
+    api(libs.okhttp)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
     implementation(libs.converter.scalars)
     implementation(libs.gson)
-    implementation(libs.retrofit)
+    api(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)

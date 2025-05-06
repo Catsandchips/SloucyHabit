@@ -10,7 +10,7 @@ import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
 
-interface HabitService {
+interface HabitApiClient {
     @GET("habit")
     suspend fun getHabits(): Response<List<HabitDTO>>
 

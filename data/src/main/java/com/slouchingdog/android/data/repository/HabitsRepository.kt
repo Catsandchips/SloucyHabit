@@ -1,8 +1,6 @@
 package com.slouchingdog.android.data.repository
 
-import android.content.Context
 import android.util.Log
-import androidx.room.Room
 import com.slouchingdog.android.data.entity.DoneDate
 import com.slouchingdog.android.data.entity.mapToDBO
 import com.slouchingdog.android.data.entity.mapToDBOList
@@ -10,25 +8,18 @@ import com.slouchingdog.android.data.entity.mapToDTO
 import com.slouchingdog.android.data.entity.mapToDomainModel
 import com.slouchingdog.android.data.entity.mapToDomainModels
 import com.slouchingdog.android.data.local.HabitDatabase
+import com.slouchingdog.android.data.remote.HabitAPIService
 import com.slouchingdog.android.domain.HabitRepository
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.SyncType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private const val DATABASE_NAME = "slouchyHabitDB"
 
-class HabitsRepository(context: Context) : HabitRepository {
-    private val database: HabitDatabase = Room.databaseBuilder(
-        context.applicationContext, HabitDatabase::class.java, DATABASE_NAME
-    ).allowMainThreadQueries()
-        .fallbackToDestructiveMigration()
-        .build()
-
-    private val service = Service()
+class HabitsRepository(val habitAPIService: HabitAPIService, val database: HabitDatabase) :
+    HabitRepository {
     override fun getHabitById(id: String): HabitEntity =
         database.habitsDao().getHabitById(id).mapToDomainModel()
-
 
     override suspend fun getHabits(): Flow<List<HabitEntity>> {
         try {
@@ -42,7 +33,7 @@ class HabitsRepository(context: Context) : HabitRepository {
 
     override suspend fun updateHabit(habit: HabitEntity) {
         val habitDBO = habit.mapToDBO()
-        val updateHabitsResponse = service.updateHabit(habit.mapToDTO())
+        val updateHabitsResponse = habitAPIService.updateHabit(habit.mapToDTO())
         if (!updateHabitsResponse.isSuccess && habitDBO.syncType != SyncType.ADD) {
             database.habitsDao().addHabit(habitDBO.copy(syncType = SyncType.UPDATE))
         } else {
@@ -52,7 +43,7 @@ class HabitsRepository(context: Context) : HabitRepository {
 
     override suspend fun addHabit(habit: HabitEntity) {
         try {
-            val addHabitResult = service.addHabit(habit.mapToDTO())
+            val addHabitResult = habitAPIService.addHabit(habit.mapToDTO())
             if (addHabitResult.isSuccess) {
                 database.habitsDao()
                     .addHabit(habit.mapToDBO().copy(id = addHabitResult.getOrThrow().uid))
@@ -67,7 +58,7 @@ class HabitsRepository(context: Context) : HabitRepository {
     override suspend fun deleteHabit(habitEntity: HabitEntity) {
         try {
             val habitDBO = habitEntity.mapToDBO()
-            val deleteHabitResult = service.deleteHabit(habitDBO.id)
+            val deleteHabitResult = habitAPIService.deleteHabit(habitDBO.id)
             if (deleteHabitResult.isSuccess) {
                 database.habitsDao().deleteHabitById(habitDBO.id)
             } else {
@@ -82,7 +73,8 @@ class HabitsRepository(context: Context) : HabitRepository {
         try {
             val habitDBO = habitEntity.mapToDBO()
             habitDBO.doneDates.add(doneDate)
-            val addDoneDateResult = service.addHabitDoneDate(DoneDate(doneDate, habitDBO.id))
+            val addDoneDateResult =
+                habitAPIService.addHabitDoneDate(DoneDate(doneDate, habitDBO.id))
             if (addDoneDateResult.isSuccess) {
                 database.habitsDao().addHabit(habitDBO)
             } else {
@@ -99,21 +91,21 @@ class HabitsRepository(context: Context) : HabitRepository {
             for (habit in notSyncedHabits) {
                 when (habit.syncType) {
                     SyncType.UPDATE -> {
-                        val updateHabitResponse = service.updateHabit(habit.mapToDTO())
+                        val updateHabitResponse = habitAPIService.updateHabit(habit.mapToDTO())
                         if (updateHabitResponse.isSuccess) {
                             database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
                         }
                     }
 
                     SyncType.ADD -> {
-                        val addHabitResponse = service.addHabit(habit.mapToDTO())
+                        val addHabitResponse = habitAPIService.addHabit(habit.mapToDTO())
                         if (addHabitResponse.isSuccess) {
                             database.habitsDao().addHabit(habit.copy(syncType = SyncType.NOT_NEED))
                         }
                     }
 
                     SyncType.DELETE -> {
-                        val deleteHabitResponse = service.deleteHabit(habit.id)
+                        val deleteHabitResponse = habitAPIService.deleteHabit(habit.id)
                         if (deleteHabitResponse.isSuccess) {
                             database.habitsDao().deleteHabitById(habit.id)
                         }
@@ -123,7 +115,7 @@ class HabitsRepository(context: Context) : HabitRepository {
                 }
             }
 
-            val getHabitsResponse = service.getHabits()
+            val getHabitsResponse = habitAPIService.getHabits()
             if (getHabitsResponse.isSuccess) {
                 database.habitsDao()
                     .replaceHabitsList(getHabitsResponse.getOrThrow().mapToDBOList())

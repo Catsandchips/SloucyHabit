@@ -1,4 +1,4 @@
-package com.slouchingdog.android.data.repository
+package com.slouchingdog.android.data.remote
 
 import android.util.Log
 import com.slouchingdog.android.data2.BuildConfig
