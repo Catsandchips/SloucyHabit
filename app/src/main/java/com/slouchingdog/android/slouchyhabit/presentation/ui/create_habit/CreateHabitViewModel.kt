@@ -33,12 +33,15 @@ class CreateHabitViewModel(
         if (habitId != null) {
             val habit = getHabitByIdUseCase.execute(habitId)
             habitState = HabitState(
-                habit.title,
-                habit.description,
-                habit.type,
-                habit.priority,
-                habit.periodicityTimes,
-                habit.periodicityDays
+                title = habit.title,
+                description = habit.description,
+                type = habit.type,
+                priority = habit.priority,
+                periodicityTimes = habit.periodicityTimes,
+                periodicityDays = habit.periodicityDays,
+                doneDates = habit.doneDates,
+                color = habit.color,
+                syncType = habit.syncType
             )
 
             _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
