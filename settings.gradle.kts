@@ -21,4 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "SlouchyHabit"
 include(":app")
- 
+include(":domain")
+include(":data")

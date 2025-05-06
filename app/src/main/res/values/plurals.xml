@@ -9,11 +9,11 @@
         <item quantity="other">дней</item>
     </plurals>
     <plurals name="times">
-        <item quantity="zero">раз в</item>
-        <item quantity="one">раз в</item>
-        <item quantity="two">раза в</item>
-        <item quantity="few">раза в</item>
-        <item quantity="many">раз в</item>
-        <item quantity="other">раз в</item>
+        <item quantity="zero">раз</item>
+        <item quantity="one">раз</item>
+        <item quantity="two">раза</item>
+        <item quantity="few">раза</item>
+        <item quantity="many">раз</item>
+        <item quantity="other">раз</item>
     </plurals>
 </resources>
