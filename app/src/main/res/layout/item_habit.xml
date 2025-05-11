@@ -14,14 +14,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageButton
+            android:id="@+id/deleteHabitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/transparent"
+            android:contentDescription="@string/delete_button"
+            android:src="@drawable/ic_clear_field_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/habitDoneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/done_button_selector"
+            android:contentDescription="@string/habit_done"
+            app:layout_constraintBottom_toBottomOf="@id/habitItemPeriodicity"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/habitItemTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/headers_color"
             android:textSize="34sp"
+            app:layout_constraintEnd_toStartOf="@+id/deleteHabitButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

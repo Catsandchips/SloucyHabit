@@ -1,5 +1,4 @@
 import org.gradle.kotlin.dsl.android
-import org.jetbrains.kotlin.gradle.utils.loadPropertyFromResources
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -55,16 +54,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
     implementation(libs.glide)
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-    implementation(libs.converter.scalars)
-    implementation(libs.gson)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
-    implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
