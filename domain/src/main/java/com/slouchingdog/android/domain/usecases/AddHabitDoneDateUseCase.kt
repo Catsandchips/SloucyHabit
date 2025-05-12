@@ -7,7 +7,10 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 class AddHabitDoneDateUseCase(private val repository: HabitRepository) {
-    suspend operator fun invoke(habitEntity: HabitEntity, doneDate: Long): Pair<HabitListEvent, Int> {
+    suspend operator fun invoke(
+        habitEntity: HabitEntity,
+        doneDate: Long
+    ): Pair<HabitListEvent, Int> {
         repository.addHabitDoneDate(habitEntity, doneDate)
 
         var availableExecutionsCount: Int = 0

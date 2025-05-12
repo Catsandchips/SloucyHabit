@@ -37,10 +37,7 @@ class HabitEntityHelper {
                 periodicityTimes = periodicityTimes
             )
 
-            return AddHabitDoneDateUseCase(repository).execute(
-                habitEntity = habitEntity,
-                today
-            )
+            return AddHabitDoneDateUseCase(repository)(habitEntity = habitEntity, today)
         }
     }
 }
