@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class GetHabitByIdUseCase(private val repository: HabitRepository) {
-    suspend fun execute(id: String): HabitEntity = withContext(Dispatchers.IO) {
+    suspend operator fun invoke(id: String): HabitEntity = withContext(Dispatchers.IO) {
         repository.getHabitById(id)
     }
 }

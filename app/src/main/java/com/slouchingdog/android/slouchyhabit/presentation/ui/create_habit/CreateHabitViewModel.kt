@@ -33,7 +33,7 @@ class CreateHabitViewModel(
     init {
         if (habitId != null) {
             runBlocking {
-                val habit = getHabitByIdUseCase.execute(habitId)
+                val habit = getHabitByIdUseCase(habitId)
                 habitState = HabitState(
                     title = habit.title,
                     description = habit.description,
@@ -67,9 +67,9 @@ class CreateHabitViewModel(
             )
 
             if (habitId != null) {
-                updateHabitUseCase.execute(habitEntity)
+                updateHabitUseCase(habitEntity)
             } else {
-                addHabitUseCase.execute(habitEntity)
+                addHabitUseCase(habitEntity)
             }
         }
     }

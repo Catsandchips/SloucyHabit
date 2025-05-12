@@ -82,10 +82,10 @@ class HabitsListFragment() : Fragment() {
         viewModel.habitListEvent.observe(viewLifecycleOwner) { event ->
             val count = viewModel.availableExecutionsCount
             val toastMessage = when (event) {
-                HabitListEvent.BadHabitDoneNormal -> "Можете выполнить еще $count ${getPlural(count)}"
-                HabitListEvent.BadHabitDoneExcessively -> "Хватит это делать"
-                HabitListEvent.GoodHabitDoneNormal -> "Стоит выполнить еще $count ${getPlural(count)}"
-                HabitListEvent.GoodHabitDoneExcessively -> "You are breathtaking"
+                HabitListEvent.BadHabitDoneNormal -> "${view?.resources?.getString(R.string.underdone_bad_habit_message)} $count ${getPlural(count)}"
+                HabitListEvent.BadHabitDoneExcessively -> view?.resources?.getString(R.string.overdone_bad_habit_message)
+                HabitListEvent.GoodHabitDoneNormal -> "${view?.resources?.getString(R.string.underdone_good_habit_message)} $count ${getPlural(count)}"
+                HabitListEvent.GoodHabitDoneExcessively -> view?.resources?.getString(R.string.overdone_good_habit_message)
             }
 
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show()

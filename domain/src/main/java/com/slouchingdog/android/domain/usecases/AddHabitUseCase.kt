@@ -4,7 +4,7 @@ import com.slouchingdog.android.domain.HabitRepository
 import com.slouchingdog.android.domain.entity.HabitEntity
 
 class AddHabitUseCase(private val repository: HabitRepository) {
-    suspend fun execute(habitEntity: HabitEntity) {
+    suspend operator fun invoke(habitEntity: HabitEntity) {
         repository.addHabit(habitEntity)
     }
 }

@@ -97,12 +97,10 @@ class CreateHabitFragment : Fragment() {
 
     private fun onHabitPeriodicityTimesChange() {
         binding.repetitionsField.addTextChangedListener(afterTextChanged = { input ->
-            binding.repetitionsFieldText.text = "${
-                resources.getQuantityString(
-                    R.plurals.times,
-                    viewModel.getPeriodicityForPlurals(input)
-                )
-            } в"
+            binding.repetitionsFieldText.text = resources.getQuantityString(
+                R.plurals.times_in,
+                viewModel.getPeriodicityForPlurals(input)
+            )
 
             viewModel.onPeriodicityTimesChange(viewModel.getPeriodicityForState(input))
         })
@@ -159,7 +157,7 @@ class CreateHabitFragment : Fragment() {
         binding.habitTypeRadioGroup.jumpDrawablesToCurrentState()
         binding.repetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
         binding.repetitionsFieldText.text =
-            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes)
+            resources.getQuantityString(R.plurals.times_in, viewModel.habitState.periodicityTimes)
 
         binding.daysCountField.setText(viewModel.habitState.periodicityDays.toString())
         binding.daysCountFieldText.text =

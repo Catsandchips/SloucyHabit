@@ -36,7 +36,7 @@ class HabitsListViewModel(
 
     init {
         viewModelScope.launch {
-            getHabitsUseCase.execute().collect {
+            getHabitsUseCase().collect {
                 _baseHabits.value = it
                 _habits.value = it
                 titleQuery = null
@@ -78,13 +78,13 @@ class HabitsListViewModel(
 
     fun deleteHabit(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            deleteHabitUseCase.execute(habitEntity)
+            deleteHabitUseCase(habitEntity)
         }
     }
 
     fun addHabitDoneDate(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            val eventPair = addHabitDoneDateUseCase.execute(
+            val eventPair = addHabitDoneDateUseCase(
                 habitEntity,
                 LocalDateTime
                     .now()
@@ -92,7 +92,6 @@ class HabitsListViewModel(
             )
             availableExecutionsCount = eventPair.second
             _habitListEvent.value = eventPair.first
-
         }
     }
 

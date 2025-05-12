@@ -3,7 +3,7 @@ package com.slouchingdog.android.data.di
 import android.content.Context
 import com.slouchingdog.android.data.local.HabitDatabase
 import com.slouchingdog.android.data.remote.HabitAPIService
-import com.slouchingdog.android.data.repository.HabitsRepository
+import com.slouchingdog.android.data.repository.HabitRepositoryImpl
 import com.slouchingdog.android.domain.HabitRepository
 import dagger.Module
 import dagger.Provides
@@ -20,6 +20,6 @@ class DataModule(val context: Context) {
         habitAPIService: HabitAPIService,
         habitDatabase: HabitDatabase
     ): HabitRepository {
-        return HabitsRepository(habitAPIService, habitDatabase)
+        return HabitRepositoryImpl(habitAPIService, habitDatabase)
     }
 }
