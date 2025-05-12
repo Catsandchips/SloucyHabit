@@ -9,6 +9,7 @@ import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
+import com.slouchingdog.android.domain.usecases.HabitListEvent
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -81,39 +82,17 @@ class HabitsListViewModel(
         }
     }
 
-    private fun addHabitDoneDate(habitEntity: HabitEntity) {
+    fun addHabitDoneDate(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            addHabitDoneDateUseCase.execute(
+            val eventPair = addHabitDoneDateUseCase.execute(
                 habitEntity,
                 LocalDateTime
                     .now()
                     .toEpochSecond(ZoneOffset.UTC)
             )
-        }
-    }
+            availableExecutionsCount = eventPair.second
+            _habitListEvent.value = eventPair.first
 
-    fun onDoneButtonClick(habitEntity: HabitEntity) {
-        addHabitDoneDate(habitEntity)
-        val periodStart =
-            LocalDateTime
-                .now()
-                .minusDays(habitEntity.periodicityDays.toLong()).toEpochSecond(ZoneOffset.UTC)
-
-        val doneInPeriod = habitEntity.doneDates.filter { it >= periodStart }
-
-        if (doneInPeriod.size < habitEntity.periodicityTimes) {
-            availableExecutionsCount = habitEntity.periodicityTimes - doneInPeriod.size
-            if (habitEntity.type == HabitType.GOOD) {
-                _habitListEvent.value = HabitListEvent.GoodHabitDoneNormal
-            } else {
-                _habitListEvent.value = HabitListEvent.BadHabitDoneNormal
-            }
-        } else {
-            if (habitEntity.type == HabitType.GOOD) {
-                _habitListEvent.value = HabitListEvent.GoodHabitDoneExcessively
-            } else {
-                _habitListEvent.value = HabitListEvent.BadHabitDoneExcessively
-            }
         }
     }
 

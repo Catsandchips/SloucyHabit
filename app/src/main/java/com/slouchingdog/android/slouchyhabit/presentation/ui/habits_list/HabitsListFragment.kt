@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
+import com.slouchingdog.android.domain.usecases.HabitListEvent
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
 import com.slouchingdog.android.slouchyhabit.di.AppComponent
@@ -74,7 +75,7 @@ class HabitsListFragment() : Fragment() {
     }
 
     fun onDoneButtonClick(habitEntity: HabitEntity) {
-        viewModel.onDoneButtonClick(habitEntity)
+        viewModel.addHabitDoneDate(habitEntity)
     }
 
     private fun observeHabitListEvents() {
