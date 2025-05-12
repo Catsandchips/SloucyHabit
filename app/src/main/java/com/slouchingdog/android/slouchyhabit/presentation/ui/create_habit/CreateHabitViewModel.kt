@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.text.isNullOrEmpty
@@ -31,20 +32,21 @@ class CreateHabitViewModel(
 
     init {
         if (habitId != null) {
-            val habit = getHabitByIdUseCase.execute(habitId)
-            habitState = HabitState(
-                title = habit.title,
-                description = habit.description,
-                type = habit.type,
-                priority = habit.priority,
-                periodicityTimes = habit.periodicityTimes,
-                periodicityDays = habit.periodicityDays,
-                doneDates = habit.doneDates,
-                color = habit.color,
-                syncType = habit.syncType
-            )
-
-            _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
+            runBlocking {
+                val habit = getHabitByIdUseCase.execute(habitId)
+                habitState = HabitState(
+                    title = habit.title,
+                    description = habit.description,
+                    type = habit.type,
+                    priority = habit.priority,
+                    periodicityTimes = habit.periodicityTimes,
+                    periodicityDays = habit.periodicityDays,
+                    doneDates = habit.doneDates,
+                    color = habit.color,
+                    syncType = habit.syncType
+                )
+                _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
+            }
         }
     }
 

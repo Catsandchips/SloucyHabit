@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.map
 
 class HabitsRepository(val habitAPIService: HabitAPIService, val database: HabitDatabase) :
     HabitRepository {
-    override fun getHabitById(id: String): HabitEntity =
+    override suspend fun getHabitById(id: String): HabitEntity =
         database.habitsDao().getHabitById(id).mapToDomainModel()
 
     override suspend fun getHabits(): Flow<List<HabitEntity>> {

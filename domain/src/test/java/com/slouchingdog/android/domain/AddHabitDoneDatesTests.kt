@@ -8,7 +8,6 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class AddHabitDoneDatesTests {
-
     @Test
     fun addDoneDate_toOverdoneGoodHabit_returnCorrectEvent() = runBlocking {
         assertEquals(addDoneDate(HabitType.GOOD, 1), HabitListEvent.GoodHabitDoneExcessively to 0)
