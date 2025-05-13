@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,20 +8,18 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBottomSheetBinding
-import com.slouchingdog.android.slouchyhabit.di.AppComponent
-import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
+import com.slouchingdog.android.slouchyhabit.di.subcomponents.FilterBottomSheetSubcomponent
+import javax.inject.Inject
 
 class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
     lateinit var binding: FragmentFilterBottomSheetBinding
-    val appComponent: AppComponent by lazy {
-        (requireActivity().application as SlouchyHabitApplication).appComponent
-    }
-    val viewModel: HabitsListViewModel by activityViewModels {
-        HabitsListViewModelFactory(
-            appComponent.getGetHabitsUseCase(),
-            appComponent.getDeleteHabitUseCase(),
-            appComponent.getAddHabitDoneDateUseCase()
-        )
+    @Inject
+    lateinit var viewModelFactory: HabitsListViewModelFactory
+    val viewModel: HabitsListViewModel by activityViewModels { viewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        FilterBottomSheetSubcomponent.inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -19,8 +19,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import javax.inject.Inject
 
-class HabitsListViewModel(
+class HabitsListViewModel @Inject constructor(
     private val getHabitsUseCase: GetHabitsUseCase,
     private val deleteHabitUseCase: DeleteHabitUseCase,
     private val addHabitDoneDateUseCase: AddHabitDoneDateUseCase
@@ -100,7 +101,7 @@ class HabitsListViewModel(
 }
 
 @Suppress("UNCHECKED_CAST")
-class HabitsListViewModelFactory(
+class HabitsListViewModelFactory @Inject constructor(
     val getHabitsUseCase: GetHabitsUseCase,
     val deleteHabitUseCase: DeleteHabitUseCase,
     val addHabitDoneDateUseCase: AddHabitDoneDateUseCase

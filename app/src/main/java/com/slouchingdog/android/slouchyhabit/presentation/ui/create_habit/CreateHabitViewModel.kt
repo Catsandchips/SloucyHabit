@@ -17,9 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import javax.inject.Inject
 import kotlin.text.isNullOrEmpty
 
-class CreateHabitViewModel(
+class CreateHabitViewModel @Inject constructor(
     val habitId: String?,
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
@@ -110,11 +111,12 @@ class CreateHabitViewModel(
 }
 
 @Suppress("UNCHECKED_CAST")
-class CreateHabitViewModelFactory(
-    private val habitId: String?,
+class CreateHabitViewModelFactory @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
 ) : ViewModelProvider.Factory {
+    var habitId: String? = null
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CreateHabitViewModel(
             habitId,

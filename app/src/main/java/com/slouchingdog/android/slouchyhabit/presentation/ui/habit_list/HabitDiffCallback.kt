@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.slouchingdog.android.domain.entity.HabitEntity
