@@ -28,7 +28,6 @@ class CreateHabitFragment : Fragment() {
         CreateHabitViewModelFactory(
             arguments?.getString(HABIT_ID_ARG),
             appComponent.getAddHabitUseCase(),
-            appComponent.getUpdateHabitUseCase(),
             appComponent.getGetHabitByIdUseCase()
         )
     }

@@ -9,7 +9,6 @@ import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.SyncType
 import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
-import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +22,6 @@ import kotlin.text.isNullOrEmpty
 class CreateHabitViewModel(
     val habitId: String?,
     val addHabitUseCase: AddHabitUseCase,
-    val updateHabitUseCase: UpdateHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
 ) : ViewModel() {
     var habitState: HabitState = HabitState()
@@ -66,11 +64,7 @@ class CreateHabitViewModel(
                 syncType = habitState.syncType
             )
 
-            if (habitId != null) {
-                updateHabitUseCase(habitEntity)
-            } else {
-                addHabitUseCase(habitEntity)
-            }
+            addHabitUseCase(habitEntity)
         }
     }
 
@@ -119,14 +113,12 @@ class CreateHabitViewModel(
 class CreateHabitViewModelFactory(
     private val habitId: String?,
     val addHabitUseCase: AddHabitUseCase,
-    val updateHabitUseCase: UpdateHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CreateHabitViewModel(
             habitId,
             addHabitUseCase,
-            updateHabitUseCase,
             getHabitByIdUseCase
         ) as T
     }

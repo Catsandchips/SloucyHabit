@@ -5,6 +5,10 @@ import com.slouchingdog.android.domain.entity.HabitEntity
 
 class AddHabitUseCase(private val repository: HabitRepository) {
     suspend operator fun invoke(habitEntity: HabitEntity) {
-        repository.addHabit(habitEntity)
+        if (habitEntity.id != null) {
+            repository.updateHabit(habitEntity)
+        } else {
+            repository.addHabit(habitEntity)
+        }
     }
 }

@@ -14,8 +14,8 @@ class HabitEntityHelper {
         val repository = mockk<HabitRepository>(relaxed = true)
         val today = LocalDateTime.now().toInstant(ZoneOffset.UTC).epochSecond
         val yesterday = LocalDateTime.now().minusDays(1).toEpochSecond(ZoneOffset.UTC)
-        private val baseHabitEntity = HabitEntity(
-            id = "test",
+        val baseHabitEntity = HabitEntity(
+            id = null,
             title = "test",
             description = "test",
             priority = 0,
