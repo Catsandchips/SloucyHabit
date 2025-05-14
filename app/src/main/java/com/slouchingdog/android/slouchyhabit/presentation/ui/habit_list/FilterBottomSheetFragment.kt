@@ -8,17 +8,22 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentFilterBottomSheetBinding
-import com.slouchingdog.android.slouchyhabit.di.subcomponents.FilterBottomSheetSubcomponent
+import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 import javax.inject.Inject
 
 class FilterBottomSheetFragment() : BottomSheetDialogFragment() {
     lateinit var binding: FragmentFilterBottomSheetBinding
+
     @Inject
     lateinit var viewModelFactory: HabitsListViewModelFactory
     val viewModel: HabitsListViewModel by activityViewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        FilterBottomSheetSubcomponent.inject(this)
+        (requireActivity().application as SlouchyHabitApplication)
+            .appComponent
+            .getFilterBottomSheetSubcomponent()
+            .create()
+            .inject(this)
         super.onCreate(savedInstanceState)
     }
 
