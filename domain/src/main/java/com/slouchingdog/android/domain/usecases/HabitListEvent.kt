@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.domain.usecases
 
 enum class HabitListEvent {
     BadHabitDoneNormal,

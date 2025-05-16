@@ -14,4 +14,7 @@ kotlin {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
+    testImplementation(kotlin("test"))
+    testImplementation(libs.mockk)
+    testImplementation (libs.jetbrains.kotlinx.coroutines.test)
 }

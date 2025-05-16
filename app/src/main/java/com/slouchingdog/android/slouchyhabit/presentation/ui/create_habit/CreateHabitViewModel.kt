@@ -9,20 +9,20 @@ import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.SyncType
 import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
-import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import javax.inject.Inject
 import kotlin.text.isNullOrEmpty
 
-class CreateHabitViewModel(
+class CreateHabitViewModel @Inject constructor(
     val habitId: String?,
     val addHabitUseCase: AddHabitUseCase,
-    val updateHabitUseCase: UpdateHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
 ) : ViewModel() {
     var habitState: HabitState = HabitState()
@@ -31,20 +31,21 @@ class CreateHabitViewModel(
 
     init {
         if (habitId != null) {
-            val habit = getHabitByIdUseCase.execute(habitId)
-            habitState = HabitState(
-                title = habit.title,
-                description = habit.description,
-                type = habit.type,
-                priority = habit.priority,
-                periodicityTimes = habit.periodicityTimes,
-                periodicityDays = habit.periodicityDays,
-                doneDates = habit.doneDates,
-                color = habit.color,
-                syncType = habit.syncType
-            )
-
-            _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
+            runBlocking {
+                val habit = getHabitByIdUseCase(habitId)
+                habitState = HabitState(
+                    title = habit.title,
+                    description = habit.description,
+                    type = habit.type,
+                    priority = habit.priority,
+                    periodicityTimes = habit.periodicityTimes,
+                    periodicityDays = habit.periodicityDays,
+                    doneDates = habit.doneDates,
+                    color = habit.color,
+                    syncType = habit.syncType
+                )
+                _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
+            }
         }
     }
 
@@ -64,11 +65,7 @@ class CreateHabitViewModel(
                 syncType = habitState.syncType
             )
 
-            if (habitId != null) {
-                updateHabitUseCase.execute(habitEntity)
-            } else {
-                addHabitUseCase.execute(habitEntity)
-            }
+            addHabitUseCase(habitEntity)
         }
     }
 
@@ -114,17 +111,16 @@ class CreateHabitViewModel(
 }
 
 @Suppress("UNCHECKED_CAST")
-class CreateHabitViewModelFactory(
-    private val habitId: String?,
+class CreateHabitViewModelFactory @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
-    val updateHabitUseCase: UpdateHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase
 ) : ViewModelProvider.Factory {
+    var habitId: String? = null
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CreateHabitViewModel(
             habitId,
             addHabitUseCase,
-            updateHabitUseCase,
             getHabitByIdUseCase
         ) as T
     }

@@ -16,8 +16,6 @@ class DatabaseModule {
     fun provideDatabase(context: Context): HabitDatabase {
         return Room.databaseBuilder(
             context.applicationContext, HabitDatabase::class.java, DATABASE_NAME
-        ).allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

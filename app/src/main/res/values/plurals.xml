@@ -8,6 +8,16 @@
         <item quantity="many">дней</item>
         <item quantity="other">дней</item>
     </plurals>
+
+    <plurals name="times_in">
+        <item quantity="zero">раз в</item>
+        <item quantity="one">раз в</item>
+        <item quantity="two">раза в</item>
+        <item quantity="few">раза в</item>
+        <item quantity="many">раз в</item>
+        <item quantity="other">раз в</item>
+    </plurals>
+
     <plurals name="times">
         <item quantity="zero">раз</item>
         <item quantity="one">раз</item>

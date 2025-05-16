@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.slouchingdog.android.domain.entity.HabitType
-import com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list.HabitsListFragment
+import com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list.HabitsListFragment
 
 class PagerAdapter(
     activity: FragmentActivity

@@ -28,4 +28,8 @@
     <string name="user_picture">User picture</string>
     <string name="delete_button">delete button</string>
     <string name="habit_done">habit done</string>
+    <string name="underdone_bad_habit_message">Можете выполнить еще</string>
+    <string name="underdone_good_habit_message">Стоит выполнить еще</string>
+    <string name="overdone_bad_habit_message">Хватит это делать</string>
+    <string name="overdone_good_habit_message">You are breathtaking</string>
 </resources>

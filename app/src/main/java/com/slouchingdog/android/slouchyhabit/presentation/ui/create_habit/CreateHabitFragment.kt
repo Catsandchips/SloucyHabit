@@ -15,22 +15,32 @@ import com.google.android.material.snackbar.Snackbar
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
-import com.slouchingdog.android.slouchyhabit.di.AppComponent
 import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
+import javax.inject.Inject
 
 const val HABIT_ID_ARG = "HABIT_ARG"
 
 class CreateHabitFragment : Fragment() {
 
     lateinit var binding: FragmentCreateHabitBinding
-    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
+
+    @Inject
+    lateinit var viewModelFactory: CreateHabitViewModelFactory
     val viewModel: CreateHabitViewModel by viewModels {
-        CreateHabitViewModelFactory(
-            arguments?.getString(HABIT_ID_ARG),
-            appComponent.getAddHabitUseCase(),
-            appComponent.getUpdateHabitUseCase(),
-            appComponent.getGetHabitByIdUseCase()
-        )
+        viewModelFactory.apply {
+            habitId = arguments?.getString(
+                HABIT_ID_ARG
+            )
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (requireActivity().application as SlouchyHabitApplication)
+            .appComponent
+            .getCreateHabitSubcomponent()
+            .create()
+            .inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -97,12 +107,10 @@ class CreateHabitFragment : Fragment() {
 
     private fun onHabitPeriodicityTimesChange() {
         binding.repetitionsField.addTextChangedListener(afterTextChanged = { input ->
-            binding.repetitionsFieldText.text = "${
-                resources.getQuantityString(
-                    R.plurals.times,
-                    viewModel.getPeriodicityForPlurals(input)
-                )
-            } в"
+            binding.repetitionsFieldText.text = resources.getQuantityString(
+                R.plurals.times_in,
+                viewModel.getPeriodicityForPlurals(input)
+            )
 
             viewModel.onPeriodicityTimesChange(viewModel.getPeriodicityForState(input))
         })
@@ -159,7 +167,7 @@ class CreateHabitFragment : Fragment() {
         binding.habitTypeRadioGroup.jumpDrawablesToCurrentState()
         binding.repetitionsField.setText(viewModel.habitState.periodicityTimes.toString())
         binding.repetitionsFieldText.text =
-            resources.getQuantityString(R.plurals.times, viewModel.habitState.periodicityTimes)
+            resources.getQuantityString(R.plurals.times_in, viewModel.habitState.periodicityTimes)
 
         binding.daysCountField.setText(viewModel.habitState.periodicityDays.toString())
         binding.daysCountFieldText.text =

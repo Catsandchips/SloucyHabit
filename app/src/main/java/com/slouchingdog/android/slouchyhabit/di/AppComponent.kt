@@ -8,7 +8,9 @@ import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
-import com.slouchingdog.android.domain.usecases.UpdateHabitUseCase
+import com.slouchingdog.android.slouchyhabit.di.subcomponents.CreateHabitSubcomponent
+import com.slouchingdog.android.slouchyhabit.di.subcomponents.FilterBottomSheetSubcomponent
+import com.slouchingdog.android.slouchyhabit.di.subcomponents.HabitListSubcomponent
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,7 +20,9 @@ interface AppComponent {
     fun getGetHabitByIdUseCase(): GetHabitByIdUseCase
     fun getGetHabitsUseCase(): GetHabitsUseCase
     fun getAddHabitUseCase(): AddHabitUseCase
-    fun getUpdateHabitUseCase(): UpdateHabitUseCase
     fun getDeleteHabitUseCase(): DeleteHabitUseCase
     fun getAddHabitDoneDateUseCase(): AddHabitDoneDateUseCase
+    fun getCreateHabitSubcomponent(): CreateHabitSubcomponent.Factory
+    fun getHabitListSubcomponent(): HabitListSubcomponent.Factory
+    fun getFilterBottomSheetSubcomponent(): FilterBottomSheetSubcomponent.Factory
 }

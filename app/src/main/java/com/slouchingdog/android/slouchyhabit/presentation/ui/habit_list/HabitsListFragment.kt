@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
 import android.os.Build
 import android.os.Bundle
@@ -14,23 +14,28 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
+import com.slouchingdog.android.domain.usecases.HabitListEvent
 import com.slouchingdog.android.slouchyhabit.R
 import com.slouchingdog.android.slouchyhabit.databinding.FragmentHabitsListBinding
-import com.slouchingdog.android.slouchyhabit.di.AppComponent
 import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 private const val HABIT_TYPE_PARAM = "HABIT_TYPE_PARAM"
 
 class HabitsListFragment() : Fragment() {
     lateinit var binding: FragmentHabitsListBinding
-    val appComponent: AppComponent by lazy { (requireActivity().application as SlouchyHabitApplication).appComponent }
-    val viewModel: HabitsListViewModel by activityViewModels {
-        HabitsListViewModelFactory(
-            appComponent.getGetHabitsUseCase(),
-            appComponent.getDeleteHabitUseCase(),
-            appComponent.getAddHabitDoneDateUseCase()
-        )
+    @Inject
+    lateinit var viewModelFactory: HabitsListViewModelFactory
+    val viewModel: HabitsListViewModel by activityViewModels { viewModelFactory }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (requireActivity().application as SlouchyHabitApplication)
+            .appComponent
+            .getHabitListSubcomponent()
+            .create()
+            .inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -74,17 +79,27 @@ class HabitsListFragment() : Fragment() {
     }
 
     fun onDoneButtonClick(habitEntity: HabitEntity) {
-        viewModel.onDoneButtonClick(habitEntity)
+        viewModel.addHabitDoneDate(habitEntity)
     }
 
     private fun observeHabitListEvents() {
         viewModel.habitListEvent.observe(viewLifecycleOwner) { event ->
             val count = viewModel.availableExecutionsCount
             val toastMessage = when (event) {
-                HabitListEvent.BadHabitDoneNormal -> "Можете выполнить еще $count ${getPlural(count)}"
-                HabitListEvent.BadHabitDoneExcessively -> "Хватит это делать"
-                HabitListEvent.GoodHabitDoneNormal -> "Стоит выполнить еще $count ${getPlural(count)}"
-                HabitListEvent.GoodHabitDoneExcessively -> "You are breathtaking"
+                HabitListEvent.BadHabitDoneNormal -> "${view?.resources?.getString(R.string.underdone_bad_habit_message)} $count ${
+                    getPlural(
+                        count
+                    )
+                }"
+
+                HabitListEvent.BadHabitDoneExcessively -> view?.resources?.getString(R.string.overdone_bad_habit_message)
+                HabitListEvent.GoodHabitDoneNormal -> "${view?.resources?.getString(R.string.underdone_good_habit_message)} $count ${
+                    getPlural(
+                        count
+                    )
+                }"
+
+                HabitListEvent.GoodHabitDoneExcessively -> view?.resources?.getString(R.string.overdone_good_habit_message)
             }
 
             Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show()

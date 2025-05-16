@@ -1,4 +1,4 @@
-package com.slouchingdog.android.slouchyhabit.presentation.ui.habits_list
+package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -57,12 +57,12 @@ class HabitAdapter(
             binding.habitItemPriority.text =
                 itemView.resources.getStringArray(R.array.priorities_array)[habit.priority]
             val timesCountString =
-                itemView.resources.getQuantityString(R.plurals.times, habit.periodicityTimes)
+                itemView.resources.getQuantityString(R.plurals.times_in, habit.periodicityTimes)
             val daysCountString =
                 itemView.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
             binding.habitItemPeriodicity.text = String.format(
                 Locale.getDefault(),
-                "%d %s в %d %s",
+                "%d %s %d %s",
                 habit.periodicityTimes,
                 timesCountString,
                 habit.periodicityDays,
