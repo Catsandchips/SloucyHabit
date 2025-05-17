@@ -6,7 +6,7 @@ daggerCompiler = "2.56.2"
 glide = "4.11.0"
 gson = "2.11.0"
 kaspresso = "1.5.2"
-kotlin = "1.9.24"
+kotlin = "2.1.21"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -24,8 +24,12 @@ navigationUiKtx = "2.8.8"
 okhttp = "4.10.0"
 orchestrator = "1.5.1"
 retrofit = "2.9.0"
-roomRuntime = "2.6.1"
+roomRuntime = "2.7.1"
 jetbrainsKotlinJvm = "1.9.24"
+composeBom = "2025.05.00"
+runtime = "1.8.1"
+activityCompose = "1.10.1"
+lifecycleViewModelCompose = "2.8.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +37,7 @@ androidx-orchestrator = { module = "androidx.test:orchestrator", version.ref = "
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "runtime" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
@@ -56,8 +61,15 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-compose-bom = {group = "androidx.compose", name = "compose-bom", version.ref = "composeBom"}
+androidx-material3 = {group = "androidx.compose.material3", name = "material3"}
+androidx-ui-tooling-preview = {group = "androidx.compose.ui", name = "ui-tooling-preview"}
+androidx-ui-tooling = {group = "androidx.compose.ui", name = "ui-tooling"}
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-lifecycle-viewmodel-compose = {group ="androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewModelCompose"}
 
 [plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }

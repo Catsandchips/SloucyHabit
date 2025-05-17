@@ -3,6 +3,7 @@ package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
@@ -48,6 +49,9 @@ class HabitsListViewModel @Inject constructor(
 
     fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
+
+    fun getHabitsLiveData(habitType: HabitType): LiveData<List<HabitEntity>> =
+        habits.map { habits -> habits.filter { it.type == habitType } }.asLiveData()
 
     fun filterHabits(titleQuery: String?) {
         this.titleQuery = titleQuery
