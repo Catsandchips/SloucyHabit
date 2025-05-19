@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_sort_button_asc_selected" android:state_checked="true" />
-    <item android:drawable="@drawable/ic_sort_button_asc" android:state_checked="false" />
+    <item android:drawable="@drawable/ic_sort_button_desc_selected" android:state_checked="true" />
+    <item android:drawable="@drawable/ic_sort_button_desc" android:state_checked="false" />
 </selector>

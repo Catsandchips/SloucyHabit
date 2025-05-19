@@ -34,14 +34,14 @@ class HabitsListViewModel @Inject constructor(
     var availableExecutionsCount = 0
     val habitListEvent: LiveData<HabitListEvent> = _habitListEvent
     val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
-    var titleQuery: String? = null
+    var titleQuery: String = ""
 
     init {
         viewModelScope.launch {
             getHabitsUseCase().collect {
                 _baseHabits.value = it
                 _habits.value = it
-                titleQuery = null
+                titleQuery = ""
                 sortingData.needSorting = false
             }
         }
@@ -50,15 +50,12 @@ class HabitsListViewModel @Inject constructor(
     fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
-    fun getHabitsLiveData(habitType: HabitType): LiveData<List<HabitEntity>> =
-        habits.map { habits -> habits.filter { it.type == habitType } }.asLiveData()
-
-    fun filterHabits(titleQuery: String?) {
+    fun filterHabits(titleQuery: String) {
         this.titleQuery = titleQuery
         var habits = _baseHabits.value
 
         var filteredList = habits.filter { habit ->
-            (titleQuery.isNullOrEmpty() || habit.title.contains(titleQuery, true))
+            (titleQuery.isEmpty() || habit.title.contains(titleQuery, true))
         }
 
         if (sortingData.needSorting) {

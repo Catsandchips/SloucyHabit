@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.Color
 val SlouchyDarkColorScheme = darkColorScheme(
     primary = Color(0xFFBCBD80),
     secondary = Color(0xFFC38BFF),
-    surface = Color(0xFF302E2E),
-    surfaceTint = Color(0xFF424242)
+    surface = Color(0xFFFFFFFF),
+    surfaceTint = Color(0xFF424242),
+    background = Color(0xFF302E2E),
+
 )

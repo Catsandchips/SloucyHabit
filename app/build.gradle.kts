@@ -59,7 +59,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(libs.androidx.runtime)
-    implementation(libs.androidx.material3)
+    implementation (libs.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(platform(libs.androidx.compose.bom))

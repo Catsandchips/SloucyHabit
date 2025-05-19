@@ -7,12 +7,10 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.habits_pager.HabitsPagerFragment"
+        android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list.HabitsListFragment"
         android:label="@string/habits_list_title"
-        tools:layout="@layout/fragment_habits_pager">
-        <action
-            android:id="@+id/action_goToHabitFromVP"
-            app:destination="@id/nav_create" />
+        tools:layout="@layout/fragment_habits_list">
+
     </fragment>
 
     <fragment
