@@ -29,11 +29,13 @@ class HabitsListViewModel @Inject constructor(
     private val _habitListEvent = SingleLiveEvent<HabitListEvent>()
     private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
     private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
-    var availableExecutionsCount = 0
     val habitListEvent: LiveData<HabitListEvent> = _habitListEvent
     val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
+    var availableExecutionsCount = 0
     var titleQuery: String = ""
+        private set
     var sortingType = SortingType.NONE
+        private set
 
     init {
         viewModelScope.launch {
@@ -49,7 +51,8 @@ class HabitsListViewModel @Inject constructor(
     fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
-    fun filterHabits() {
+    fun filterHabits(titleQuery: String) {
+        this.titleQuery = titleQuery
         var habits = _baseHabits.value
 
         var filteredList = habits.filter { habit ->
@@ -61,6 +64,11 @@ class HabitsListViewModel @Inject constructor(
         }
 
         _habits.value = filteredList
+    }
+
+    fun sortHabits(sortingType: SortingType) {
+        this.sortingType = sortingType
+        filterHabits(titleQuery)
     }
 
     fun deleteHabit(habitEntity: HabitEntity) {

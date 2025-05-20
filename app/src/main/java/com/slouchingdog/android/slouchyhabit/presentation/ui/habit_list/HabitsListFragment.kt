@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -83,103 +84,25 @@ class HabitsListFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         observeHabitListEvents()
-
-        val tabs = listOf(
-            getString(R.string.good_habits_tab_title),
-            getString(R.string.bad_habits_tab_title)
-        )
-
         return ComposeView(requireContext()).apply {
-
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 SlouchyTheme {
-                    val sheetState = rememberModalBottomSheetState()
                     var showBottomSheet by remember { mutableStateOf(false) }
-                    val scope = rememberCoroutineScope()
 
                     Scaffold(floatingActionButton = {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            FloatingActionButton(
-                                onClick = {
-                                    showBottomSheet = true
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = getString(R.string.open_filter_button_description)
-                                )
-                            }
-
-                            FloatingActionButton(
-                                onClick = {
-                                    findNavController().navigate(
-                                        R.id.nav_create
-                                    )
-                                },
-                                containerColor = SlouchyDarkColorScheme.primary,
-                                contentColor = SlouchyDarkColorScheme.surface
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = getString(R.string.add_habit_button_description)
-                                )
-                            }
-                        }
+                        HabitListFABs(onOpenFilterFABClick = { showBottomSheet = true })
                     }) { innerPadding ->
-                        if (showBottomSheet) {
-                            ModalBottomSheet(
-                                onDismissRequest = {
-                                    showBottomSheet = false
-                                },
-                                sheetState = sheetState,
-                                containerColor = SlouchyDarkColorScheme.background
-                            ) {
-                                BottomSheetFilters()
-                            }
-                        }
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(innerPadding)
-                        ) {
-                            val pagerState = rememberPagerState { 2 }
-                            TabRow(
-                                selectedTabIndex = pagerState.currentPage,
-                                containerColor = SlouchyDarkColorScheme.background
-                            ) {
-                                tabs.forEachIndexed { index, title ->
-                                    Tab(
-                                        text = { Text(title) },
-                                        selected = pagerState.currentPage == index,
-                                        onClick = {
-                                            scope.launch {
-                                                pagerState.animateScrollToPage(index)
-                                            }
-                                        }
-                                    )
-                                }
-                            }
-                            HorizontalPager(pagerState) { page ->
-                                when (page) {
-                                    0 -> {
-                                        HabitList(HabitType.GOOD)
-                                    }
+                        HabitListPager(innerPadding)
 
-                                    1 -> {
-                                        HabitList(HabitType.BAD)
-                                    }
-                                }
-                            }
+                        if (showBottomSheet) {
+                            BottomSheetFilters(onDismissRequest = { showBottomSheet = false })
                         }
                     }
                 }
@@ -188,88 +111,165 @@ class HabitsListFragment : Fragment() {
     }
 
     @Composable
-    fun BottomSheetFilters() {
+    fun HabitListPager(innerPadding: PaddingValues) {
+        val scope = rememberCoroutineScope()
+        val tabs = listOf(
+            getString(R.string.good_habits_tab_title),
+            getString(R.string.bad_habits_tab_title)
+        )
+
         Column(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(innerPadding)
         ) {
-            var text by remember { mutableStateOf(viewModel.titleQuery) }
-            OutlinedTextField(
-                value = text,
-                onValueChange = { value ->
-                    text = value
-                    viewModel.titleQuery = value
-                    viewModel.filterHabits()
-                },
-                label = { Text(getString(R.string.find_habit_hint)) },
-                trailingIcon = {
-                    if (text.isNotEmpty()) {
-                        IconButton(
-                            onClick = {
-                                text = ""
-                                viewModel.titleQuery = ""
-                                viewModel.filterHabits()
-                            }) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = null,
-                            )
-                        }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            val pagerState = rememberPagerState { 2 }
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                containerColor = SlouchyDarkColorScheme.background
             ) {
-                var isAscChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.ASC) }
-                var isDescChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.DESC) }
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        }
+                    )
+                }
+            }
+            HorizontalPager(pagerState) { page ->
+                when (page) {
+                    0 -> HabitList(HabitType.GOOD)
+                    1 -> HabitList(HabitType.BAD)
+                }
+            }
+        }
+    }
 
-
-                Text(
-                    text = getString(R.string.sort_by_priority_title),
-                    color = SlouchyDarkColorScheme.primary,
-                    fontSize = 24.sp
+    @Composable
+    fun HabitListFABs(onOpenFilterFABClick: () -> Unit) {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            FloatingActionButton(onClick = onOpenFilterFABClick) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = getString(R.string.open_filter_button_description)
                 )
-                IconToggleButton(
-                    checked = isDescChecked,
-                    onCheckedChange = {
-                        isDescChecked = it
-                        if (it) {
-                            isAscChecked = false
-                            viewModel.sortingType = SortingType.DESC
-                            viewModel.filterHabits()
-                        } else {
-                            viewModel.sortingType = SortingType.NONE
-                            viewModel.filterHabits()
-                        }
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Sort decs"
-                    )
-                }
+            }
 
-                IconToggleButton(
-                    checked = isAscChecked,
-                    onCheckedChange = {
-                        isAscChecked = it
-                        if (it) {
-                            isDescChecked = false
-                            viewModel.sortingType = SortingType.ASC
-                            viewModel.filterHabits()
-                        } else {
-                            viewModel.sortingType = SortingType.NONE
-                            viewModel.filterHabits()
-                        }
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Sort asc"
+            FloatingActionButton(
+                onClick = {
+                    findNavController().navigate(
+                        R.id.nav_create
                     )
+                },
+                containerColor = SlouchyDarkColorScheme.primary,
+                contentColor = SlouchyDarkColorScheme.surface
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = getString(R.string.add_habit_button_description)
+                )
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun BottomSheetFilters(onDismissRequest: () -> Unit) {
+        val sheetState = rememberModalBottomSheetState()
+
+        ModalBottomSheet(
+            onDismissRequest = onDismissRequest,
+            sheetState = sheetState,
+            containerColor = SlouchyDarkColorScheme.background
+        ) {
+            Column(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                HabitsSearchField()
+                SortHabitsRow()
+            }
+        }
+    }
+
+    @Composable
+    fun HabitsSearchField() {
+        var text by remember { mutableStateOf(viewModel.titleQuery) }
+
+        OutlinedTextField(
+            value = text,
+            onValueChange = { value ->
+                text = value
+                viewModel.filterHabits(value)
+            },
+            label = { Text(getString(R.string.find_habit_hint)) },
+            trailingIcon = {
+                if (text.isNotEmpty()) {
+                    IconButton(
+                        onClick = {
+                            text = ""
+                            viewModel.filterHabits(text)
+                        }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                        )
+                    }
                 }
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+    @Composable
+    fun SortHabitsRow() {
+        var isAscChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.ASC) }
+        var isDescChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.DESC) }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = getString(R.string.sort_by_priority_title),
+                color = SlouchyDarkColorScheme.primary,
+                fontSize = 24.sp
+            )
+            IconToggleButton(
+                checked = isDescChecked,
+                onCheckedChange = {
+                    isDescChecked = it
+                    if (it) {
+                        isAscChecked = false
+                        viewModel.sortHabits(SortingType.DESC)
+                    } else {
+                        viewModel.sortHabits(SortingType.NONE)
+                    }
+                }) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = "Sort decs"
+                )
+            }
+            IconToggleButton(
+                checked = isAscChecked,
+                onCheckedChange = {
+                    isAscChecked = it
+                    if (it) {
+                        isDescChecked = false
+                        viewModel.sortHabits(SortingType.ASC)
+                    } else {
+                        viewModel.sortHabits(SortingType.NONE)
+                    }
+                }) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowUp,
+                    contentDescription = "Sort asc"
+                )
             }
         }
     }
@@ -300,49 +300,31 @@ class HabitsListFragment : Fragment() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = habit.title,
-                        color = colorResource(R.color.headers_color),
-                        fontFamily = SlouchyFontFamily,
-                        fontSize = 34.sp,
-                    )
-                    Text(
-                        text = habit.description,
-                        color = colorResource(R.color.headers_color),
-                        fontFamily = SlouchyFontFamily,
-                        fontSize = 24.sp,
-                    )
-                    HabitInfoRow(habit)
-                }
-                Column(
-                    modifier = Modifier.fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    IconButton(
-                        onClick = { viewModel.deleteHabit(habit) },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = getString(R.string.delete_button),
-                            tint = colorResource(R.color.white)
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { viewModel.addHabitDoneDate(habit) },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = getString(R.string.habit_done),
-                            tint = colorResource(R.color.white)
-                        )
-                    }
-                }
+                HabitDescriptionColumn(habit)
+                HabitModificationButtons(habit)
             }
+        }
+    }
+
+    @Composable
+    fun HabitDescriptionColumn(habit: HabitEntity) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                text = habit.title,
+                color = colorResource(R.color.headers_color),
+                fontFamily = SlouchyFontFamily,
+                fontSize = 34.sp,
+            )
+            Text(
+                text = habit.description,
+                color = colorResource(R.color.headers_color),
+                fontFamily = SlouchyFontFamily,
+                fontSize = 24.sp,
+            )
+            HabitInfoRow(habit)
         }
     }
 
@@ -369,6 +351,34 @@ class HabitsListFragment : Fragment() {
                     daysCountString
                 )
             )
+        }
+    }
+
+    @Composable
+    fun HabitModificationButtons(habit: HabitEntity) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            IconButton(
+                onClick = { viewModel.deleteHabit(habit) },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = getString(R.string.delete_button),
+                    tint = colorResource(R.color.white)
+                )
+            }
+
+            IconButton(
+                onClick = { viewModel.addHabitDoneDate(habit) },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
+                    contentDescription = getString(R.string.habit_done),
+                    tint = colorResource(R.color.white)
+                )
+            }
         }
     }
 
