@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.konan.properties.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("androidx.navigation.safeargs")
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
 }

@@ -75,4 +75,4 @@ val SlouchyAppTypography = Typography(
         color = Color(0xFFFFFFFF)
     ),
 
-)
+    )

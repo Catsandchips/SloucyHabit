@@ -10,4 +10,4 @@ val SlouchyDarkColorScheme = darkColorScheme(
     surfaceTint = Color(0xFF424242),
     background = Color(0xFF302E2E),
 
-)
+    )

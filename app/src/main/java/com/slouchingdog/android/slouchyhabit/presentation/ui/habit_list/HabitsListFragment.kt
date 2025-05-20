@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
@@ -72,7 +72,7 @@ import kotlin.getValue
 class HabitsListFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: HabitsListViewModelFactory
-    val viewModel: HabitsListViewModel by activityViewModels { viewModelFactory }
+    val viewModel: HabitsListViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (requireActivity().application as SlouchyHabitApplication)

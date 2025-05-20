@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun SlouchyTheme(
     content: @Composable () -> Unit
-){
-    MaterialTheme (
+) {
+    MaterialTheme(
         colorScheme = SlouchyDarkColorScheme,
         typography = SlouchyAppTypography,
         shapes = SlouchyShapes,
