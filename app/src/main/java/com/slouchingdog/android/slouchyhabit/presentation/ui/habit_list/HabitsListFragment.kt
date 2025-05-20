@@ -49,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -166,7 +167,8 @@ class HabitsListFragment : Fragment() {
                     )
                 },
                 containerColor = SlouchyDarkColorScheme.primary,
-                contentColor = SlouchyDarkColorScheme.surface
+                contentColor = SlouchyDarkColorScheme.surface,
+                modifier = Modifier.testTag("createHabitButton")
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,

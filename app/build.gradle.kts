@@ -78,6 +78,9 @@ dependencies {
     androidTestUtil(libs.androidx.orchestrator)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.kaspresso)
+    androidTestImplementation (libs.kaspresso.compose.support)
+    androidTestImplementation (libs.androidx.ui.test.junit4)
+    debugImplementation (libs.androidx.ui.test.manifest)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

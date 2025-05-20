@@ -60,11 +60,7 @@ class HabitsListViewModel @Inject constructor(
             (titleQuery.isEmpty() || habit.title.contains(titleQuery, true))
         }
 
-        if (sortingType != SortingType.NONE) {
-            filteredList = sortHabitsByPriority(filteredList)
-        }
-
-        _habits.value = filteredList
+        _habits.value = sortHabitsByPriority(filteredList)
     }
 
     fun sortHabits(sortingType: SortingType) {

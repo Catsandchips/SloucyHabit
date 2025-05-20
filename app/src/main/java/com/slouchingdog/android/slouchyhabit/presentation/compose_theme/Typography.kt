@@ -73,6 +73,5 @@ val SlouchyAppTypography = Typography(
     labelSmall = TextStyle(
         fontFamily = SlouchyFontFamily,
         color = Color(0xFFFFFFFF)
-    ),
-
     )
+)
