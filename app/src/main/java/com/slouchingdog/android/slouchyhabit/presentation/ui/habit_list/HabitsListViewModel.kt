@@ -3,7 +3,6 @@ package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
@@ -29,12 +28,12 @@ class HabitsListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _habitListEvent = SingleLiveEvent<HabitListEvent>()
     private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
-    private var sortingData: SortingData = SortingData(false, false)
     private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
     var availableExecutionsCount = 0
     val habitListEvent: LiveData<HabitListEvent> = _habitListEvent
     val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
     var titleQuery: String = ""
+    var sortingType = SortingType.NONE
 
     init {
         viewModelScope.launch {
@@ -42,7 +41,7 @@ class HabitsListViewModel @Inject constructor(
                 _baseHabits.value = it
                 _habits.value = it
                 titleQuery = ""
-                sortingData.needSorting = false
+                sortingType = SortingType.NONE
             }
         }
     }
@@ -50,32 +49,18 @@ class HabitsListViewModel @Inject constructor(
     fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
-    fun filterHabits(titleQuery: String) {
-        this.titleQuery = titleQuery
+    fun filterHabits() {
         var habits = _baseHabits.value
 
         var filteredList = habits.filter { habit ->
             (titleQuery.isEmpty() || habit.title.contains(titleQuery, true))
         }
 
-        if (sortingData.needSorting) {
+        if (sortingType != SortingType.NONE) {
             filteredList = sortHabitsByPriority(filteredList)
         }
 
         _habits.value = filteredList
-    }
-
-    fun setPrioritySorting(sortByAsc: Boolean) {
-        sortingData.apply {
-            needSorting = true
-            sortAsc = sortByAsc
-        }
-        filterHabits(titleQuery)
-    }
-
-    fun resetPrioritySorting() {
-        sortingData.needSorting = false
-        filterHabits(titleQuery)
     }
 
     fun deleteHabit(habitEntity: HabitEntity) {
@@ -97,8 +82,15 @@ class HabitsListViewModel @Inject constructor(
         }
     }
 
-    private fun sortHabitsByPriority(habits: List<HabitEntity>) =
-        if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
+    private fun sortHabitsByPriority(habits: List<HabitEntity>): List<HabitEntity> {
+        return when (sortingType) {
+            SortingType.ASC -> habits.sortedBy { it.priority }
+            SortingType.DESC -> habits.sortedByDescending { it.priority }
+            SortingType.NONE -> habits
+
+        }
+    }
+
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -116,4 +108,8 @@ class HabitsListViewModelFactory @Inject constructor(
     }
 }
 
-data class SortingData(var needSorting: Boolean, var sortAsc: Boolean)
+enum class SortingType() {
+    ASC,
+    DESC,
+    NONE
+}

@@ -11,13 +11,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,7 +29,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.IconToggleButtonColors
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -40,18 +43,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
@@ -111,11 +113,9 @@ class HabitsListFragment : Fragment() {
                                 onClick = {
                                     showBottomSheet = true
                                 },
-                                modifier = Modifier
-                                    .size(50.dp)
                             ) {
                                 Icon(
-                                    painter = painterResource(R.drawable.ic_add_button),
+                                    imageVector = Icons.Default.Search,
                                     contentDescription = getString(R.string.open_filter_button_description)
                                 )
                             }
@@ -127,11 +127,10 @@ class HabitsListFragment : Fragment() {
                                     )
                                 },
                                 containerColor = SlouchyDarkColorScheme.primary,
-                                contentColor = SlouchyDarkColorScheme.surface,
-                                modifier = Modifier.size(50.dp)
+                                contentColor = SlouchyDarkColorScheme.surface
                             ) {
                                 Icon(
-                                    painter = painterResource(R.drawable.ic_add_button),
+                                    imageVector = Icons.Default.Add,
                                     contentDescription = getString(R.string.add_habit_button_description)
                                 )
                             }
@@ -142,7 +141,8 @@ class HabitsListFragment : Fragment() {
                                 onDismissRequest = {
                                     showBottomSheet = false
                                 },
-                                sheetState = sheetState
+                                sheetState = sheetState,
+                                containerColor = SlouchyDarkColorScheme.background
                             ) {
                                 BottomSheetFilters()
                             }
@@ -190,74 +190,88 @@ class HabitsListFragment : Fragment() {
     @Composable
     fun BottomSheetFilters() {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            var text by remember { mutableStateOf("") }
+            var text by remember { mutableStateOf(viewModel.titleQuery) }
             OutlinedTextField(
                 value = text,
                 onValueChange = { value ->
                     text = value
-                    viewModel.filterHabits(value) },
+                    viewModel.titleQuery = value
+                    viewModel.filterHabits()
+                },
                 label = { Text(getString(R.string.find_habit_hint)) },
                 trailingIcon = {
                     if (text.isNotEmpty()) {
                         IconButton(
-                            onClick = { text = "" },
-                            modifier = Modifier.size(24.dp)
-                        ) {
+                            onClick = {
+                                text = ""
+                                viewModel.titleQuery = ""
+                                viewModel.filterHabits()
+                            }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Очистить поле",
+                                contentDescription = null,
                             )
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth())
+                modifier = Modifier.fillMaxWidth()
+            )
 
-            Row(modifier = Modifier.fillMaxWidth()) {
-                var isCheckedAsc by remember { mutableStateOf(false) }
-                var isCheckedDesc by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                var isAscChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.ASC) }
+                var isDescChecked by remember { mutableStateOf(viewModel.sortingType == SortingType.DESC) }
 
-                Text(getString(R.string.sort_by_priority_title))
+
+                Text(
+                    text = getString(R.string.sort_by_priority_title),
+                    color = SlouchyDarkColorScheme.primary,
+                    fontSize = 24.sp
+                )
                 IconToggleButton(
-                    checked = isCheckedDesc,
+                    checked = isDescChecked,
                     onCheckedChange = {
-                        isCheckedDesc = it
-                        if (isCheckedDesc) {
-                            isCheckedAsc = false
-                            viewModel.setPrioritySorting(sortByAsc = false)
+                        isDescChecked = it
+                        if (it) {
+                            isAscChecked = false
+                            viewModel.sortingType = SortingType.DESC
+                            viewModel.filterHabits()
                         } else {
-                            viewModel.resetPrioritySorting()
+                            viewModel.sortingType = SortingType.NONE
+                            viewModel.filterHabits()
                         }
                     }) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_sort_button_desc),
+                        imageVector = Icons.Default.KeyboardArrowDown,
                         contentDescription = "Sort decs"
                     )
                 }
 
                 IconToggleButton(
-                    checked = isCheckedAsc,
+                    checked = isAscChecked,
                     onCheckedChange = {
-                        isCheckedAsc = it
-                        if (isCheckedAsc) {
-                            isCheckedDesc = false
-                            viewModel.setPrioritySorting(sortByAsc = true)
+                        isAscChecked = it
+                        if (it) {
+                            isDescChecked = false
+                            viewModel.sortingType = SortingType.ASC
+                            viewModel.filterHabits()
                         } else {
-                            viewModel.resetPrioritySorting()
+                            viewModel.sortingType = SortingType.NONE
+                            viewModel.filterHabits()
                         }
                     }) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_sort_button_asc),
-                        contentDescription = "Sort decs"
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "Sort asc"
                     )
                 }
-
             }
-
         }
-
     }
 
     @Composable
@@ -312,7 +326,7 @@ class HabitsListFragment : Fragment() {
                         onClick = { viewModel.deleteHabit(habit) },
                     ) {
                         Icon(
-                            painterResource(R.drawable.ic_clear_field_button),
+                            imageVector = Icons.Default.Close,
                             contentDescription = getString(R.string.delete_button),
                             tint = colorResource(R.color.white)
                         )
@@ -322,7 +336,7 @@ class HabitsListFragment : Fragment() {
                         onClick = { viewModel.addHabitDoneDate(habit) },
                     ) {
                         Icon(
-                            painterResource(R.drawable.ic_habit_done_button),
+                            imageVector = Icons.Default.CheckCircle,
                             contentDescription = getString(R.string.habit_done),
                             tint = colorResource(R.color.white)
                         )
