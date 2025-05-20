@@ -10,7 +10,7 @@ class AddHabitDoneDateUseCase(private val repository: HabitRepository) {
     suspend operator fun invoke(
         habitEntity: HabitEntity,
         doneDate: Long
-    ): Pair<HabitListEvent, Int> {
+    ): HabitListEventData {
         repository.addHabitDoneDate(habitEntity, doneDate)
 
         var availableExecutionsCount: Int = 0
@@ -37,6 +37,7 @@ class AddHabitDoneDateUseCase(private val repository: HabitRepository) {
             }
         }
 
-        return event to availableExecutionsCount
+        return HabitListEventData(event, availableExecutionsCount)
     }
 }
+

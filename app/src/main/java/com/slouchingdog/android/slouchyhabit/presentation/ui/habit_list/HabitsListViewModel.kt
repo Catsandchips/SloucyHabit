@@ -10,6 +10,7 @@ import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
 import com.slouchingdog.android.domain.usecases.HabitListEvent
+import com.slouchingdog.android.domain.usecases.HabitListEventData
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,14 +80,14 @@ class HabitsListViewModel @Inject constructor(
 
     fun addHabitDoneDate(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            val eventPair = addHabitDoneDateUseCase(
+            val eventData: HabitListEventData = addHabitDoneDateUseCase(
                 habitEntity,
                 LocalDateTime
                     .now()
                     .toEpochSecond(ZoneOffset.UTC)
             )
-            availableExecutionsCount = eventPair.second
-            _habitListEvent.value = eventPair.first
+            availableExecutionsCount = eventData.availableExecutionsCount
+            _habitListEvent.value = eventData.habitListEvent
         }
     }
 
@@ -95,10 +96,8 @@ class HabitsListViewModel @Inject constructor(
             SortingType.ASC -> habits.sortedBy { it.priority }
             SortingType.DESC -> habits.sortedByDescending { it.priority }
             SortingType.NONE -> habits
-
         }
     }
-
 }
 
 @Suppress("UNCHECKED_CAST")

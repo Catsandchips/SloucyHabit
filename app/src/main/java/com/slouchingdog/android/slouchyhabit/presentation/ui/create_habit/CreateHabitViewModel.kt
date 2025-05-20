@@ -2,8 +2,12 @@ package com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit
 
 import android.text.Editable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.SyncType
@@ -14,24 +18,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
 import kotlin.text.isNullOrEmpty
 
 class CreateHabitViewModel @Inject constructor(
-    val habitId: String?,
     val addHabitUseCase: AddHabitUseCase,
-    val getHabitByIdUseCase: GetHabitByIdUseCase
+    val getHabitByIdUseCase: GetHabitByIdUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     var habitState: HabitState = HabitState()
     private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
     val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
+    val habitId = savedStateHandle.get<String>(HABIT_ID_ARG)
 
     init {
         if (habitId != null) {
-            runBlocking {
+            viewModelScope.launch {
                 val habit = getHabitByIdUseCase(habitId)
                 habitState = HabitState(
                     title = habit.title,
@@ -113,15 +117,14 @@ class CreateHabitViewModel @Inject constructor(
 @Suppress("UNCHECKED_CAST")
 class CreateHabitViewModelFactory @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
-    val getHabitByIdUseCase: GetHabitByIdUseCase
+    val getHabitByIdUseCase: GetHabitByIdUseCase,
 ) : ViewModelProvider.Factory {
-    var habitId: String? = null
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return CreateHabitViewModel(
-            habitId,
             addHabitUseCase,
-            getHabitByIdUseCase
+            getHabitByIdUseCase,
+            extras.createSavedStateHandle()
         ) as T
     }
 }
