@@ -254,7 +254,7 @@ class HabitsListFragment : Fragment() {
                 }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Sort decs"
+                    contentDescription = null
                 )
             }
             IconToggleButton(
@@ -270,7 +270,7 @@ class HabitsListFragment : Fragment() {
                 }) {
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Sort asc"
+                    contentDescription = null
                 )
             }
         }
@@ -340,9 +340,9 @@ class HabitsListFragment : Fragment() {
 
         Row {
             Text(text = habit.type.title, fontFamily = SlouchyFontFamily)
-            Text(text = " • ")
+            Text(text = getString(R.string.devider_dot))
             Text(text = context.resources.getStringArray(R.array.priorities_array)[habit.priority])
-            Text(text = " • ")
+            Text(text = getString(R.string.devider_dot))
             Text(
                 text = String.format(
                     Locale.getDefault(),
