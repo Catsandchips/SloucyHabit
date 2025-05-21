@@ -239,7 +239,8 @@ class HabitsListFragment : Fragment() {
             Text(
                 text = getString(R.string.sort_by_priority_title),
                 color = SlouchyDarkColorScheme.primary,
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                modifier = Modifier.padding(end = 24.dp)
             )
             IconToggleButton(
                 checked = isDescChecked,
@@ -338,7 +339,7 @@ class HabitsListFragment : Fragment() {
         val daysCountString =
             context.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
 
-        Row {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(text = habit.type.title, fontFamily = SlouchyFontFamily)
             Text(text = getString(R.string.devider_dot))
             Text(text = context.resources.getStringArray(R.array.priorities_array)[habit.priority])
