@@ -30,6 +30,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -61,8 +62,6 @@ import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.usecases.HabitListEvent
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.SlouchyDarkColorScheme
-import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.SlouchyFontFamily
 import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.SlouchyTheme
 import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.HABIT_ID_ARG
@@ -127,7 +126,7 @@ class HabitsListFragment : Fragment() {
             val pagerState = rememberPagerState { 2 }
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
-                containerColor = SlouchyDarkColorScheme.background
+                containerColor = MaterialTheme.colorScheme.background
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
@@ -166,8 +165,8 @@ class HabitsListFragment : Fragment() {
                         R.id.nav_create
                     )
                 },
-                containerColor = SlouchyDarkColorScheme.primary,
-                contentColor = SlouchyDarkColorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.testTag("createHabitButton")
             ) {
                 Icon(
@@ -186,7 +185,7 @@ class HabitsListFragment : Fragment() {
         ModalBottomSheet(
             onDismissRequest = onDismissRequest,
             sheetState = sheetState,
-            containerColor = SlouchyDarkColorScheme.background
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             Column(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp),
@@ -238,7 +237,7 @@ class HabitsListFragment : Fragment() {
         ) {
             Text(
                 text = getString(R.string.sort_by_priority_title),
-                color = SlouchyDarkColorScheme.primary,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 modifier = Modifier.padding(end = 24.dp)
             )
@@ -318,14 +317,12 @@ class HabitsListFragment : Fragment() {
             Text(
                 text = habit.title,
                 color = colorResource(R.color.headers_color),
-                fontFamily = SlouchyFontFamily,
-                fontSize = 34.sp,
+                fontSize = 34.sp
             )
             Text(
                 text = habit.description,
                 color = colorResource(R.color.headers_color),
-                fontFamily = SlouchyFontFamily,
-                fontSize = 24.sp,
+                fontSize = 24.sp
             )
             HabitInfoRow(habit)
         }
@@ -340,7 +337,7 @@ class HabitsListFragment : Fragment() {
             context.resources.getQuantityString(R.plurals.days, habit.periodicityDays)
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(text = habit.type.title, fontFamily = SlouchyFontFamily)
+            Text(text = habit.type.title)
             Text(text = getString(R.string.devider_dot))
             Text(text = context.resources.getStringArray(R.array.priorities_array)[habit.priority])
             Text(text = getString(R.string.devider_dot))
