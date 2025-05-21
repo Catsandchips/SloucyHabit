@@ -32,4 +32,5 @@
     <string name="underdone_good_habit_message">Стоит выполнить еще</string>
     <string name="overdone_bad_habit_message">Хватит это делать</string>
     <string name="overdone_good_habit_message">You are breathtaking</string>
+    <string name="devider_dot"> • </string>
 </resources>

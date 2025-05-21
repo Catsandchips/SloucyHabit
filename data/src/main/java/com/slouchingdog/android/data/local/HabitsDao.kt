@@ -17,7 +17,7 @@ interface HabitsDao {
     fun getHabits(): Flow<List<HabitDBO>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
-    fun getHabitById(id: String): HabitDBO
+    suspend fun getHabitById(id: String): HabitDBO
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addHabit(habit: HabitDBO)
@@ -32,7 +32,7 @@ interface HabitsDao {
     suspend fun deleteHabitById(id: String)
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE syncType != '$NOT_NEED_SYNC'")
-    fun getNotSyncedHabits(): List<HabitDBO>
+    suspend fun getNotSyncedHabits(): List<HabitDBO>
 
     @Transaction
     suspend fun replaceHabitsList(habits: List<HabitDBO>) {

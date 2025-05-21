@@ -26,13 +26,7 @@ class CreateHabitFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: CreateHabitViewModelFactory
-    val viewModel: CreateHabitViewModel by viewModels {
-        viewModelFactory.apply {
-            habitId = arguments?.getString(
-                HABIT_ID_ARG
-            )
-        }
-    }
+    val viewModel: CreateHabitViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (requireActivity().application as SlouchyHabitApplication)
