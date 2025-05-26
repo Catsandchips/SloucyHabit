@@ -7,20 +7,12 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list.HabitsListFragment"
-        android:label="@string/habits_list_title">
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_create"
-        android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.CreateHabitFragment"
-        android:label="@string/create_habit_title" />
+        android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.ComposeRootFragment"
+        android:label="@string/habits_list_title" />
 
     <fragment
         android:id="@+id/nav_about"
         android:name="com.slouchingdog.android.slouchyhabit.presentation.ui.app_info.AppInfoFragment"
         android:label="@string/about_title"
         tools:layout="@layout/fragment_app_info" />
-
 </navigation>

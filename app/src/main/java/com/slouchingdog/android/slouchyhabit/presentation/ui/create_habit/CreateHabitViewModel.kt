@@ -8,11 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.navigation.toRoute
 import com.slouchingdog.android.domain.entity.HabitEntity
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.domain.entity.SyncType
 import com.slouchingdog.android.domain.usecases.AddHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitByIdUseCase
+import com.slouchingdog.android.slouchyhabit.presentation.ui.ComposeRootFragment.CreateHabitDestination
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +33,8 @@ class CreateHabitViewModel @Inject constructor(
     var habitState: HabitState = HabitState()
     private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
     val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
-    val habitId = savedStateHandle.get<String>(HABIT_ID_ARG)
+    val habitDetails = savedStateHandle.toRoute<CreateHabitDestination>()
+    val habitId = habitDetails.habitId
 
     init {
         if (habitId != null) {
