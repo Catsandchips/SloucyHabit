@@ -121,7 +121,7 @@ class HabitRepositoryImpl(val habitAPIService: HabitAPIService, val database: Ha
                     .replaceHabitsList(getHabitsResponse.getOrThrow().mapToDBOList())
             }
         } catch (e: Exception) {
-            Log.e("SYNCHRONIZATION HABITS ERROR", e.stackTrace.toString())
+            Log.e("SYNCHRONIZATION HABITS ERROR", e.toString())
         }
     }
 }

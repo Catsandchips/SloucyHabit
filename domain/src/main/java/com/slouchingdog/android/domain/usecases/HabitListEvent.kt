@@ -6,3 +6,5 @@ enum class HabitListEvent {
     GoodHabitDoneNormal,
     GoodHabitDoneExcessively
 }
+
+data class HabitListEventData(val habitListEvent: HabitListEvent, val availableExecutionsCount: Int)

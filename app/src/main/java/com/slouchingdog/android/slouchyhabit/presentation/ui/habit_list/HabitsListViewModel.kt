@@ -10,6 +10,7 @@ import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
 import com.slouchingdog.android.domain.usecases.HabitListEvent
+import com.slouchingdog.android.domain.usecases.HabitListEventData
 import com.slouchingdog.android.slouchyhabit.ui.create_habit.SingleLiveEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,20 +29,22 @@ class HabitsListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _habitListEvent = SingleLiveEvent<HabitListEvent>()
     private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
-    private var sortingData: SortingData = SortingData(false, false)
     private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
-    var availableExecutionsCount = 0
     val habitListEvent: LiveData<HabitListEvent> = _habitListEvent
     val habits: StateFlow<List<HabitEntity>> = _habits.asStateFlow()
-    var titleQuery: String? = null
+    var availableExecutionsCount = 0
+    var titleQuery: String = ""
+        private set
+    var sortingType = SortingType.NONE
+        private set
 
     init {
         viewModelScope.launch {
             getHabitsUseCase().collect {
                 _baseHabits.value = it
                 _habits.value = it
-                titleQuery = null
-                sortingData.needSorting = false
+                titleQuery = ""
+                sortingType = SortingType.NONE
             }
         }
     }
@@ -49,31 +52,19 @@ class HabitsListViewModel @Inject constructor(
     fun getHabitsFlow(habitType: HabitType?): Flow<List<HabitEntity>> =
         habits.map { habits -> habits.filter { it.type == habitType } }
 
-    fun filterHabits(titleQuery: String?) {
+    fun filterHabits(titleQuery: String) {
         this.titleQuery = titleQuery
         var habits = _baseHabits.value
 
         var filteredList = habits.filter { habit ->
-            (titleQuery.isNullOrEmpty() || habit.title.contains(titleQuery, true))
+            (titleQuery.isEmpty() || habit.title.contains(titleQuery, true))
         }
 
-        if (sortingData.needSorting) {
-            filteredList = sortHabitsByPriority(filteredList)
-        }
-
-        _habits.value = filteredList
+        _habits.value = sortHabitsByPriority(filteredList)
     }
 
-    fun setPrioritySorting(sortByAsc: Boolean) {
-        sortingData.apply {
-            needSorting = true
-            sortAsc = sortByAsc
-        }
-        filterHabits(titleQuery)
-    }
-
-    fun resetPrioritySorting() {
-        sortingData.needSorting = false
+    fun sortHabits(sortingType: SortingType) {
+        this.sortingType = sortingType
         filterHabits(titleQuery)
     }
 
@@ -85,19 +76,24 @@ class HabitsListViewModel @Inject constructor(
 
     fun addHabitDoneDate(habitEntity: HabitEntity) {
         viewModelScope.launch {
-            val eventPair = addHabitDoneDateUseCase(
+            val eventData: HabitListEventData = addHabitDoneDateUseCase(
                 habitEntity,
                 LocalDateTime
                     .now()
                     .toEpochSecond(ZoneOffset.UTC)
             )
-            availableExecutionsCount = eventPair.second
-            _habitListEvent.value = eventPair.first
+            availableExecutionsCount = eventData.availableExecutionsCount
+            _habitListEvent.value = eventData.habitListEvent
         }
     }
 
-    private fun sortHabitsByPriority(habits: List<HabitEntity>) =
-        if (sortingData.sortAsc) habits.sortedBy { it.priority } else habits.sortedByDescending { it.priority }
+    private fun sortHabitsByPriority(habits: List<HabitEntity>): List<HabitEntity> {
+        return when (sortingType) {
+            SortingType.ASC -> habits.sortedBy { it.priority }
+            SortingType.DESC -> habits.sortedByDescending { it.priority }
+            SortingType.NONE -> habits
+        }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -115,4 +111,8 @@ class HabitsListViewModelFactory @Inject constructor(
     }
 }
 
-data class SortingData(var needSorting: Boolean, var sortAsc: Boolean)
+enum class SortingType() {
+    ASC,
+    DESC,
+    NONE
+}
