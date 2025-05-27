@@ -1,6 +1,5 @@
 package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -71,35 +70,34 @@ fun HabitListScreen(
     onSortButtonCheck: (SortingType) -> Unit,
     onTabClick: (HabitType) -> Unit
 ) {
-    val habitListState by habitListStateLiveData.observeAsState()
-    if (habitListState != null) {
-        ObserveHabitListEvents(habitListState!!.habitListEventData)
-        var showBottomSheet by remember { mutableStateOf(false) }
+    val habitListState by habitListStateLiveData.observeAsState(HabitListState())
 
-        Scaffold(floatingActionButton = {
-            HabitListFABs(
-                onOpenFilterFABClick = { showBottomSheet = true },
-                onNavigateToCreateHabit = onNavigateToCreateHabit
-            )
-        }) { innerPadding ->
-            HabitListPager(
-                onNavigateToCreateHabit =  onNavigateToCreateHabit,
-                innerPadding = innerPadding,
-                onDeleteButtonClick = onDeleteButtonClick,
-                onTabClick = onTabClick,
-                onAddDoneDateButtonClick = onAddDoneDateButtonClick,
-                habitsFlow = habitListState!!.habitListFlow
-            )
+    ObserveHabitListEvents(habitListState.habitListEventData)
+    var showBottomSheet by remember { mutableStateOf(false) }
 
-            if (showBottomSheet) {
-                BottomSheetFilters(
-                    onDismissRequest = { showBottomSheet = false },
-                    onSetQuery = onSetQuery,
-                    onSortButtonCheck = onSortButtonCheck,
-                    titleQuery = habitListState!!.titleQuery,
-                    sortingType = habitListState!!.sortingType
-                )
-            }
+    Scaffold(floatingActionButton = {
+        HabitListFABs(
+            onOpenFilterFABClick = { showBottomSheet = true },
+            onNavigateToCreateHabit = onNavigateToCreateHabit
+        )
+    }) { innerPadding ->
+        HabitListPager(
+            onNavigateToCreateHabit = onNavigateToCreateHabit,
+            innerPadding = innerPadding,
+            onDeleteButtonClick = onDeleteButtonClick,
+            onTabClick = onTabClick,
+            onAddDoneDateButtonClick = onAddDoneDateButtonClick,
+            habitsFlow = habitListState.habitListFlow
+        )
+
+        if (showBottomSheet) {
+            BottomSheetFilters(
+                onDismissRequest = { showBottomSheet = false },
+                onSetQuery = onSetQuery,
+                onSortButtonCheck = onSortButtonCheck,
+                titleQuery = habitListState.titleQuery,
+                sortingType = habitListState.sortingType
+            )
         }
     }
 }

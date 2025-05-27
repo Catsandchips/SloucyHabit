@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,7 +32,7 @@ class ComposeRootFragment : Fragment() {
 
     @Inject
     lateinit var createHabitViewModelFactory: CreateHabitViewModelFactory
-    val createHabitViewModel: CreateHabitViewModel by viewModels { createHabitViewModelFactory }
+    lateinit var createHabitViewModel: CreateHabitViewModel //by viewModels { createHabitViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (requireActivity().application as SlouchyHabitApplication)
@@ -88,7 +89,29 @@ class ComposeRootFragment : Fragment() {
             }
             composable<CreateHabitDestination> { backStackEntry ->
                 val createHabitDestination: CreateHabitDestination = backStackEntry.toRoute()
-                CreateHabitScreen(habitId = createHabitDestination.habitId)
+                createHabitViewModel = viewModel(factory = createHabitViewModelFactory.apply { habitId = createHabitDestination.habitId })
+                CreateHabitScreen(
+                    habitId = createHabitDestination.habitId,
+                    habitStateLiveData = createHabitViewModel.habitState,
+                    onTitleChange = { title -> createHabitViewModel.onTitleChange(title) },
+                    onDescriptionChange = { description ->
+                        createHabitViewModel.onDescriptionChange(
+                            description
+                        )
+                    },
+                    onPrioritySelection = { priority ->
+                        createHabitViewModel.onPriorityChange(
+                            priority
+                        )
+                    },
+                    onTypeSelected = { type -> createHabitViewModel.onTypeChange(type) },
+                    onTimesChange = { times -> createHabitViewModel.onPeriodicityTimesChange(times) },
+                    onDaysChange = { days -> createHabitViewModel.onPeriodicityDaysChange(days) },
+                    onSaveButtonClick = {
+                        createHabitViewModel.onSaveButtonClick()
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

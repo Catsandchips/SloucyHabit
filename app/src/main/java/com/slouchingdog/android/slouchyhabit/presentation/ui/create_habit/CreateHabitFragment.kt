@@ -15,7 +15,6 @@
 //import com.slouchingdog.android.domain.entity.HabitType
 //import com.slouchingdog.android.slouchyhabit.R
 //import com.slouchingdog.android.slouchyhabit.databinding.FragmentCreateHabitBinding
-//import com.slouchingdog.android.slouchyhabit.presentation.ui.SlouchyHabitApplication
 //import javax.inject.Inject
 //
 //const val HABIT_ID_ARG = "HABIT_ARG"

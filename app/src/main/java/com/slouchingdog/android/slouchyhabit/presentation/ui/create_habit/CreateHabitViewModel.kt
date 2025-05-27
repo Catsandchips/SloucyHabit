@@ -2,6 +2,7 @@ package com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit
 
 import android.text.Editable
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -28,25 +29,25 @@ import kotlin.text.isNullOrEmpty
 class CreateHabitViewModel @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    val habitId: String?
 ) : ViewModel() {
-    var habitState: HabitState = HabitState()
+    private val _habitState: MutableLiveData<HabitState> = MutableLiveData(HabitState())
+    val habitState: LiveData<HabitState> = _habitState
     private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
     val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
-    val habitDetails = savedStateHandle.toRoute<CreateHabitDestination>()
-    val habitId = habitDetails.habitId
 
     init {
         if (habitId != null) {
             viewModelScope.launch {
                 val habit = getHabitByIdUseCase(habitId)
-                habitState = HabitState(
+                _habitState.value = HabitState(
                     title = habit.title,
                     description = habit.description,
                     type = habit.type,
                     priority = habit.priority,
-                    periodicityTimes = habit.periodicityTimes,
-                    periodicityDays = habit.periodicityDays,
+                    periodicityTimes = habit.periodicityTimes.toString(),
+                    periodicityDays = habit.periodicityDays.toString(),
                     doneDates = habit.doneDates,
                     color = habit.color,
                     syncType = habit.syncType
@@ -58,14 +59,15 @@ class CreateHabitViewModel @Inject constructor(
 
     fun addHabit() {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+            val habitState = _habitState.value!!
             val habitEntity = HabitEntity(
                 id = habitId,
                 title = habitState.title,
                 description = habitState.description,
                 type = habitState.type,
                 priority = habitState.priority,
-                periodicityTimes = habitState.periodicityTimes,
-                periodicityDays = habitState.periodicityDays,
+                periodicityTimes = habitState.periodicityTimes.toInt(),
+                periodicityDays = habitState.periodicityDays.toInt(),
                 date = habitState.date,
                 doneDates = habitState.doneDates,
                 color = habitState.color,
@@ -77,32 +79,36 @@ class CreateHabitViewModel @Inject constructor(
     }
 
     fun onTitleChange(newTitle: String) {
-        habitState = habitState.copy(title = newTitle)
+        _habitState.value = _habitState.value!!.copy(title = newTitle)
     }
 
     fun onDescriptionChange(newDescription: String) {
-        habitState = habitState.copy(description = newDescription)
+        _habitState.value = _habitState.value!!.copy(description = newDescription)
     }
 
     fun onTypeChange(newType: HabitType) {
-        habitState = habitState.copy(type = newType)
+        _habitState.value = _habitState.value!!.copy(type = newType)
     }
 
     fun onPriorityChange(newPriority: Int) {
-        habitState = habitState.copy(priority = newPriority)
+        _habitState.value = _habitState.value!!.copy(priority = newPriority)
     }
 
-    fun onPeriodicityTimesChange(newPeriodicityTimes: Int) {
-        habitState = habitState.copy(periodicityTimes = newPeriodicityTimes)
+    fun onPeriodicityTimesChange(newPeriodicityTimes: String) {
+        _habitState.value = _habitState.value!!.copy(periodicityTimes = newPeriodicityTimes)
     }
 
-    fun onPeriodicityDaysChange(newPeriodicityDays: Int) {
-        habitState = habitState.copy(periodicityDays = newPeriodicityDays)
+    fun onPeriodicityDaysChange(newPeriodicityDays: String) {
+        _habitState.value = _habitState.value!!.copy(periodicityDays = newPeriodicityDays)
     }
 
     fun onSaveButtonClick() {
         _createHabitEvent.value =
-            if (habitState.title.isEmpty() || habitState.description.isEmpty() || habitState.periodicityTimes == 0 || habitState.periodicityDays == 0) {
+            if (_habitState.value!!.title.isEmpty() ||
+                _habitState.value!!.description.isEmpty() ||
+                _habitState.value!!.periodicityTimes.isEmpty() ||
+                _habitState.value!!.periodicityDays.isEmpty()
+            ) {
                 CreateHabitEvent.ShowSnackBarSomeFieldsEmpty
             } else {
                 addHabit()
@@ -122,12 +128,14 @@ class CreateHabitViewModelFactory @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase,
 ) : ViewModelProvider.Factory {
+    var habitId: String? = null
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return CreateHabitViewModel(
             addHabitUseCase,
             getHabitByIdUseCase,
-            extras.createSavedStateHandle()
+            extras.createSavedStateHandle(),
+            habitId
         ) as T
     }
 }
@@ -137,8 +145,8 @@ data class HabitState(
     val description: String = "",
     val type: HabitType = HabitType.GOOD,
     val priority: Int = 0,
-    val periodicityTimes: Int = 0,
-    val periodicityDays: Int = 0,
+    val periodicityTimes: String = "",
+    val periodicityDays: String = "",
     val date: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).epochSecond,
     val doneDates: MutableList<Long> = mutableListOf<Long>(),
     val color: Int = 0,
