@@ -1,5 +1,6 @@
 package com.slouchingdog.android.slouchyhabit.presentation.ui.habit_list
 
+import androidx.compose.foundation.pager.PagerState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,65 +12,58 @@ import com.slouchingdog.android.domain.usecases.AddHabitDoneDateUseCase
 import com.slouchingdog.android.domain.usecases.DeleteHabitUseCase
 import com.slouchingdog.android.domain.usecases.GetHabitsUseCase
 import com.slouchingdog.android.domain.usecases.HabitListEventData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
-
 
 class HabitsListViewModel @Inject constructor(
     private val getHabitsUseCase: GetHabitsUseCase,
     private val deleteHabitUseCase: DeleteHabitUseCase,
     private val addHabitDoneDateUseCase: AddHabitDoneDateUseCase
 ) : ViewModel() {
-    private val _baseHabits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
-    private val _habits: MutableStateFlow<List<HabitEntity>> = MutableStateFlow(emptyList())
+    private var _baseHabits: List<HabitEntity> = mutableListOf()
     private var _habitListState: MutableLiveData<HabitListState> = MutableLiveData(HabitListState())
+
     val habitListState: LiveData<HabitListState> = _habitListState
 
     init {
         viewModelScope.launch {
             getHabitsUseCase().collect {
-                _baseHabits.value = it
-                _habits.value = it
+                _baseHabits = it
                 _habitListState.value = _habitListState.value!!.copy(
                     titleQuery = "",
-                    sortingType = SortingType.NONE,
-                    habitListFlow = getHabitsFlow()
+                    sortingType = SortingType.NONE
                 )
+                filterHabits()
             }
         }
     }
 
-    private fun getHabitsFlow(): Flow<List<HabitEntity>> {
-        filterHabits()
-        return _habits.map { habits -> habits.filter { it.type == _habitListState.value!!.habitType } }
-    }
-
-
     private fun filterHabits() {
-        var habits = _baseHabits.value
-
-        var filteredList = habits.filter { habit ->
-            (_habitListState.value!!.titleQuery.isEmpty() || habit.title.contains(_habitListState.value!!.titleQuery, true))
+        var filteredList = _baseHabits.filter { habit ->
+            (habit.type == habitListState.value?.habitType && (_habitListState.value!!.titleQuery.isEmpty() || habit.title.contains(
+                _habitListState.value!!.titleQuery,
+                true
+            )))
         }
-
-        _habits.value = sortHabitsByPriority(filteredList)
+        _habitListState.value =
+            _habitListState.value!!.copy(habitList = sortHabitsByPriority(filteredList))
     }
 
-    fun setHabitListType(habitType: HabitType){
+    fun setHabitListType(habitType: HabitType) {
         _habitListState.value = _habitListState.value!!.copy(habitType = habitType)
+        filterHabits()
     }
 
     fun setSortingType(sortingType: SortingType) {
         _habitListState.value = _habitListState.value!!.copy(sortingType = sortingType)
+        filterHabits()
     }
 
-    fun setTitleQuery(titleQuery: String){
+    fun setTitleQuery(titleQuery: String) {
         _habitListState.value = _habitListState.value!!.copy(titleQuery = titleQuery)
+        filterHabits()
     }
 
     fun deleteHabit(habitEntity: HabitEntity) {
@@ -89,6 +83,14 @@ class HabitsListViewModel @Inject constructor(
 
             _habitListState.value = _habitListState.value!!.copy(habitListEventData = eventData)
         }
+    }
+
+    fun onOpenFilterFABClick() {
+        _habitListState.value = _habitListState.value!!.copy(isBottomSheetShown = true)
+    }
+
+    fun onBottomSheetDismissRequest() {
+        _habitListState.value = _habitListState.value!!.copy(isBottomSheetShown = false)
     }
 
     private fun sortHabitsByPriority(habits: List<HabitEntity>): List<HabitEntity> {
@@ -117,10 +119,12 @@ class HabitsListViewModelFactory @Inject constructor(
 
 data class HabitListState(
     val habitType: HabitType = HabitType.GOOD,
-    val habitListFlow: Flow<List<HabitEntity>> = MutableStateFlow(emptyList()),
+    val habitList: List<HabitEntity> = emptyList(),
     val sortingType: SortingType = SortingType.NONE,
     val titleQuery: String = "",
-    val habitListEventData: HabitListEventData? = null
+    val habitListEventData: HabitListEventData? = null,
+    val isBottomSheetShown: Boolean = false,
+    val pagerState: PagerState = PagerState(pageCount = { 2 })
 )
 
 enum class SortingType() {
