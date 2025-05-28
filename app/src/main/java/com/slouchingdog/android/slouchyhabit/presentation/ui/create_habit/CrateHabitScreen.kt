@@ -38,7 +38,10 @@ fun CreateHabitScreen(
     onSaveHabit: () -> Unit
 ) {
     val habitScreenState by habitScreenStateLiveData.observeAsState(HabitScreenState())
-    ObserveCreationEvent(eventLivaData = habitScreenState.createHabitEvent, onSaveHabit = onSaveHabit)
+    ObserveCreationEvent(
+        eventLivaData = habitScreenState.createHabitEvent,
+        onSaveHabit = onSaveHabit
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +82,10 @@ fun CreateHabitScreen(
 }
 
 @Composable
-private fun ObserveCreationEvent(eventLivaData: LiveData<CreateHabitEvent>?, onSaveHabit: () -> Unit) {
+private fun ObserveCreationEvent(
+    eventLivaData: LiveData<CreateHabitEvent>?,
+    onSaveHabit: () -> Unit
+) {
     val event = eventLivaData?.observeAsState()
 
     when (event?.value) {

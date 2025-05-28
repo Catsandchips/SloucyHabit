@@ -123,7 +123,8 @@ class CreateHabitViewModel @Inject constructor(
                 CreateHabitEvent.SaveHabitWithCorrectData
             }
 
-        _habitScreenState.value = _habitScreenState.value!!.copy(createHabitEvent = createHabitEvent)
+        _habitScreenState.value =
+            _habitScreenState.value!!.copy(createHabitEvent = createHabitEvent)
     }
 }
 
