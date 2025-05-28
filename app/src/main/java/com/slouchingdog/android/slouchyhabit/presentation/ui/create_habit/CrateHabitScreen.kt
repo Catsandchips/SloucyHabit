@@ -1,7 +1,6 @@
 package com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit
 
-import androidx.activity.compose.LocalActivity
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.SlouchyTheme
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.components.DescriptionFields
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.components.PeriodicityFields
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.components.PrioritySelector
@@ -36,47 +34,65 @@ fun CreateHabitScreen(
     onTypeSelected: (HabitType) -> Unit,
     onDaysChange: (String) -> Unit,
     onTimesChange: (String) -> Unit,
-    onSaveButtonClick: () -> Unit
+    onSaveButtonClick: () -> Unit,
+    onSaveHabit: () -> Unit
 ) {
-    SlouchyTheme {
-        val habitScreenState by habitScreenStateLiveData.observeAsState(HabitScreenState())
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            DescriptionFields(
-                title = habitScreenState.title,
-                description = habitScreenState.description,
-                onTitleChange = onTitleChange,
-                onDescriptionChange = onDescriptionChange
+    val habitScreenState by habitScreenStateLiveData.observeAsState(HabitScreenState())
+    ObserveCreationEvent(eventLivaData = habitScreenState.createHabitEvent, onSaveHabit = onSaveHabit)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        DescriptionFields(
+            title = habitScreenState.title,
+            description = habitScreenState.description,
+            onTitleChange = onTitleChange,
+            onDescriptionChange = onDescriptionChange
+        )
+        PrioritySelector(
+            priority = habitScreenState.priority,
+            isPrioritySelectorExpanded = habitScreenState.isPrioritySelectorExpanded,
+            onPrioritySelection = onPrioritySelection,
+            onPrioritySelectorExpandedChange = onPrioritySelectorExpandedChange,
+            onDismissRequest = onDismissPriorityRequest
+        )
+        TypeRadioGroup(
+            selectedType = habitScreenState.type,
+            onTypeSelected = onTypeSelected
+        )
+        PeriodicityFields(
+            times = habitScreenState.periodicityTimes,
+            days = habitScreenState.periodicityDays,
+            onDaysChange = onDaysChange,
+            onTimesChange = onTimesChange
+        )
+        Button(onClick = { onSaveButtonClick() }) {
+            Text(
+                text = stringResource(R.string.save_habit_button_text),
+                fontSize = 34.sp,
+                color = MaterialTheme.colorScheme.background
             )
-            PrioritySelector(
-                priority = habitScreenState.priority,
-                isPrioritySelectorExpanded = habitScreenState.isPrioritySelectorExpanded,
-                onPrioritySelection = onPrioritySelection,
-                onPrioritySelectorExpandedChange = onPrioritySelectorExpandedChange,
-                onDismissRequest = onDismissPriorityRequest
-            )
-            TypeRadioGroup(
-                selectedType = habitScreenState.type,
-                onTypeSelected = onTypeSelected
-            )
-            PeriodicityFields(
-                times = habitScreenState.periodicityTimes,
-                days = habitScreenState.periodicityDays,
-                onDaysChange = onDaysChange,
-                onTimesChange = onTimesChange
-            )
-            Button(onClick = { onSaveButtonClick() }) {
-                Text(
-                    text = stringResource(R.string.save_habit_button_text),
-                    fontSize = 34.sp,
-                    color = MaterialTheme.colorScheme.background
-                )
-            }
         }
+    }
+}
+
+@Composable
+private fun ObserveCreationEvent(eventLivaData: LiveData<CreateHabitEvent>?, onSaveHabit: () -> Unit) {
+    val event = eventLivaData?.observeAsState()
+
+    when (event?.value) {
+        CreateHabitEvent.ShowSnackBarSomeFieldsEmpty -> {
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(R.string.form_validation_text),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        CreateHabitEvent.SaveHabitWithCorrectData -> onSaveHabit()
+        null -> {}
     }
 }
 

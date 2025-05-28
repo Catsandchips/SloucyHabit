@@ -28,8 +28,6 @@ class CreateHabitViewModel @Inject constructor(
     private val _habitScreenState: MutableLiveData<HabitScreenState> =
         MutableLiveData(HabitScreenState())
     val habitScreenState: LiveData<HabitScreenState> = _habitScreenState
-    private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
-    val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
 
     init {
         if (habitId != null) {
@@ -46,7 +44,6 @@ class CreateHabitViewModel @Inject constructor(
                     color = habit.color,
                     syncType = habit.syncType
                 )
-                _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
             }
         }
     }
@@ -112,7 +109,9 @@ class CreateHabitViewModel @Inject constructor(
     }
 
     fun onSaveButtonClick() {
-        _createHabitEvent.value =
+        val createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
+
+        createHabitEvent.value =
             if (_habitScreenState.value!!.title.isEmpty() ||
                 _habitScreenState.value!!.description.isEmpty() ||
                 _habitScreenState.value!!.periodicityTimes.isEmpty() ||
@@ -123,6 +122,8 @@ class CreateHabitViewModel @Inject constructor(
                 addHabit()
                 CreateHabitEvent.SaveHabitWithCorrectData
             }
+
+        _habitScreenState.value = _habitScreenState.value!!.copy(createHabitEvent = createHabitEvent)
     }
 }
 
@@ -153,5 +154,6 @@ data class HabitScreenState(
     val date: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).epochSecond,
     val doneDates: MutableList<Long> = mutableListOf<Long>(),
     val color: Int = 0,
-    val syncType: SyncType = SyncType.NOT_NEED
+    val syncType: SyncType = SyncType.NOT_NEED,
+    val createHabitEvent: LiveData<CreateHabitEvent>? = null
 )

@@ -122,10 +122,8 @@ class ComposeRootFragment : Fragment() {
                     onTypeSelected = { type -> createHabitViewModel.onTypeChange(type) },
                     onTimesChange = { times -> createHabitViewModel.onPeriodicityTimesChange(times) },
                     onDaysChange = { days -> createHabitViewModel.onPeriodicityDaysChange(days) },
-                    onSaveButtonClick = {
-                        createHabitViewModel.onSaveButtonClick()
-                        navController.popBackStack()
-                    }
+                    onSaveButtonClick = { createHabitViewModel.onSaveButtonClick() },
+                    onSaveHabit = { navController.popBackStack() }
                 )
             }
         }

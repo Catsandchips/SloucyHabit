@@ -24,7 +24,6 @@ class HabitsListViewModel @Inject constructor(
 ) : ViewModel() {
     private var _baseHabits: List<HabitEntity> = mutableListOf()
     private var _habitListState: MutableLiveData<HabitListState> = MutableLiveData(HabitListState())
-
     val habitListState: LiveData<HabitListState> = _habitListState
 
     init {
