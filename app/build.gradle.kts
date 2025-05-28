@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     alias(libs.plugins.compose.compiler)
+    id ("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
@@ -72,6 +73,9 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
     ksp(libs.dagger.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     testImplementation(libs.junit)

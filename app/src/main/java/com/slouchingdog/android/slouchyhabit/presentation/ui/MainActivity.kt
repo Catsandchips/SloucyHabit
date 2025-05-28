@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_home, R.id.nav_about
             ), binding.navigationDrawerLayout
-
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)

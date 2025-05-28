@@ -1,11 +1,9 @@
 package com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit
 
-import android.text.Editable
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.slouchingdog.android.domain.entity.HabitEntity
@@ -21,48 +19,46 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import javax.inject.Inject
-import kotlin.text.isNullOrEmpty
 
 class CreateHabitViewModel @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase,
-    savedStateHandle: SavedStateHandle
+    val habitId: String?
 ) : ViewModel() {
-    var habitState: HabitState = HabitState()
-    private val _createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
-    val createHabitEvent: LiveData<CreateHabitEvent> = _createHabitEvent
-    val habitId = savedStateHandle.get<String>(HABIT_ID_ARG)
+    private val _habitScreenState: MutableLiveData<HabitScreenState> =
+        MutableLiveData(HabitScreenState())
+    val habitScreenState: LiveData<HabitScreenState> = _habitScreenState
 
     init {
         if (habitId != null) {
             viewModelScope.launch {
                 val habit = getHabitByIdUseCase(habitId)
-                habitState = HabitState(
+                _habitScreenState.value = HabitScreenState(
                     title = habit.title,
                     description = habit.description,
                     type = habit.type,
                     priority = habit.priority,
-                    periodicityTimes = habit.periodicityTimes,
-                    periodicityDays = habit.periodicityDays,
+                    periodicityTimes = habit.periodicityTimes.toString(),
+                    periodicityDays = habit.periodicityDays.toString(),
                     doneDates = habit.doneDates,
                     color = habit.color,
                     syncType = habit.syncType
                 )
-                _createHabitEvent.value = CreateHabitEvent.PrefillFormWithPassedHabit
             }
         }
     }
 
     fun addHabit() {
         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+            val habitState = _habitScreenState.value!!
             val habitEntity = HabitEntity(
                 id = habitId,
                 title = habitState.title,
                 description = habitState.description,
                 type = habitState.type,
                 priority = habitState.priority,
-                periodicityTimes = habitState.periodicityTimes,
-                periodicityDays = habitState.periodicityDays,
+                periodicityTimes = habitState.periodicityTimes.toInt(),
+                periodicityDays = habitState.periodicityDays.toInt(),
                 date = habitState.date,
                 doneDates = habitState.doneDates,
                 color = habitState.color,
@@ -74,44 +70,62 @@ class CreateHabitViewModel @Inject constructor(
     }
 
     fun onTitleChange(newTitle: String) {
-        habitState = habitState.copy(title = newTitle)
+        _habitScreenState.value = _habitScreenState.value!!.copy(title = newTitle)
     }
 
     fun onDescriptionChange(newDescription: String) {
-        habitState = habitState.copy(description = newDescription)
+        _habitScreenState.value = _habitScreenState.value!!.copy(description = newDescription)
     }
 
     fun onTypeChange(newType: HabitType) {
-        habitState = habitState.copy(type = newType)
+        _habitScreenState.value = _habitScreenState.value!!.copy(type = newType)
     }
 
     fun onPriorityChange(newPriority: Int) {
-        habitState = habitState.copy(priority = newPriority)
+        _habitScreenState.value = _habitScreenState.value!!.copy(
+            priority = newPriority,
+            isPrioritySelectorExpanded = false
+        )
     }
 
-    fun onPeriodicityTimesChange(newPeriodicityTimes: Int) {
-        habitState = habitState.copy(periodicityTimes = newPeriodicityTimes)
+    fun onPrioritySelectionExpandedChange() {
+        val isSelectorExpanded = _habitScreenState.value!!.isPrioritySelectorExpanded
+        _habitScreenState.value =
+            _habitScreenState.value!!.copy(isPrioritySelectorExpanded = !isSelectorExpanded)
     }
 
-    fun onPeriodicityDaysChange(newPeriodicityDays: Int) {
-        habitState = habitState.copy(periodicityDays = newPeriodicityDays)
+    fun onDismissPriorityRequest() {
+        _habitScreenState.value = _habitScreenState.value!!.copy(isPrioritySelectorExpanded = false)
+    }
+
+    fun onPeriodicityTimesChange(newPeriodicityTimes: String) {
+        _habitScreenState.value =
+            _habitScreenState.value!!.copy(periodicityTimes = newPeriodicityTimes)
+    }
+
+    fun onPeriodicityDaysChange(newPeriodicityDays: String) {
+        _habitScreenState.value =
+            _habitScreenState.value!!.copy(periodicityDays = newPeriodicityDays)
     }
 
     fun onSaveButtonClick() {
-        _createHabitEvent.value =
-            if (habitState.title.isEmpty() || habitState.description.isEmpty() || habitState.periodicityTimes == 0 || habitState.periodicityDays == 0) {
+        val createHabitEvent = SingleLiveEvent<CreateHabitEvent>()
+
+        createHabitEvent.value =
+            if (_habitScreenState.value!!.title.isEmpty() ||
+                _habitScreenState.value!!.description.isEmpty() ||
+                _habitScreenState.value!!.periodicityTimes.isEmpty() ||
+                _habitScreenState.value!!.periodicityDays.isEmpty()
+            ) {
                 CreateHabitEvent.ShowSnackBarSomeFieldsEmpty
             } else {
                 addHabit()
                 CreateHabitEvent.SaveHabitWithCorrectData
             }
+
+        _habitScreenState.value =
+            _habitScreenState.value!!.copy(createHabitEvent = createHabitEvent)
     }
-
-    fun getPeriodicityForPlurals(input: Editable?): Int =
-        if (input.isNullOrEmpty()) 0 else input.toString().toInt()
-
-    fun getPeriodicityForState(input: Editable?): Int =
-        if (input.isNullOrEmpty()) 0 else input.toString().toInt()
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -119,25 +133,28 @@ class CreateHabitViewModelFactory @Inject constructor(
     val addHabitUseCase: AddHabitUseCase,
     val getHabitByIdUseCase: GetHabitByIdUseCase,
 ) : ViewModelProvider.Factory {
+    var habitId: String? = null
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         return CreateHabitViewModel(
             addHabitUseCase,
             getHabitByIdUseCase,
-            extras.createSavedStateHandle()
+            habitId
         ) as T
     }
 }
 
-data class HabitState(
+data class HabitScreenState(
     val title: String = "",
     val description: String = "",
     val type: HabitType = HabitType.GOOD,
     val priority: Int = 0,
-    val periodicityTimes: Int = 0,
-    val periodicityDays: Int = 0,
+    val isPrioritySelectorExpanded: Boolean = false,
+    val periodicityTimes: String = "",
+    val periodicityDays: String = "",
     val date: Long = LocalDateTime.now().toInstant(ZoneOffset.UTC).epochSecond,
     val doneDates: MutableList<Long> = mutableListOf<Long>(),
     val color: Int = 0,
-    val syncType: SyncType = SyncType.NOT_NEED
+    val syncType: SyncType = SyncType.NOT_NEED,
+    val createHabitEvent: LiveData<CreateHabitEvent>? = null
 )
