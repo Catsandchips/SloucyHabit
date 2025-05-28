@@ -46,33 +46,30 @@ fun PeriodicityFields(
             verticalAlignment = Alignment.Bottom
         ) {
             TextField(
-                modifier = Modifier.width(64.dp),
-                label = {
-                    Text(
-                        text = context.resources.getQuantityString(
-                            R.plurals.times,
-                            times.toIntOrNull() ?: 0
-                        )
-                    )
-                },
+                modifier = Modifier.width(40.dp),
+                label = { Text("") },
                 value = times.toString(),
                 onValueChange = { value -> onTimesChange(value) },
                 colors = textFieldColors()
             )
-            Text(text = "в")
+            Text(
+                text = context.resources.getQuantityString(
+                    R.plurals.times_in,
+                    times.toIntOrNull() ?: 0
+                )
+            )
             TextField(
-                modifier = Modifier.width(64.dp),
-                label = {
-                    Text(
-                        text = context.resources.getQuantityString(
-                            R.plurals.days,
-                            days.toIntOrNull() ?: 0
-                        )
-                    )
-                },
+                modifier = Modifier.width(40.dp),
+                label = { Text("") },
                 value = days.toString(),
                 onValueChange = { value -> onDaysChange(value) },
                 colors = textFieldColors()
+            )
+            Text(
+                text = context.resources.getQuantityString(
+                    R.plurals.days,
+                    days.toIntOrNull() ?: 0
+                )
             )
         }
     }
