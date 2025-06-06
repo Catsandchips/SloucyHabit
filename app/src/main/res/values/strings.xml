@@ -33,4 +33,6 @@
     <string name="overdone_bad_habit_message">Хватит это делать</string>
     <string name="overdone_good_habit_message">You are breathtaking</string>
     <string name="devider_dot"> • </string>
+    <string name="habit_list_destination">habit_list_screen</string>
+    <string name="create_habit_destination">create_habit_screen</string>
 </resources>
