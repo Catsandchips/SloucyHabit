@@ -90,7 +90,6 @@ class ComposeRootFragment : Fragment() {
                     onDeleteButtonClick = { habit -> habitListViewModel.deleteHabit(habit) },
                     onAddDoneDateButtonClick = { habit -> habitListViewModel.addHabitDoneDate(habit) },
                     onSetQuery = { titleQuery -> habitListViewModel.setTitleQuery(titleQuery) },
-                    onTabClick = { habitType -> habitListViewModel.setHabitListType(habitType) },
                     onOpenFilterFABClick = { habitListViewModel.onOpenFilterFABClick() },
                     onBottomSheetDismissRequest = { habitListViewModel.onBottomSheetDismissRequest() },
                     onSortButtonCheck = { sortingType ->

@@ -25,7 +25,6 @@ fun HabitListScreen(
     onAddDoneDateButtonClick: (HabitEntity) -> Unit,
     onSetQuery: (String) -> Unit,
     onSortButtonCheck: (SortingType) -> Unit,
-    onTabClick: (HabitType) -> Unit,
     onOpenFilterFABClick: () -> Unit,
     onBottomSheetDismissRequest: () -> Unit
 ) {
@@ -42,9 +41,9 @@ fun HabitListScreen(
             onNavigateToCreateHabit = onNavigateToCreateHabit,
             innerPadding = innerPadding,
             onDeleteButtonClick = onDeleteButtonClick,
-            onTabClick = onTabClick,
             onAddDoneDateButtonClick = onAddDoneDateButtonClick,
-            habits = habitListState.habitList,
+            goodHabitList = habitListState.goodHabitList,
+            badHabitList = habitListState.badHabitList,
             pagerState = habitListState.pagerState
         )
 

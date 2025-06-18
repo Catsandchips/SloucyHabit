@@ -41,18 +41,16 @@ class HabitsListViewModel @Inject constructor(
 
     private fun filterHabits() {
         var filteredList = _baseHabits.filter { habit ->
-            (habit.type == habitListState.value?.habitType && (_habitListState.value!!.titleQuery.isEmpty() || habit.title.contains(
+            ((_habitListState.value!!.titleQuery.isEmpty() || habit.title.contains(
                 _habitListState.value!!.titleQuery,
                 true
             )))
         }
         _habitListState.value =
-            _habitListState.value!!.copy(habitList = sortHabitsByPriority(filteredList))
-    }
-
-    fun setHabitListType(habitType: HabitType) {
-        _habitListState.value = _habitListState.value!!.copy(habitType = habitType)
-        filterHabits()
+            _habitListState.value!!.copy(
+                goodHabitList = sortHabitsByPriority(filteredList.filter { habit -> habit.type == HabitType.GOOD }),
+                badHabitList = sortHabitsByPriority(filteredList.filter { habit -> habit.type == HabitType.BAD })
+            )
     }
 
     fun setSortingType(sortingType: SortingType) {
@@ -117,8 +115,8 @@ class HabitsListViewModelFactory @Inject constructor(
 }
 
 data class HabitListState(
-    val habitType: HabitType = HabitType.GOOD,
-    val habitList: List<HabitEntity> = emptyList(),
+    val goodHabitList: List<HabitEntity> = emptyList(),
+    val badHabitList: List<HabitEntity> = emptyList(),
     val sortingType: SortingType = SortingType.NONE,
     val titleQuery: String = "",
     val habitListEventData: HabitListEventData? = null,

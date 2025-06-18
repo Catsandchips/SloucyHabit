@@ -16,7 +16,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.slouchingdog.android.domain.entity.HabitEntity
-import com.slouchingdog.android.domain.entity.HabitType
 import com.slouchingdog.android.slouchyhabit.R
 import kotlinx.coroutines.launch
 
@@ -25,10 +24,10 @@ import kotlinx.coroutines.launch
 fun HabitListPager(
     onNavigateToCreateHabit: (String?) -> Unit,
     innerPadding: PaddingValues,
-    onTabClick: (HabitType) -> Unit,
     onDeleteButtonClick: (HabitEntity) -> Unit,
     onAddDoneDateButtonClick: (HabitEntity) -> Unit,
-    habits: List<HabitEntity>,
+    goodHabitList: List<HabitEntity>,
+    badHabitList: List<HabitEntity>,
     pagerState: PagerState
 ) {
     val scope = rememberCoroutineScope()
@@ -61,20 +60,18 @@ fun HabitListPager(
         HorizontalPager(pagerState) { page ->
             when (page) {
                 0 -> {
-                    onTabClick(HabitType.GOOD)
                     HabitList(
                         onNavigateToCreateHabit = onNavigateToCreateHabit,
-                        habits = habits,
+                        habits = goodHabitList,
                         onDeleteButtonClick = onDeleteButtonClick,
                         onAddDoneDateButtonClick = onAddDoneDateButtonClick
                     )
                 }
 
                 1 -> {
-                    onTabClick(HabitType.BAD)
                     HabitList(
                         onNavigateToCreateHabit = onNavigateToCreateHabit,
-                        habits = habits,
+                        habits = badHabitList,
                         onDeleteButtonClick = onDeleteButtonClick,
                         onAddDoneDateButtonClick = onAddDoneDateButtonClick
                     )
