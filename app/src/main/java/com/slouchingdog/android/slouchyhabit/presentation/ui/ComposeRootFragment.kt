@@ -21,7 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.slouchingdog.android.slouchyhabit.R
-import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.SlouchyTheme
+import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.BaseSlouchyTheme
+import com.slouchingdog.android.slouchyhabit.presentation.compose_theme.CreateHabitTheme
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.CreateHabitScreen
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.CreateHabitViewModel
 import com.slouchingdog.android.slouchyhabit.presentation.ui.create_habit.CreateHabitViewModelFactory
@@ -60,9 +61,7 @@ class ComposeRootFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                SlouchyTheme {
-                    ComposeNavigation()
-                }
+                ComposeNavigation()
             }
         }
     }
@@ -80,50 +79,62 @@ class ComposeRootFragment : Fragment() {
 
         NavHost(navController = navController, startDestination = HabitListDestination) {
             composable<HabitListDestination> {
-                HabitListScreen(
-                    onNavigateToCreateHabit = { habitId ->
-                        navController.navigate(
-                            route = CreateHabitDestination(habitId)
-                        )
-                    },
-                    habitListStateLiveData = habitListViewModel.habitListState,
-                    onDeleteButtonClick = { habit -> habitListViewModel.deleteHabit(habit) },
-                    onAddDoneDateButtonClick = { habit -> habitListViewModel.addHabitDoneDate(habit) },
-                    onSetQuery = { titleQuery -> habitListViewModel.setTitleQuery(titleQuery) },
-                    onOpenFilterFABClick = { habitListViewModel.onOpenFilterFABClick() },
-                    onBottomSheetDismissRequest = { habitListViewModel.onBottomSheetDismissRequest() },
-                    onSortButtonCheck = { sortingType ->
-                        habitListViewModel.setSortingType(
-                            sortingType
-                        )
-                    })
+                BaseSlouchyTheme(content = {
+                    HabitListScreen(
+                        onNavigateToCreateHabit = { habitId ->
+                            navController.navigate(
+                                route = CreateHabitDestination(habitId)
+                            )
+                        },
+                        habitListStateLiveData = habitListViewModel.habitListState,
+                        onDeleteButtonClick = { habit -> habitListViewModel.deleteHabit(habit) },
+                        onAddDoneDateButtonClick = { habit ->
+                            habitListViewModel.addHabitDoneDate(
+                                habit
+                            )
+                        },
+                        onSetQuery = { titleQuery -> habitListViewModel.setTitleQuery(titleQuery) },
+                        onOpenFilterFABClick = { habitListViewModel.onOpenFilterFABClick() },
+                        onBottomSheetDismissRequest = { habitListViewModel.onBottomSheetDismissRequest() },
+                        onSortButtonCheck = { sortingType ->
+                            habitListViewModel.setSortingType(
+                                sortingType
+                            )
+                        })
+                })
             }
             composable<CreateHabitDestination> { backStackEntry ->
                 val createHabitDestination: CreateHabitDestination = backStackEntry.toRoute()
                 createHabitViewModel = viewModel(factory = createHabitViewModelFactory.apply {
                     habitId = createHabitDestination.habitId
                 })
-                CreateHabitScreen(
-                    habitScreenStateLiveData = createHabitViewModel.habitScreenState,
-                    onTitleChange = { title -> createHabitViewModel.onTitleChange(title) },
-                    onDescriptionChange = { description ->
-                        createHabitViewModel.onDescriptionChange(
-                            description
-                        )
-                    },
-                    onPrioritySelection = { priority ->
-                        createHabitViewModel.onPriorityChange(
-                            priority
-                        )
-                    },
-                    onPrioritySelectorExpandedChange = { createHabitViewModel.onPrioritySelectionExpandedChange() },
-                    onDismissPriorityRequest = { createHabitViewModel.onDismissPriorityRequest() },
-                    onTypeSelected = { type -> createHabitViewModel.onTypeChange(type) },
-                    onTimesChange = { times -> createHabitViewModel.onPeriodicityTimesChange(times) },
-                    onDaysChange = { days -> createHabitViewModel.onPeriodicityDaysChange(days) },
-                    onSaveButtonClick = { createHabitViewModel.onSaveButtonClick() },
-                    onSaveHabit = { navController.popBackStack() }
-                )
+                CreateHabitTheme {
+                    CreateHabitScreen(
+                        habitScreenStateLiveData = createHabitViewModel.habitScreenState,
+                        onTitleChange = { title -> createHabitViewModel.onTitleChange(title) },
+                        onDescriptionChange = { description ->
+                            createHabitViewModel.onDescriptionChange(
+                                description
+                            )
+                        },
+                        onPrioritySelection = { priority ->
+                            createHabitViewModel.onPriorityChange(
+                                priority
+                            )
+                        },
+                        onPrioritySelectorExpandedChange = { createHabitViewModel.onPrioritySelectionExpandedChange() },
+                        onDismissPriorityRequest = { createHabitViewModel.onDismissPriorityRequest() },
+                        onTypeSelected = { type -> createHabitViewModel.onTypeChange(type) },
+                        onTimesChange = { times ->
+                            createHabitViewModel.onPeriodicityTimesChange(
+                                times
+                            )
+                        },
+                        onDaysChange = { days -> createHabitViewModel.onPeriodicityDaysChange(days) },
+                        onSaveButtonClick = { createHabitViewModel.onSaveButtonClick() },
+                        onSaveHabit = { navController.popBackStack() }
+                    )
+                }
             }
         }
     }

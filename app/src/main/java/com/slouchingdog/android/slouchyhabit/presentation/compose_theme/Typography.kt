@@ -75,3 +75,67 @@ val SlouchyAppTypography = Typography(
         color = Color(0xFFFFFFFF)
     )
 )
+
+val CreateHabitTypography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    displayMedium = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    displaySmall = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    titleLarge = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    titleMedium = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    titleSmall = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        fontSize = 24.sp,
+        color = Color(0xFFFFFFFF)
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    bodySmall = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    labelLarge = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    labelMedium = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    ),
+    labelSmall = TextStyle(
+        fontFamily = SlouchyFontFamily,
+        color = Color(0xFFFFFFFF)
+    )
+)
